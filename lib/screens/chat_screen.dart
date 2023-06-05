@@ -74,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       // scroll down widget
       floatingActionButton: ScrollDownWidget(
-        index: lastIndex!,
+        index: lastIndex ?? 0,
         scrollController: itemScrollController,
       ),
     );
