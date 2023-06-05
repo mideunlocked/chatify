@@ -13,12 +13,16 @@ class ChatScreenAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // back button
           const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Colors.white54,
           ),
+
+          // title (Name, and isOnline)
           Column(
             children: [
+              // name
               Text(
                 "Uber driver",
                 style: TextStyle(
@@ -27,6 +31,7 @@ class ChatScreenAppBar extends StatelessWidget {
                   fontSize: 14.sp,
                 ),
               ),
+              // isOnline
               Text(
                 "Online",
                 style: TextStyle(
@@ -36,6 +41,8 @@ class ChatScreenAppBar extends StatelessWidget {
               ),
             ],
           ),
+
+          // profile picture
           CircleAvatar(
             backgroundColor: Colors.grey[200],
           ),

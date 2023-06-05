@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../providers/chatting.dart';
 import 'more_actions_dialog.dart';
+import 'replied_widget.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
@@ -13,13 +15,17 @@ class ChatBubble extends StatelessWidget {
     this.isRead = false,
     required this.id,
     required this.reply,
+    required this.index,
+    required this.scrollController,
   });
 
   final String text;
   final String id;
   final bool isMe;
+  final int index;
   final bool isRead;
   final Map<String, dynamic> reply;
+  final ItemScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +64,16 @@ class ChatBubble extends StatelessWidget {
               .centerLeft, // alignment for current user : alignment for other user
       child: InkWell(
         borderRadius: BorderRadius.circular(30),
-        onLongPress: () => showChatDetails(context),
+        onLongPress: () => showChatDetails(
+          context,
+        ),
         onDoubleTap: () {
-          replyData(isMe == true ? "You" : "Uber Driver", text, context);
+          replyChat(
+            isMe == true ? "You" : "Uber Driver",
+            text,
+            index,
+            context,
+          );
         },
         child: Stack(
           alignment: Alignment.topRight,
@@ -68,7 +81,11 @@ class ChatBubble extends StatelessWidget {
             reply.isEmpty == true
                 ? const Text("")
                 : RepliedWidget(
-                    isMe: isMe, bubbleWidth: bubbleWidth, reply: reply),
+                    isMe: isMe,
+                    bubbleWidth: bubbleWidth,
+                    reply: reply,
+                    scrollController: scrollController,
+                  ),
             Container(
               margin: EdgeInsets.only(
                 top: reply.isEmpty == true ? 0 : 30.sp,
@@ -101,6 +118,8 @@ class ChatBubble extends StatelessWidget {
                       fontSize: 11.sp,
                     ),
                   ),
+
+                  // widget to notify when a message as been delivered and seen
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -124,6 +143,7 @@ class ChatBubble extends StatelessWidget {
     );
   }
 
+  // function to call the show more info dialog
   void showChatDetails(BuildContext context) {
     showDialog(
       context: context,
@@ -132,80 +152,17 @@ class ChatBubble extends StatelessWidget {
           isMe: isMe,
           text: text,
           id: id,
+          index: index,
         );
       },
     );
   }
 
-  void replyData(String name, String text, context) {
+  // function ot reply chat
+  void replyChat(String name, String text, int index, context) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
+    print("Index is: $index");
 
-    chattingProvider.replyMessage(name, text);
-  }
-}
-
-class RepliedWidget extends StatelessWidget {
-  const RepliedWidget({
-    super.key,
-    required this.isMe,
-    required this.bubbleWidth,
-    required this.reply,
-  });
-
-  final bool isMe;
-  final double bubbleWidth;
-  final Map<String, dynamic> reply;
-
-  @override
-  Widget build(BuildContext context) {
-    // calculate bubble container width using text span
-    final textSpan = TextSpan(
-      text: reply["text"],
-    );
-    final textPainter = TextPainter(
-      text: textSpan,
-      textDirection: TextDirection.ltr,
-      maxLines: 1,
-    );
-    textPainter.layout();
-
-    // bubble container final size
-    final bubbleWidth = textPainter.width + 35;
-
-    return Padding(
-      padding: EdgeInsets.only(
-        left: isMe == true ? 30.sp : 10.sp,
-        right: isMe == false ? 30.sp : 10.sp,
-        top: 10.sp,
-      ),
-      child: Container(
-        padding: EdgeInsets.only(
-          top: 3.sp,
-          left: 12.sp,
-          right: 12.sp,
-          bottom: 10.sp,
-        ),
-        alignment: Alignment.topLeft,
-        width: bubbleWidth,
-        decoration: BoxDecoration(
-          color: Colors.white24,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(
-          children: [
-            Text(
-              reply["text"] ?? "",
-              style: TextStyle(
-                color: Colors.white54,
-                fontSize: 11.sp,
-              ),
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-          ],
-        ),
-      ),
-    );
+    chattingProvider.replyMessage(name, text, index);
   }
 }

@@ -113,6 +113,43 @@ class Chatting with ChangeNotifier {
       text:
           "And you too, I'm doing well, i'm guessing you are the uber driver i requested for?",
     ),
+    Chat(
+      id: "e",
+      timeStamp: 3,
+      reply: {},
+      isMe: true,
+      isSeen: true,
+      isSent: true,
+      text: "Good day seun",
+    ),
+    Chat(
+      id: "r",
+      timeStamp: 4,
+      reply: {},
+      isMe: true,
+      isSeen: true,
+      isSent: true,
+      text: "I'm Ariyo",
+    ),
+    Chat(
+      id: "t",
+      timeStamp: 5,
+      reply: {},
+      isMe: false,
+      isSeen: true,
+      isSent: true,
+      text: "Nice to meet you",
+    ),
+    Chat(
+      id: "y",
+      timeStamp: 6,
+      reply: {},
+      isMe: true,
+      isSeen: true,
+      isSent: true,
+      text:
+          "And you too, I'm doing well, i'm guessing you are the uber driver i requested for?",
+    ),
   ];
 
   Map<String, dynamic> _reply = {};
@@ -135,8 +172,9 @@ class Chatting with ChangeNotifier {
     return chats;
   }
 
-  void replyMessage(String name, String chatText) {
+  void replyMessage(String name, String chatText, int index) {
     _reply = {
+      "index": index,
       "name": name,
       "text": chatText,
     };

@@ -11,10 +11,12 @@ class MoreActionsDialog extends StatelessWidget {
     required this.isMe,
     required this.text,
     required this.id,
+    required this.index,
   });
 
   final bool isMe;
   final String id;
+  final int index;
   final String text;
 
   @override
@@ -113,8 +115,11 @@ class MoreActionsDialog extends StatelessWidget {
                           )
                         : Container(),
                     ListTile(
-                      onTap: () => replyData(
-                          isMe == true ? "You" : "Uber Driver", text, context),
+                      onTap: () => replyChat(
+                          isMe == true ? "You" : "Uber Driver",
+                          text,
+                          context,
+                          index),
                       title: const Text(
                         "Reply",
                         style: TextStyle(
@@ -149,13 +154,15 @@ class MoreActionsDialog extends StatelessWidget {
     );
   }
 
-  void replyData(String name, String text, context) {
+  // reply chat functions
+  void replyChat(String name, String text, context, int index) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
 
-    chattingProvider.replyMessage(name, text);
+    chattingProvider.replyMessage(name, text, index);
     Navigator.pop(context);
   }
 
+  // delete chat functions
   void deleteChat(context) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
 

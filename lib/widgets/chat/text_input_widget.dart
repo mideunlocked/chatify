@@ -15,10 +15,12 @@ class TextInputWidget extends StatefulWidget {
     this.replyText = "",
     this.name = "",
     required this.isMe,
+    required this.index,
   });
 
   String replyText;
   String name;
+  final int index;
   final bool isMe;
 
   @override
@@ -66,6 +68,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
                       id: "jaa",
                       timeStamp: 23,
                       reply: {
+                        "index": widget.index,
                         "name": widget.name,
                         "text": widget.replyText,
                       },
