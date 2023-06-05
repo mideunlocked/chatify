@@ -8,6 +8,8 @@ class ChatScreenAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var of = Theme.of(context);
+    var textTheme = of.textTheme;
     return Padding(
       padding: EdgeInsets.all(7.sp),
       child: Row(
@@ -25,9 +27,7 @@ class ChatScreenAppBar extends StatelessWidget {
               // name
               Text(
                 "Uber driver",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                style: textTheme.bodyLarge?.copyWith(
                   fontSize: 14.sp,
                 ),
               ),

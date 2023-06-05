@@ -33,14 +33,12 @@ class ChatTextField extends StatelessWidget {
         minLines: 1,
         cursorColor: const Color.fromARGB(255, 192, 250, 223),
         style: const TextStyle(
+          fontFamily: "Poppins",
           color: Colors.white,
         ),
         decoration: const InputDecoration(
           border: InputBorder.none,
           hintText: "Write your message",
-          hintStyle: TextStyle(
-            color: Colors.white30,
-          ),
         ),
         onChanged: (_) {},
         onEditingComplete: () {},

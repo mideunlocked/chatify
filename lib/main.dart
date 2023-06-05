@@ -24,7 +24,28 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            indicatorColor: const Color.fromARGB(255, 192, 250, 223),
             scaffoldBackgroundColor: const Color.fromARGB(255, 0, 19, 29),
+            textTheme: TextTheme(
+              bodyLarge: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+              bodyMedium: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 10.sp,
+                color: Colors.white,
+              ),
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              hintStyle: TextStyle(
+                color: Colors.white30,
+                fontSize: 11.sp,
+                fontFamily: "Poppins",
+              ),
+            ),
           ),
           home: const HomeScreen(),
         ),
