@@ -13,7 +13,7 @@ class MessagesAppBar extends StatelessWidget {
     const radius = Radius.circular(35);
 
     return Container(
-      height: 10.h,
+      height: 8.h,
       padding: EdgeInsets.symmetric(horizontal: 8.w),
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 7, 49, 73).withOpacity(0.3),
@@ -30,10 +30,10 @@ class MessagesAppBar extends StatelessWidget {
             style: textTheme.bodyLarge,
           ),
           Image.asset(
-            "assets/images/search.png",
+            "assets/icons/search.png",
             color: Colors.white,
-            height: 7.h,
-            width: 7.w,
+            height: 5.h,
+            width: 5.w,
           ),
         ],
       ),

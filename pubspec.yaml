@@ -28,8 +28,12 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/search.png
-    - assets/images/share.png
+    - assets/icons/search.png
+    - assets/icons/share.png
+    - assets/icons/communities.png
+    - assets/icons/configure.png
+    - assets/icons/group-chat.png
+    - assets/icons/message.png
  
   fonts:
     - family: Poppins

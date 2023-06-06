@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (context) => Chatting(),
-          )
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             textTheme: TextTheme(
               bodyLarge: TextStyle(
                 fontFamily: "Poppins",
-                fontSize: 18.sp,
+                fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
               ),
@@ -53,3 +53,64 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// import 'package:chatify/screens/messages_list_screen.dart';
+// import 'package:flutter/material.dart';
+
+// import '../widgets/home_screen_widget/custom_nav.dart';
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   final pageController = PageController();
+
+//   @override
+//   void dispose() {
+//     super.dispose();
+
+//     pageController.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Stack(
+//         alignment: Alignment.bottomCenter,
+//         children: [
+//           // home screen pages with page view
+//           PageView(
+//             controller: pageController,
+//             physics: const NeverScrollableScrollPhysics(),
+//             children: pages,
+//           ),
+
+//           // custom bottom nav
+//           CustomBottomNav(
+//             pageController: pageController,
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// List<Widget> pages = [
+//   const MessagesScreen(),
+//   const Center(
+//     child: Text("Groups"),
+//   ),
+//   const Center(
+//     child: Text("Communities"),
+//   ),
+//   const Center(
+//     child: Text("search"),
+//   ),
+//   const Center(
+//     child: Text("Settings"),
+//   ),
+// ];

@@ -16,9 +16,12 @@ class ChatScreenAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // back button
-          const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.white54,
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white54,
+            ),
           ),
 
           // title (Name, and isOnline)

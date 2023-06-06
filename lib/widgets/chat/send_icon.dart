@@ -25,7 +25,7 @@ class SendIcon extends StatelessWidget {
             color: Color.fromARGB(255, 192, 250, 223),
           ),
           child: Image.asset(
-            "assets/images/share.png",
+            "assets/icons/share.png",
             height: 7.h,
             width: 7.w,
           )),

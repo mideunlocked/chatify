@@ -24,6 +24,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
+                itemCount: 10,
                 itemBuilder: (context, index) => const MessageTile(),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:chatify/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -18,6 +19,12 @@ class MessageTile extends StatelessWidget {
             horizontal: 1.w,
           ),
           child: ListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ChatScreen(),
+              ),
+            ),
             leading: CircleAvatar(
               backgroundColor: Colors.grey[300],
               radius: 17.sp,
