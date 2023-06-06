@@ -1,4 +1,8 @@
+import 'package:chatify/screens/group_messaging_screen.dart';
 import 'package:chatify/screens/messages_list_screen.dart';
+import 'package:chatify/screens/search_screen.dart';
+import 'package:chatify/screens/settings_screen.dart';
+import 'package:chatify/screens/spaces_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/home_screen_widget/custom_nav.dart';
@@ -11,9 +15,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final pageController = PageController();
+  var currentIndex = 1;
 
-  var currentIndex = 0;
+  final pageController = PageController(
+    initialPage: 1,
+  );
 
   @override
   void dispose() {
@@ -25,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -51,16 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
 List<Widget> pages = [
   const MessagesScreen(),
-  const Center(
-    child: Text("Groups"),
-  ),
-  const Center(
-    child: Text("Communities"),
-  ),
-  const Center(
-    child: Text("search"),
-  ),
-  const Center(
-    child: Text("Settings"),
-  ),
+  const GroupMessagesScreen(),
+  const SpacesScreen(),
+  const SearchScreen(),
+  const SettingScreen(),
 ];

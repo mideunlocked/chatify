@@ -2,8 +2,8 @@ import 'package:chatify/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class MessageTile extends StatelessWidget {
-  const MessageTile({
+class GroupMessageTile extends StatelessWidget {
+  const GroupMessageTile({
     super.key,
   });
 
@@ -11,6 +11,19 @@ class MessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     var of = Theme.of(context);
     var textTheme = of.textTheme;
+
+    // var openImage = Image.asset(
+    //                 "assets/icons/global-network.png",
+    //                 color: Colors.blue,
+    //                 height: 10.sp,
+    //                 width: 10.sp,
+    //               );
+    var lockedImage = Image.asset(
+      "assets/icons/lock.png",
+      color: Colors.red,
+      height: 10.sp,
+      width: 10.sp,
+    );
 
     return Column(
       children: [
@@ -31,13 +44,21 @@ class MessageTile extends StatelessWidget {
             ),
             title: Padding(
               padding: EdgeInsets.symmetric(vertical: 5.sp),
-              child: Text(
-                "Uber Driver",
-                style: textTheme.bodyLarge?.copyWith(fontSize: 13.sp),
+              child: Row(
+                children: [
+                  Text(
+                    "Fpl Heroes",
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 13.sp),
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  lockedImage,
+                ],
               ),
             ),
             subtitle: Text(
-              "I'm on my way to you now",
+              "Man utd vs gunners who is winning?",
               maxLines: 1,
               softWrap: true,
               overflow: TextOverflow.ellipsis,

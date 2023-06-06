@@ -34,6 +34,11 @@ flutter:
     - assets/icons/configure.png
     - assets/icons/group-chat.png
     - assets/icons/message.png
+    - assets/icons/global-network.png
+    - assets/icons/lock.png
+    - assets/icons/plus.png
+    - assets/icons/more.png
+    - assets/icons/exit.png
  
   fonts:
     - family: Poppins

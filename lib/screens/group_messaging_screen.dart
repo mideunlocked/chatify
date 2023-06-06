@@ -1,16 +1,16 @@
+import 'package:chatify/widgets/message_list/group_message_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/message_list/message_app_bar.dart';
-import '../widgets/message_list/message_tile.dart';
 
-class MessagesScreen extends StatefulWidget {
-  const MessagesScreen({super.key});
+class GroupMessagesScreen extends StatefulWidget {
+  const GroupMessagesScreen({super.key});
 
   @override
-  State<MessagesScreen> createState() => _MessagesScreenState();
+  State<GroupMessagesScreen> createState() => _MessagesScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen> {
+class _MessagesScreenState extends State<GroupMessagesScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,7 +18,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         children: [
           // custom app bar
           const MessagesAppBar(
-            title: "Messages",
+            title: "Group messages",
           ),
 
           // messages list
@@ -26,7 +26,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: 10,
-              itemBuilder: (context, index) => const MessageTile(),
+              itemBuilder: (context, index) => const GroupMessageTile(),
             ),
           ),
         ],

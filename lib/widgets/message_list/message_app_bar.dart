@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../home_screen_widget/app_bar_images.dart';
+
 class MessagesAppBar extends StatelessWidget {
   const MessagesAppBar({
     super.key,
+    required this.title,
   });
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +31,30 @@ class MessagesAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Messages",
+            title,
             style: textTheme.bodyLarge,
           ),
-          Image.asset(
-            "assets/icons/search.png",
-            color: Colors.white,
-            height: 5.h,
-            width: 5.w,
+          const Spacer(),
+          Row(
+            children: [
+              AppBarIcon(
+                url: "assets/icons/search.png",
+                function: () {},
+              ),
+              title.contains("Group") != true
+                  ? Container()
+                  : Row(
+                      children: [
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        AppBarIcon(
+                          url: "assets/icons/plus.png",
+                          function: () {},
+                        ),
+                      ],
+                    ),
+            ],
           ),
         ],
       ),
