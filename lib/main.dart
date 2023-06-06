@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             indicatorColor: const Color.fromARGB(255, 192, 250, 223),
             scaffoldBackgroundColor: const Color.fromARGB(255, 0, 19, 29),
+            primaryColor: const Color.fromARGB(255, 0, 34, 53),
             textTheme: TextTheme(
               bodyLarge: TextStyle(
                 fontFamily: "Poppins",
@@ -42,8 +43,31 @@ class MyApp extends StatelessWidget {
             inputDecorationTheme: InputDecorationTheme(
               hintStyle: TextStyle(
                 color: Colors.white30,
-                fontSize: 11.sp,
+                fontSize: 10.sp,
                 fontFamily: "Poppins",
+              ),
+            ),
+            textButtonTheme: const TextButtonThemeData(
+              style: ButtonStyle(
+                textStyle: MaterialStatePropertyAll(
+                  TextStyle(
+                    fontFamily: "Poppins",
+                    color: Color.fromARGB(255, 192, 250, 223),
+                  ),
+                ),
+              ),
+            ),
+            listTileTheme: ListTileThemeData(
+              titleTextStyle: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+              subtitleTextStyle: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 9.sp,
+                color: Colors.white60,
               ),
             ),
           ),
@@ -53,64 +77,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// import 'package:chatify/screens/messages_list_screen.dart';
-// import 'package:flutter/material.dart';
-
-// import '../widgets/home_screen_widget/custom_nav.dart';
-
-// class HomeScreen extends StatefulWidget {
-//   const HomeScreen({super.key});
-
-//   @override
-//   State<HomeScreen> createState() => _HomeScreenState();
-// }
-
-// class _HomeScreenState extends State<HomeScreen> {
-//   final pageController = PageController();
-
-//   @override
-//   void dispose() {
-//     super.dispose();
-
-//     pageController.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         alignment: Alignment.bottomCenter,
-//         children: [
-//           // home screen pages with page view
-//           PageView(
-//             controller: pageController,
-//             physics: const NeverScrollableScrollPhysics(),
-//             children: pages,
-//           ),
-
-//           // custom bottom nav
-//           CustomBottomNav(
-//             pageController: pageController,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// List<Widget> pages = [
-//   const MessagesScreen(),
-//   const Center(
-//     child: Text("Groups"),
-//   ),
-//   const Center(
-//     child: Text("Communities"),
-//   ),
-//   const Center(
-//     child: Text("search"),
-//   ),
-//   const Center(
-//     child: Text("Settings"),
-//   ),
-// ];

@@ -40,7 +40,6 @@ class RepliedWidget extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          print(reply["index"]);
           scrollController.scrollTo(
             index: reply["index"] ?? 0,
             alignment: 0.5,

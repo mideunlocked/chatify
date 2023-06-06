@@ -1,7 +1,7 @@
 import 'package:chatify/screens/group_messaging_screen.dart';
 import 'package:chatify/screens/messages_list_screen.dart';
 import 'package:chatify/screens/search_screen.dart';
-import 'package:chatify/screens/settings_screen.dart';
+import 'package:chatify/screens/settings/settings_screen.dart';
 import 'package:chatify/screens/spaces_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +15,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var currentIndex = 1;
+  int currentIndex = 4;
 
   final pageController = PageController(
-    initialPage: 1,
+    initialPage: 4,
   );
 
   @override

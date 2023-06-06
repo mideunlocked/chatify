@@ -16,6 +16,8 @@ dependencies:
   sizer: ^2.0.15
   provider: ^6.0.5
   scrollable_positioned_list: ^0.3.8
+  flutter_native_splash: ^2.3.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -23,22 +25,27 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo-2.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+flutter_native_splash:
+  color: "#000B1E"
+  image: assets/images/logo-1.png
+
+  android_12:
+    image: assets/images/logo-1.png
+    icon_background_color: "#000B1E"
+
 flutter:
 
   uses-material-design: true
 
   assets:
-    - assets/icons/search.png
-    - assets/icons/share.png
-    - assets/icons/communities.png
-    - assets/icons/configure.png
-    - assets/icons/group-chat.png
-    - assets/icons/message.png
-    - assets/icons/global-network.png
-    - assets/icons/lock.png
-    - assets/icons/plus.png
-    - assets/icons/more.png
-    - assets/icons/exit.png
+    - assets/icons/
+    - assets/images/
  
   fonts:
     - family: Poppins
@@ -52,9 +59,4 @@ flutter:
           weight: 500
         - asset: assets/fonts/poppins/Poppins-Medium.ttf
           weight: 300
-    # - family: Trajan Pro
-    #   fonts:
-    #     - asset: fonts/TrajanPro.ttf
-    #     - asset: fonts/TrajanPro_Bold.ttf
-    #       weight: 700
 

@@ -161,7 +161,6 @@ class ChatBubble extends StatelessWidget {
   // function ot reply chat
   void replyChat(String name, String text, int index, context) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
-    print("Index is: $index");
 
     chattingProvider.replyMessage(name, text, index);
   }

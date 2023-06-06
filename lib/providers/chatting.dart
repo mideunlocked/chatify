@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/chat.dart';
 
 class Chatting with ChangeNotifier {
-  List<Chat> _chats = [
-    Chat(
+  final List<Chat> _chats = [
+    const Chat(
       id: "q",
       timeStamp: 1,
       reply: {},
@@ -13,7 +13,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Hi",
     ),
-    Chat(
+    const Chat(
       id: "w",
       timeStamp: 2,
       reply: {},
@@ -22,7 +22,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "This is seun",
     ),
-    Chat(
+    const Chat(
       id: "e",
       timeStamp: 3,
       reply: {},
@@ -31,7 +31,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Good day seun",
     ),
-    Chat(
+    const Chat(
       id: "r",
       timeStamp: 4,
       reply: {},
@@ -40,7 +40,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "I'm Ariyo",
     ),
-    Chat(
+    const Chat(
       id: "t",
       timeStamp: 5,
       reply: {},
@@ -49,7 +49,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Nice to meet you",
     ),
-    Chat(
+    const Chat(
       id: "y",
       timeStamp: 6,
       reply: {},
@@ -58,7 +58,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "And you too",
     ),
-    Chat(
+    const Chat(
       id: "q",
       timeStamp: 1,
       reply: {},
@@ -67,7 +67,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Hi",
     ),
-    Chat(
+    const Chat(
       id: "w",
       timeStamp: 2,
       reply: {},
@@ -76,7 +76,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "This is seun",
     ),
-    Chat(
+    const Chat(
       id: "e",
       timeStamp: 3,
       reply: {},
@@ -85,7 +85,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Good day seun",
     ),
-    Chat(
+    const Chat(
       id: "r",
       timeStamp: 4,
       reply: {},
@@ -94,7 +94,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "I'm Ariyo",
     ),
-    Chat(
+    const Chat(
       id: "t",
       timeStamp: 5,
       reply: {},
@@ -103,7 +103,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Nice to meet you",
     ),
-    Chat(
+    const Chat(
       id: "y",
       timeStamp: 6,
       reply: {},
@@ -113,7 +113,7 @@ class Chatting with ChangeNotifier {
       text:
           "And you too, I'm doing well, i'm guessing you are the uber driver i requested for?",
     ),
-    Chat(
+    const Chat(
       id: "e",
       timeStamp: 3,
       reply: {},
@@ -122,7 +122,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Good day seun",
     ),
-    Chat(
+    const Chat(
       id: "r",
       timeStamp: 4,
       reply: {},
@@ -131,7 +131,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "I'm Ariyo",
     ),
-    Chat(
+    const Chat(
       id: "t",
       timeStamp: 5,
       reply: {},
@@ -140,7 +140,7 @@ class Chatting with ChangeNotifier {
       isSent: true,
       text: "Nice to meet you",
     ),
-    Chat(
+    const Chat(
       id: "y",
       timeStamp: 6,
       reply: {},

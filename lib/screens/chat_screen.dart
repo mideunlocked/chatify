@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../widgets/chat/app_bar.dart';
-import '../widgets/chat/bubble.dart';
-import '../widgets/chat/scroll_down_widget.dart';
-import '../widgets/chat/text_input_widget.dart';
+import '../widgets/chat_widget/app_bar.dart';
+import '../widgets/chat_widget/bubble.dart';
+import '../widgets/chat_widget/scroll_down_widget.dart';
+import '../widgets/chat_widget/text_input_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -46,7 +46,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     var chat = chattingProvider.chats;
                     itemListener.itemPositions.addListener(() {
                       lastIndex = itemListener.itemPositions.value.last.index;
-                      print(lastIndex);
                     });
 
                     return ChatBubble(

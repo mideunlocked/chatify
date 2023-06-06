@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../general_widget/custom_back_button.dart';
+
 class ChatScreenAppBar extends StatelessWidget {
   const ChatScreenAppBar({
     super.key,
@@ -11,18 +13,12 @@ class ChatScreenAppBar extends StatelessWidget {
     var of = Theme.of(context);
     var textTheme = of.textTheme;
     return Padding(
-      padding: EdgeInsets.all(7.sp),
+      padding: EdgeInsets.symmetric(horizontal: 7.sp, vertical: 10.sp),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // back button
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-              color: Colors.white54,
-            ),
-          ),
+          const CustomBackButton(),
 
           // title (Name, and isOnline)
           Column(

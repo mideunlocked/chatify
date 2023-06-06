@@ -25,8 +25,8 @@ class AppBarIcon extends StatelessWidget {
       child: Image.asset(
         url,
         color: Colors.white,
-        height: 8.h,
-        width: 8.w,
+        height: height,
+        width: width,
       ),
     );
   }

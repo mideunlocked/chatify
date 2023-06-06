@@ -1,4 +1,4 @@
-import 'package:chatify/widgets/spaces/spaces_app_bar.dart';
+import 'package:chatify/widgets/spaces_widget/spaces_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class SpacesScreen extends StatefulWidget {

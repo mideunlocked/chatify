@@ -1,7 +1,7 @@
 import 'package:chatify/models/chat.dart';
 import 'package:chatify/providers/chatting.dart';
-import 'package:chatify/widgets/chat/reply_widget.dart';
-import 'package:chatify/widgets/chat/text_field.dart';
+import 'package:chatify/widgets/chat_widget/reply_widget.dart';
+import 'package:chatify/widgets/chat_widget/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
