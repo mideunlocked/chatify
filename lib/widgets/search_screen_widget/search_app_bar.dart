@@ -62,9 +62,11 @@ class _MessagesAppBarState extends State<SearchAppBar> {
           ),
           Visibility(
             visible: false,
-            child: AppBarIcon(
-              url: "assets/icons/search.png",
-              function: () {},
+            child: GestureDetector(
+              onTap: () {},
+              child: AppBarIcon(
+                url: "assets/icons/search.png",
+              ),
             ),
           ),
         ],

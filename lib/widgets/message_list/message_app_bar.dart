@@ -39,7 +39,6 @@ class MessagesAppBar extends StatelessWidget {
             children: [
               AppBarIcon(
                 url: "assets/icons/search.png",
-                function: () {},
               ),
               title.contains("Group") != true
                   ? Container()
@@ -50,7 +49,6 @@ class MessagesAppBar extends StatelessWidget {
                         ),
                         AppBarIcon(
                           url: "assets/icons/plus.png",
-                          function: () {},
                         ),
                       ],
                     ),
