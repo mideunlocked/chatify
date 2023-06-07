@@ -12,6 +12,7 @@ class ChatScreenAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     var of = Theme.of(context);
     var textTheme = of.textTheme;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 7.sp, vertical: 10.sp),
       child: Row(

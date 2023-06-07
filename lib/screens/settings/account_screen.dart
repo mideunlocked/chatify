@@ -21,7 +21,7 @@ class _AccountScreenState extends State<AccountScreen> {
         child: Column(
           children: [
             // app bar
-            const SettingChildAppBar(),
+            const SettingChildAppBar(title: "Account"),
 
             // list of items
             Expanded(

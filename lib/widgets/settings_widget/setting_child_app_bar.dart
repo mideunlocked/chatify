@@ -6,7 +6,10 @@ import '../general_widget/custom_back_button.dart';
 class SettingChildAppBar extends StatelessWidget {
   const SettingChildAppBar({
     super.key,
+    required this.title,
   });
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class SettingChildAppBar extends StatelessWidget {
             ],
           ),
           Text(
-            "Account",
+            title,
             style: textTheme.bodyLarge?.copyWith(
               fontSize: 14.sp,
             ),

@@ -1,39 +1,19 @@
-import 'package:chatify/widgets/general_widget/custom_back_button.dart';
+import 'package:chatify/screens/settings/dev_cont_screen.dart';
+import 'package:chatify/widgets/settings_widget/setting_child_app_bar.dart';
 import 'package:chatify/widgets/settings_widget/settings_list_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var textTheme = of.textTheme;
-
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 7.sp, vertical: 10.sp),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  const Row(
-                    children: [
-                      CustomBackButton(),
-                    ],
-                  ),
-                  Text(
-                    "Help",
-                    style: textTheme.bodyLarge?.copyWith(
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const SettingChildAppBar(title: "Help"),
             // SettingListTile(
             //   subtitle: "Questions? Need help?",
             //   icon: Icons.people_rounded,
@@ -45,13 +25,21 @@ class HelpScreen extends StatelessWidget {
               icon: Icons.book_outlined,
               title: "Terms and Privacy Policy",
               screenWidget: Container(),
-              function: () {},
+              function: () async {
+                final url = Uri.parse(
+                    "https://docs.google.com/document/d/1mvKBsKh-TahJ1xOwIC5g7DrMltS7y_kGvANyAn6Brck/edit");
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
+                } else {
+                  throw "Could not launch $url";
+                }
+              },
             ),
             SettingListTile(
               subtitle: "Contact the developer",
               icon: Icons.perm_contact_cal_rounded,
               title: "Developer contact",
-              screenWidget: Container(),
+              screenWidget: const DevContScreen(),
               function: () {},
             ),
           ],
