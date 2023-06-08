@@ -1,19 +1,17 @@
-import 'comment.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
   final String id;
   final String text;
   final Map<String, dynamic> postUserInfo;
-  final String time;
-  final List<Comment> comments;
-  final int likeCount;
+  final Timestamp time;
+  final List<String> likeCount;
 
   const Post({
     required this.id,
     required this.text,
     required this.postUserInfo,
     required this.time,
-    required this.comments,
     required this.likeCount,
   });
 }

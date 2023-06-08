@@ -1,5 +1,7 @@
 import 'package:chatify/models/post.dart';
+import 'package:chatify/providers/post_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'like_and_comment.dart';
@@ -9,9 +11,11 @@ class SpacePostWidget extends StatelessWidget {
   const SpacePostWidget({
     super.key,
     required this.post,
+    required this.index,
   });
 
   final Post post;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +26,8 @@ class SpacePostWidget extends StatelessWidget {
         children: [
           // this widgets hold the username, user profile image and the time posted
           ProfileAcessTime(
-            time: post.time,
-            profileUrl: post.postUserInfo["profileUrl"] ?? "",
+            time: post.time.toDate().hour.toString(),
+            profileUrl: post.postUserInfo["profileImageUrl"] ?? "",
             username: post.postUserInfo["username"],
           ),
           SizedBox(
@@ -39,11 +43,54 @@ class SpacePostWidget extends StatelessWidget {
           ),
 
           // this holds the Like and comment buttons
-          LikeAndComment(
-            post: post,
+          Stack(
+            alignment: Alignment.centerRight,
+            children: [
+              LikeAndComment(
+                post: post,
+                index: index,
+              ),
+              PopupMenuButton(
+                itemBuilder: (BuildContext context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Delete"),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        const Icon(
+                          Icons.delete_rounded,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                onSelected: (value) {
+                  if (value == 1) {
+                    deletePost(context);
+                  }
+                },
+                child: Image.asset(
+                  "assets/icons/more.png",
+                  color: Colors.white60,
+                  height: 3.h,
+                  width: 3.w,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  void deletePost(BuildContext context) async {
+    var postProvider = Provider.of<PostProvider>(context, listen: false);
+
+    await postProvider.deletePost(post.id, index);
   }
 }

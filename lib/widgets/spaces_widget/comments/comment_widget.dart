@@ -23,10 +23,11 @@ class CommentWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // profile access and time
           ProfileAcessTime(
-            time: comment.time,
+            time: "1d",
             username: comment.commenter["username"] ?? "",
             profileUrl: comment.commenter["profileUrl"] ?? "",
           ),
@@ -46,7 +47,6 @@ class CommentWidget extends StatelessWidget {
                 icon: Icons.thumb_up_outlined,
                 icon2: Icons.thumb_up_rounded,
                 count: comment.likeCount.toString(),
-                function: () {},
               ),
               SizedBox(
                 width: 15.w,
@@ -56,7 +56,6 @@ class CommentWidget extends StatelessWidget {
                 icon: Icons.thumb_down_outlined,
                 icon2: Icons.thumb_down_rounded,
                 count: comment.disLikeCount.toString(),
-                function: () {},
               ),
             ],
           ),

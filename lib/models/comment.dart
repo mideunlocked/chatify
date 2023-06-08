@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Comment {
-  final String time;
+  final Timestamp time;
   final String comment;
   final int likeCount;
   final int disLikeCount;

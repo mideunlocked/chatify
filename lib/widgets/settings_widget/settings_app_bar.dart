@@ -29,37 +29,48 @@ class SettingsAppBar extends StatelessWidget {
             "Settings",
             style: textTheme.bodyLarge,
           ),
-          PopupMenuButton(
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                value: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Logout"),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Image.asset(
-                      "assets/icons/exit.png",
-                      height: 5.h,
-                      width: 5.w,
-                    ),
-                  ],
-                ),
+          const SettingsMoreButton(),
+        ],
+      ),
+    );
+  }
+}
+
+class SettingsMoreButton extends StatelessWidget {
+  const SettingsMoreButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Logout"),
+              SizedBox(
+                width: 3.w,
+              ),
+              Image.asset(
+                "assets/icons/exit.png",
+                height: 5.h,
+                width: 5.w,
               ),
             ],
-            onSelected: (value) {
-              if (value == 1) {}
-            },
-            child: Image.asset(
-              "assets/icons/more.png",
-              color: Colors.white,
-              height: 8.h,
-              width: 8.w,
-            ),
           ),
-        ],
+        ),
+      ],
+      onSelected: (value) {
+        if (value == 1) {}
+      },
+      child: Image.asset(
+        "assets/icons/more.png",
+        color: Colors.white,
+        height: 8.h,
+        width: 8.w,
       ),
     );
   }

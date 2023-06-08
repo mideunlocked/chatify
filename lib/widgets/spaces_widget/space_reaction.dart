@@ -6,33 +6,32 @@ class SpaceReaction extends StatelessWidget {
     super.key,
     required this.count,
     required this.icon,
-    required this.function,
     required this.icon2,
+    this.isActive = false,
   });
 
   final String count;
+  final bool isActive;
   final IconData icon, icon2;
-  final VoidCallback function;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => function,
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            color: Colors.white60,
-          ),
-          SizedBox(
-            height: 1.h,
-          ),
-          Text(
-            count,
-            style: const TextStyle(color: Colors.white60),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Icon(
+          isActive == true ? icon2 : icon,
+          color: isActive == true
+              ? const Color.fromARGB(255, 255, 17, 0)
+              : Colors.white60,
+        ),
+        SizedBox(
+          height: 1.h,
+        ),
+        Text(
+          count,
+          style: const TextStyle(color: Colors.white60),
+        ),
+      ],
     );
   }
 }

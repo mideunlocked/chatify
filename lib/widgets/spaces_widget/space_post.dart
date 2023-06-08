@@ -9,9 +9,11 @@ class SpacePost extends StatefulWidget {
   const SpacePost({
     super.key,
     required this.post,
+    required this.index,
   });
 
   final Post post;
+  final int index;
 
   @override
   State<SpacePost> createState() => _SpacePostState();
@@ -28,16 +30,8 @@ class _SpacePostState extends State<SpacePost> {
           context,
           MaterialPageRoute(
             builder: (ctx) => SpaceScreen(
-              post: Post(
-                id: data.id,
-                text: data.text,
-                postUserInfo: {
-                  "username": data.postUserInfo["username"],
-                },
-                time: data.time,
-                comments: data.comments,
-                likeCount: data.likeCount,
-              ),
+              index: widget.index,
+              post: widget.post,
             ),
           ),
         );
@@ -50,6 +44,7 @@ class _SpacePostState extends State<SpacePost> {
         ),
         child: SpacePostWidget(
           post: data,
+          index: widget.index,
         ),
       ),
     );

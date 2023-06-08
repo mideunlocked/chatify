@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:chatify/providers/post_provider.dart';
 import 'package:chatify/widgets/home_screen_widget/app_bar_images.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class SpacesAppBar extends StatelessWidget {
@@ -131,7 +133,7 @@ class _PostBottomsheetState extends State<PostBottomsheet> {
                     ),
                   ),
                 ),
-                onSubmitted: (value) {},
+                onSubmitted: (_) => addPost(context),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -147,7 +149,7 @@ class _PostBottomsheetState extends State<PostBottomsheet> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => addPost(context),
                     child: const Text(
                       "Post",
                     ),
@@ -159,5 +161,14 @@ class _PostBottomsheetState extends State<PostBottomsheet> {
         ),
       ),
     );
+  }
+
+  void addPost(BuildContext context) async {
+    var postProvider = Provider.of<PostProvider>(context, listen: false);
+
+    await postProvider.addPost(controller.text.trim());
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 }
