@@ -5,7 +5,7 @@ class Post {
   final String text;
   final Map<String, dynamic> postUserInfo;
   final Timestamp time;
-  final List<String> likeCount;
+  final List<dynamic> likeCount;
 
   const Post({
     required this.id,

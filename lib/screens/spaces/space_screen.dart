@@ -16,10 +16,12 @@ class SpaceScreen extends StatelessWidget {
     super.key,
     required this.post,
     required this.index,
+    this.isLiked = false,
   });
 
   final Post post;
   final int index;
+  final bool isLiked;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,6 @@ class SpaceScreen extends StatelessWidget {
       thickness: 0.5,
     );
 
-    var data = post;
     var commentProvider = Provider.of<CommentProvider>(context);
 
     return Scaffold(
@@ -48,8 +49,9 @@ class SpaceScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: SpacePostWidget(
-                      post: data,
+                      post: post,
                       index: index,
+                      isLiked: isLiked,
                     ),
                   ),
                   divider,

@@ -40,6 +40,7 @@ class _SpacesScreenState extends State<SpacesScreen> {
                           snapshot.data!.docs.map((DocumentSnapshot postData) {
                     Map<String, dynamic> post =
                         postData.data()! as Map<String, dynamic>;
+                    print(post["likeCount"]);
 
                     return SpacePost(
                       post: Post(
@@ -47,7 +48,7 @@ class _SpacesScreenState extends State<SpacesScreen> {
                         text: post["text"] ?? "",
                         postUserInfo: post["postUserInfo"] ?? {},
                         time: post["time"] ?? Timestamp.now(),
-                        likeCount: post["likeCount"] ?? [],
+                        likeCount: post["likes"] ?? [],
                       ),
                       index: 0,
                     );

@@ -12,10 +12,12 @@ class SpacePostWidget extends StatelessWidget {
     super.key,
     required this.post,
     required this.index,
+    required this.isLiked,
   });
 
   final Post post;
   final int index;
+  final bool isLiked;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class SpacePostWidget extends StatelessWidget {
               LikeAndComment(
                 post: post,
                 index: index,
+                isLiked: isLiked,
               ),
               PopupMenuButton(
                 itemBuilder: (BuildContext context) => [

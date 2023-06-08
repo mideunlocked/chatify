@@ -10,10 +10,12 @@ class SpacePost extends StatefulWidget {
     super.key,
     required this.post,
     required this.index,
+    this.isLiked = false,
   });
 
   final Post post;
   final int index;
+  final bool isLiked;
 
   @override
   State<SpacePost> createState() => _SpacePostState();
@@ -22,8 +24,6 @@ class SpacePost extends StatefulWidget {
 class _SpacePostState extends State<SpacePost> {
   @override
   Widget build(BuildContext context) {
-    final data = widget.post;
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -43,8 +43,9 @@ class _SpacePostState extends State<SpacePost> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: SpacePostWidget(
-          post: data,
+          post: widget.post,
           index: widget.index,
+          isLiked: widget.isLiked,
         ),
       ),
     );

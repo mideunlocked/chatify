@@ -7,38 +7,44 @@ import 'package:sizer/sizer.dart';
 import '../../screens/spaces/space_screen.dart';
 import 'space_reaction.dart';
 
+// ignore: must_be_immutable
 class LikeAndComment extends StatefulWidget {
-  const LikeAndComment({
+  LikeAndComment({
     super.key,
     required this.post,
     required this.index,
+    required this.isLiked,
   });
 
   final Post post;
   final int index;
+  bool isLiked;
 
   @override
   State<LikeAndComment> createState() => _LikeAndCommentState();
 }
 
 class _LikeAndCommentState extends State<LikeAndComment> {
-  bool isLiked = false;
+  // bool isLiked = false;
+
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
     super.initState();
+
+    widget.isLiked = widget.post.likeCount.contains(uid);
   }
 
   void toggleLike() {
     setState(() {
-      isLiked = !isLiked;
+      widget.isLiked = !widget.isLiked;
     });
 
     DocumentReference ref =
         FirebaseFirestore.instance.collection("posts").doc(widget.post.id);
-    String uid = FirebaseAuth.instance.currentUser!.uid;
 
-    if (isLiked == true) {
+    if (widget.isLiked) {
       ref.update({
         "likes": FieldValue.arrayUnion([uid]),
       });
@@ -51,8 +57,6 @@ class _LikeAndCommentState extends State<LikeAndComment> {
 
   @override
   Widget build(BuildContext context) {
-    var data = widget.post;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -60,7 +64,7 @@ class _LikeAndCommentState extends State<LikeAndComment> {
         FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection("posts")
-                .doc(data.id)
+                .doc(widget.post.id)
                 .collection("comments")
                 .get(),
             builder: (context, snapshot) {
@@ -70,14 +74,15 @@ class _LikeAndCommentState extends State<LikeAndComment> {
                   MaterialPageRoute(
                     builder: (ctx) => SpaceScreen(
                       index: widget.index,
+                      isLiked: widget.isLiked,
                       post: Post(
-                        id: data.id,
-                        text: data.text,
+                        id: widget.post.id,
+                        text: widget.post.text,
                         postUserInfo: {
                           "username": "",
                         },
-                        time: data.time,
-                        likeCount: data.likeCount,
+                        time: widget.post.time,
+                        likeCount: widget.post.likeCount,
                       ),
                     ),
                   ),
@@ -94,12 +99,12 @@ class _LikeAndCommentState extends State<LikeAndComment> {
         ),
         // favourite
         GestureDetector(
-          onTap: () => toggleLike(),
+          onTap: toggleLike,
           child: SpaceReaction(
             icon: Icons.favorite_outline_rounded,
             icon2: Icons.favorite_rounded,
-            isActive: isLiked,
-            count: data.likeCount.length.toString(),
+            isActive: widget.isLiked,
+            count: widget.post.likeCount.length.toString(),
           ),
         ),
       ],
