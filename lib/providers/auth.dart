@@ -22,7 +22,7 @@ class AuthProvider with ChangeNotifier {
         password: password,
       )
           .then((value) {
-        cloudInstance.collection("users").add({
+        cloudInstance.collection("users").doc(value.user?.uid).set({
           "id": value.user?.uid,
           "fullName": fullName,
           "email": email,
@@ -31,6 +31,7 @@ class AuthProvider with ChangeNotifier {
           "username": username,
           "isAgree": isAgreed,
         });
+        authInstance.currentUser?.updateDisplayName(username);
       });
 
       notifyListeners();

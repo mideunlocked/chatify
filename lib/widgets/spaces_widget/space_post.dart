@@ -1,5 +1,4 @@
 import 'package:chatify/models/post.dart';
-import 'package:chatify/screens/spaces/space_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,12 +9,10 @@ class SpacePost extends StatefulWidget {
     super.key,
     required this.post,
     required this.index,
-    this.isLiked = false,
   });
 
   final Post post;
   final int index;
-  final bool isLiked;
 
   @override
   State<SpacePost> createState() => _SpacePostState();
@@ -24,17 +21,23 @@ class SpacePost extends StatefulWidget {
 class _SpacePostState extends State<SpacePost> {
   @override
   Widget build(BuildContext context) {
+    var spacePostWidget = SpacePostWidget(
+      post: widget.post,
+      index: widget.index,
+    );
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (ctx) => SpaceScreen(
-              index: widget.index,
-              post: widget.post,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (ctx) => SpaceScreen(
+        //       index: widget.index,
+        //       post: widget.post,
+        //       spacePostWidget: spacePostWidget,
+        //     ),
+        //   ),
+        // );
+        // showSpaceDialog();
       },
       child: Card(
         color: const Color.fromARGB(255, 0, 34, 53),
@@ -42,11 +45,7 @@ class _SpacePostState extends State<SpacePost> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        child: SpacePostWidget(
-          post: widget.post,
-          index: widget.index,
-          isLiked: widget.isLiked,
-        ),
+        child: spacePostWidget,
       ),
     );
   }

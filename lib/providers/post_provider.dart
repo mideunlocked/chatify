@@ -1,18 +1,20 @@
 // import 'package:chatify/models/comment.dart';
-import 'package:chatify/models/post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PostProvider with ChangeNotifier {
   FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
+  FirebaseAuth authInstance = FirebaseAuth.instance;
 
-  final List<Post> _post = [];
+  final List<dynamic> _posts = [];
 
-  List<Post> get post => [
-        ..._post,
-      ];
+  List<dynamic> get posts => [..._posts];
 
   Future<dynamic> addPost(String text) async {
+    var currentUser = authInstance.currentUser;
+    var uid = currentUser?.uid;
+
     try {
       await cloudInstance.collection("posts").add(
         {
@@ -20,9 +22,9 @@ class PostProvider with ChangeNotifier {
           "time": Timestamp.now(),
           "likes": [],
           "postUserInfo": {
-            "username": "johndoe",
+            "username": currentUser?.displayName,
             "profileImageUrl": "",
-            "userId": "12345",
+            "userId": uid,
           },
         },
       );
@@ -42,7 +44,6 @@ class PostProvider with ChangeNotifier {
     try {
       await cloudInstance.collection("posts").doc(id).delete();
 
-      _post.removeAt(index);
       notifyListeners();
       return true;
     } catch (e) {
@@ -65,13 +66,11 @@ class PostProvider with ChangeNotifier {
     }
   }
 
-  Future<dynamic> likePost(
-    String postId,
-  ) async {
+  Future<dynamic> likePost(String postId, int newLikeCount) async {
     try {
       await cloudInstance.collection("posts").doc(postId).set(
         {
-          "likeCount": "",
+          "likeCount": newLikeCount,
         },
         SetOptions(
           merge: true,
@@ -94,22 +93,15 @@ class PostProvider with ChangeNotifier {
     }
   }
 
-  Future<dynamic> searchPost(String search) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> searchPost(String search) async {
     try {
-      final querySnapshot = cloudInstance
-          .collection("posts")
-          .where(
-            "text",
-            isEqualTo: search,
-          )
-          .get();
-      notifyListeners();
+      final querySnapshot = cloudInstance.collection("posts").get();
       // Return the list of filtered documents
       return querySnapshot;
     } catch (error) {
       // Handle the error
       print('Error retrieving filtered posts: $error');
-      return false;
+      throw 0;
     }
   }
 }

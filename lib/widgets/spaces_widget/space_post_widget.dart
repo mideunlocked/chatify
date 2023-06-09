@@ -7,18 +7,21 @@ import 'package:sizer/sizer.dart';
 import 'like_and_comment.dart';
 import 'profile_time.dart';
 
-class SpacePostWidget extends StatelessWidget {
+class SpacePostWidget extends StatefulWidget {
   const SpacePostWidget({
     super.key,
     required this.post,
     required this.index,
-    required this.isLiked,
   });
 
   final Post post;
   final int index;
-  final bool isLiked;
 
+  @override
+  State<SpacePostWidget> createState() => _SpacePostWidgetState();
+}
+
+class _SpacePostWidgetState extends State<SpacePostWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,9 +31,9 @@ class SpacePostWidget extends StatelessWidget {
         children: [
           // this widgets hold the username, user profile image and the time posted
           ProfileAcessTime(
-            time: post.time.toDate().hour.toString(),
-            profileUrl: post.postUserInfo["profileImageUrl"] ?? "",
-            username: post.postUserInfo["username"],
+            time: widget.post.time.toDate().hour.toString(),
+            profileUrl: widget.post.postUserInfo["profileImageUrl"] ?? "",
+            username: widget.post.postUserInfo["username"],
           ),
           SizedBox(
             height: 2.h,
@@ -38,7 +41,7 @@ class SpacePostWidget extends StatelessWidget {
 
           // this widgets holds the space text
           Text(
-            post.text,
+            widget.post.text,
           ),
           SizedBox(
             height: 3.h,
@@ -49,9 +52,8 @@ class SpacePostWidget extends StatelessWidget {
             alignment: Alignment.centerRight,
             children: [
               LikeAndComment(
-                post: post,
-                index: index,
-                isLiked: isLiked,
+                post: widget.post,
+                index: widget.index,
               ),
               PopupMenuButton(
                 itemBuilder: (BuildContext context) => [
@@ -94,6 +96,6 @@ class SpacePostWidget extends StatelessWidget {
   void deletePost(BuildContext context) async {
     var postProvider = Provider.of<PostProvider>(context, listen: false);
 
-    await postProvider.deletePost(post.id, index);
+    await postProvider.deletePost(widget.post.id, widget.index);
   }
 }

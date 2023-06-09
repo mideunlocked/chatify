@@ -9,11 +9,13 @@ class AccountListTile extends StatefulWidget {
     required this.subtitle,
     this.iconUrl = "",
     required this.title,
+    required this.dataKey,
   });
 
   final String subtitle;
   final String iconUrl;
   final String title;
+  final String dataKey;
 
   @override
   State<AccountListTile> createState() => _AccountListTileState();

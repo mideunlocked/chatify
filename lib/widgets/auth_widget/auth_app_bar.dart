@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../screens/auth/welcome_screen.dart';
+import 'chatify_text.dart';
 
 class AuthAppBar extends StatelessWidget {
   const AuthAppBar({

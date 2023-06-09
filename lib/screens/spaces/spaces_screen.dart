@@ -1,5 +1,6 @@
 import 'package:chatify/models/post.dart';
 import 'package:chatify/providers/post_provider.dart';
+import 'package:chatify/widgets/general_widget/custom_progress_indicator.dart';
 import 'package:chatify/widgets/spaces_widget/spaces_app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,16 +32,26 @@ class _SpacesScreenState extends State<SpacesScreen> {
                     return const Text('Something went wrong');
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return const Text("Loading");
+                    return const CustomProgressIndicator();
                   } else if (snapshot.hasData == false) {
-                    return const Text("No data");
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Nothing to show here",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.white60),
+                      ),
+                    );
                   }
+
                   return ListView(
                       children:
                           snapshot.data!.docs.map((DocumentSnapshot postData) {
                     Map<String, dynamic> post =
                         postData.data()! as Map<String, dynamic>;
-                    print(post["likeCount"]);
+                    print(post["likes"]);
 
                     return SpacePost(
                       post: Post(

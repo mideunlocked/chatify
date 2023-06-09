@@ -2,6 +2,7 @@ import 'package:chatify/providers/auth.dart';
 import 'package:chatify/providers/chatting.dart';
 import 'package:chatify/providers/comment_provider.dart';
 import 'package:chatify/providers/post_provider.dart';
+import 'package:chatify/providers/user_provider.dart';
 import 'package:chatify/screens/auth/welcome_screen.dart';
 import 'package:chatify/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => AuthProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => UserProvider(),
           ),
         ],
         child: MaterialApp(

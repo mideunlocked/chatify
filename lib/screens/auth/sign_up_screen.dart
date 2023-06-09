@@ -1,13 +1,15 @@
 import 'package:chatify/providers/auth.dart';
 import 'package:chatify/screens/auth/login_screen.dart';
-import 'package:chatify/screens/auth/welcome_screen.dart';
 import 'package:chatify/widgets/auth_widget/auth_animation_widget.dart';
 import 'package:chatify/widgets/auth_widget/auth_app_bar.dart';
+import 'package:chatify/widgets/auth_widget/auth_button.dart';
 import 'package:chatify/widgets/auth_widget/auth_textfield.dart';
 import 'package:chatify/widgets/auth_widget/have_account_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -34,6 +36,7 @@ class _LoginScreenState extends State<SignupScreen> {
   final phoneNumberNode = FocusNode();
 
   bool isAgree = false;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -183,6 +186,7 @@ class _LoginScreenState extends State<SignupScreen> {
                           Center(
                             child: AuthButton(
                               text: "Sign up",
+                              isLoading: isLoading,
                               fucntion: () => createUser(),
                             ),
                           ),
@@ -211,6 +215,9 @@ class _LoginScreenState extends State<SignupScreen> {
     if (isValid == false && isAgree == false) {
       return;
     } else {
+      setState(() {
+        isLoading = true;
+      });
       final response = await Provider.of<AuthProvider>(context, listen: false)
           .createUserEmailAndPassword(
         emailController.text.trim(),
@@ -223,13 +230,26 @@ class _LoginScreenState extends State<SignupScreen> {
       );
 
       if (response != true) {
+        setState(() {
+          isLoading = false;
+        });
         _scaffoldKey.currentState?.showSnackBar(
           SnackBar(
             content: Text(response),
             backgroundColor: Colors.red,
           ),
         );
+      } else {
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+              (route) => false);
+        }
       }
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 }

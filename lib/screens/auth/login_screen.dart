@@ -1,7 +1,8 @@
 import 'package:chatify/providers/auth.dart';
-import 'package:chatify/screens/auth/welcome_screen.dart';
+import 'package:chatify/screens/home_screen.dart';
 import 'package:chatify/widgets/auth_widget/auth_animation_widget.dart';
 import 'package:chatify/widgets/auth_widget/auth_app_bar.dart';
+import 'package:chatify/widgets/auth_widget/auth_button.dart';
 import 'package:chatify/widgets/auth_widget/have_account_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final emailNode = FocusNode();
   final passwordNode = FocusNode();
+
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -111,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: AuthButton(
                               text: "Login",
                               fucntion: () => signIn(),
+                              isLoading: isLoading,
                             ),
                           ),
 
@@ -138,18 +142,34 @@ class _LoginScreenState extends State<LoginScreen> {
     if (isValid == false) {
       return;
     } else {
+      setState(() {
+        isLoading = true;
+      });
       final response =
           await Provider.of<AuthProvider>(context, listen: false).signInUSer(
         loginDetailController.text.trim(),
         passwordController.text.trim(),
       );
       if (response != true) {
+        setState(() {
+          isLoading = false;
+        });
         _scaffoldKey.currentState?.showSnackBar(
           SnackBar(
             content: Text(response),
             backgroundColor: Colors.red,
           ),
         );
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+              (route) => false);
+        }
       }
     }
   }

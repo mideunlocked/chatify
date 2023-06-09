@@ -1,4 +1,6 @@
+import 'package:chatify/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'account_list_tile.dart';
@@ -27,6 +29,9 @@ class _EditDialogState extends State<EditDialog> {
 
     focusNode.requestFocus();
   }
+
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   void dispose() {
@@ -102,7 +107,7 @@ class _EditDialogState extends State<EditDialog> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => updateUser(),
                   child: Text(
                     "Save",
                     style: TextStyle(
@@ -116,5 +121,26 @@ class _EditDialogState extends State<EditDialog> {
         ),
       ),
     );
+  }
+
+  void updateUser() async {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    final response = await userProvider.updateUser(
+      widget.widget.dataKey,
+      widget.controller.text.trim(),
+    );
+
+    if (response != true || widget.controller.text.isEmpty == true) {
+      _scaffoldKey.currentState?.showSnackBar(
+        const SnackBar(
+          content: Text("Update user failed"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 }

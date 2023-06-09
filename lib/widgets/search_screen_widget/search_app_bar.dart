@@ -1,26 +1,16 @@
+import 'package:chatify/screens/search/search_result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../home_screen_widget/app_bar_images.dart';
 
-class SearchAppBar extends StatefulWidget {
+class SearchAppBar extends StatelessWidget {
   const SearchAppBar({
     super.key,
+    required this.controller,
   });
 
-  @override
-  State<SearchAppBar> createState() => _MessagesAppBarState();
-}
-
-class _MessagesAppBarState extends State<SearchAppBar> {
-  final controller = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    controller.dispose();
-  }
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +44,20 @@ class _MessagesAppBarState extends State<SearchAppBar> {
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: "Search...",
+                errorBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
               ),
-              onChanged: (_) {},
-              onEditingComplete: () {},
-              onSubmitted: (value) {},
+              onSubmitted: (value) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => SearchResultScreen(
+                      searchText: value,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           Visibility(
@@ -74,3 +74,25 @@ class _MessagesAppBarState extends State<SearchAppBar> {
     );
   }
 }
+
+
+// FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+//               future: postProvider.searchPost(),
+//               builder: (context, snapshot) {
+//                 return Expanded(
+//                   child: ListView(
+//                     children: snapshot.data!.docs
+//                         .where(
+//                           (element) => element["text"].toString().contains(
+//                                 controller.text.trim(),
+//                               ),
+//                         )
+//                         .map(
+//                           (result) => Text(
+//                             result["text"] ?? "",
+//                           ),
+//                         )
+//                         .toList(),
+//                   ),
+//                 );
+//               }),

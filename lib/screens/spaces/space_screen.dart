@@ -16,12 +16,12 @@ class SpaceScreen extends StatelessWidget {
     super.key,
     required this.post,
     required this.index,
-    this.isLiked = false,
+    required this.spacePostWidget,
   });
 
   final Post post;
   final int index;
-  final bool isLiked;
+  final SpacePostWidget spacePostWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,6 @@ class SpaceScreen extends StatelessWidget {
                     child: SpacePostWidget(
                       post: post,
                       index: index,
-                      isLiked: isLiked,
                     ),
                   ),
                   divider,
