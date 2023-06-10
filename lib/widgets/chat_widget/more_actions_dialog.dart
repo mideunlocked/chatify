@@ -11,12 +11,18 @@ class MoreActionsDialog extends StatelessWidget {
     required this.isMe,
     required this.text,
     required this.id,
-    required this.index,
+    required this.time,
+    required this.isRead,
+    required this.date,
+    required this.chatid,
   });
 
   final bool isMe;
   final String id;
-  final int index;
+  final String chatid;
+  final bool isRead;
+  final String time;
+  final String date;
   final String text;
 
   @override
@@ -30,124 +36,92 @@ class MoreActionsDialog extends StatelessWidget {
         highlightColor: Colors.transparent,
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                width: 80.w,
-                margin: EdgeInsets.all(2.sp),
-                padding: EdgeInsets.all(12.sp),
-                decoration: BoxDecoration(
-                  color: isMe == true
-                      ? const Color.fromARGB(255, 192, 250, 223)
-                      : const Color.fromARGB(255, 0, 34, 53),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Text(
-                  text,
-                  style: TextStyle(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: 80.w,
+                  margin: EdgeInsets.all(2.sp),
+                  padding: EdgeInsets.all(12.sp),
+                  decoration: BoxDecoration(
                     color: isMe == true
-                        ? const Color.fromARGB(255, 0, 34, 53)
-                        : Colors.white,
-                    fontSize: 11.sp,
+                        ? const Color.fromARGB(255, 192, 250, 223)
+                        : const Color.fromARGB(255, 0, 34, 53),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: isMe == true
+                          ? const Color.fromARGB(255, 0, 34, 53)
+                          : Colors.white,
+                      fontSize: 11.sp,
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.all(7.sp),
-                padding: EdgeInsets.all(12.sp),
-                width: 40.w,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 0, 34, 53),
-                  borderRadius: BorderRadius.circular(30),
+                Container(
+                  margin: EdgeInsets.all(7.sp),
+                  padding: EdgeInsets.all(12.sp),
+                  width: 45.w,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 0, 34, 53),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          time,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          date,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      // ListTile(
+                      //   onTap: () => replyChat(
+                      //     isMe == true ? "You" : "Friend",
+                      //     text,
+                      //     context,
+                      //   ),
+                      //   title: const Text(
+                      //     "Reply",
+                      //     style: TextStyle(
+                      //       color: Colors.white,
+                      //     ),
+                      //   ),
+                      //   trailing: const Icon(
+                      //     Icons.reply_rounded,
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                      ListTile(
+                        onTap: () => deleteChat(context),
+                        title: const Text(
+                          "Delete",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        trailing: const Icon(
+                          Icons.delete_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  children: [
-                    const ListTile(
-                      title: Text(
-                        "08:20 pm",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    isMe == true
-                        ? Column(
-                            children: [
-                              ListTile(
-                                title: const Text(
-                                  "Read",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                trailing: Container(
-                                  height: 10.sp,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: isMe == true
-                                        ? Colors.green
-                                        : Colors.transparent,
-                                  ),
-                                  child: const Text(" "),
-                                ),
-                              ),
-                              ListTile(
-                                title: const Text(
-                                  "Delivered",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                trailing: Container(
-                                  height: 10.sp,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: isMe == true
-                                        ? Colors.green
-                                        : Colors.transparent,
-                                  ),
-                                  child: const Text(" "),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container(),
-                    ListTile(
-                      onTap: () => replyChat(
-                          isMe == true ? "You" : "Uber Driver",
-                          text,
-                          context,
-                          index),
-                      title: const Text(
-                        "Reply",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.reply_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                    ListTile(
-                      onTap: () => deleteChat(context),
-                      title: const Text(
-                        "Delete",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.delete_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -155,10 +129,17 @@ class MoreActionsDialog extends StatelessWidget {
   }
 
   // reply chat functions
-  void replyChat(String name, String text, context, int index) {
+  void replyChat(
+    String name,
+    String text,
+    context,
+  ) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
 
-    chattingProvider.replyMessage(name, text, index);
+    chattingProvider.replyMessage(
+      name,
+      text,
+    );
     Navigator.pop(context);
   }
 
@@ -166,7 +147,10 @@ class MoreActionsDialog extends StatelessWidget {
   void deleteChat(context) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
 
-    chattingProvider.deleteMessage(id);
+    chattingProvider.deleteMessage(
+      id,
+      chatid,
+    );
     Navigator.pop(context);
   }
 }

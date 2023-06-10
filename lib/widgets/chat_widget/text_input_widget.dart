@@ -1,7 +1,7 @@
 import 'package:chatify/models/chat.dart';
 import 'package:chatify/providers/chatting.dart';
-import 'package:chatify/widgets/chat_widget/reply_widget.dart';
 import 'package:chatify/widgets/chat_widget/text_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -16,12 +16,18 @@ class TextInputWidget extends StatefulWidget {
     this.name = "",
     required this.isMe,
     required this.index,
+    required this.chatId,
+    required this.isInitial,
+    required this.recieverUid,
   });
 
   String replyText;
   String name;
+  final String chatId;
   final int index;
   final bool isMe;
+  bool isInitial;
+  final String recieverUid;
 
   @override
   State<TextInputWidget> createState() => _TextInputWidgetState();
@@ -43,13 +49,13 @@ class _TextInputWidgetState extends State<TextInputWidget> {
 
     return Column(
       children: [
-        widget.replyText == ""
-            ? const SizedBox()
-            : ReplyWidget(
-                replyText: widget.replyText,
-                name: widget.name,
-                isMe: widget.isMe,
-              ),
+        // widget.replyText == ""
+        //     ? const SizedBox()
+        //     : ReplyWidget(
+        //         replyText: widget.replyText,
+        //         name: widget.name,
+        //         isMe: widget.isMe,
+        //       ),
         Padding(
           padding: EdgeInsets.only(
             left: 7.sp,
@@ -63,21 +69,45 @@ class _TextInputWidgetState extends State<TextInputWidget> {
               ChatTextField(controller: controller),
               SendIcon(
                 function: () {
-                  chattingProvider.senMessage(
-                    Chat(
-                      id: "jaa",
-                      timeStamp: 23,
-                      reply: {
-                        "index": widget.index,
-                        "name": widget.name,
-                        "text": widget.replyText,
-                      },
-                      isMe: true,
-                      isSeen: false,
-                      isSent: false,
-                      text: controller.text.trim(),
-                    ),
-                  );
+                  if (widget.isInitial == false) {
+                    chattingProvider.senMessage(
+                      Chat(
+                        id: "jaa",
+                        timeStamp: Timestamp.now(),
+                        reply: {
+                          "index": widget.index,
+                          "name": widget.name,
+                          "text": widget.replyText,
+                        },
+                        isMe: true,
+                        isSeen: false,
+                        isSent: false,
+                        text: controller.text.trim(),
+                      ),
+                      widget.recieverUid +
+                          chattingProvider.authInstance.currentUser!.uid,
+                    );
+                  } else {
+                    chattingProvider.startChat(
+                      widget.recieverUid,
+                      Chat(
+                        id: "",
+                        timeStamp: Timestamp.now(),
+                        reply: {
+                          "index": widget.index,
+                          "name": widget.name,
+                          "text": widget.replyText,
+                        },
+                        isMe: true,
+                        isSeen: false,
+                        isSent: false,
+                        text: controller.text.trim(),
+                      ),
+                    );
+                    setState(() {
+                      widget.isInitial = false;
+                    });
+                  }
                   chattingProvider.clearReply();
                   controller.clear();
                 },

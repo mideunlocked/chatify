@@ -51,7 +51,6 @@ class _SpacesScreenState extends State<SpacesScreen> {
                           snapshot.data!.docs.map((DocumentSnapshot postData) {
                     Map<String, dynamic> post =
                         postData.data()! as Map<String, dynamic>;
-                    print(post["likes"]);
 
                     return SpacePost(
                       post: Post(

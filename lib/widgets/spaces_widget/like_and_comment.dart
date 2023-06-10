@@ -80,7 +80,7 @@ class _LikeAndCommentState extends State<LikeAndComment> {
           child: SpaceReaction(
             icon: Icons.favorite_outline_rounded,
             icon2: Icons.favorite_rounded,
-            isActive: isLiked,
+            isActive: isLiked == true ? true : false,
             count: widget.post.likeCount.length.toString(),
           ),
         ),

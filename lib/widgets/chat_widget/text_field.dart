@@ -38,6 +38,11 @@ class ChatTextField extends StatelessWidget {
         ),
         decoration: const InputDecoration(
           border: InputBorder.none,
+          errorBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
           hintText: "Write your message",
         ),
         onChanged: (_) {},

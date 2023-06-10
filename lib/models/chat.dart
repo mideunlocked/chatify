@@ -1,6 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class ListChat {
+  final List<Chat> chats;
+  final String reciverUid;
+  final Timestamp time;
+
+  const ListChat({
+    required this.chats,
+    required this.reciverUid,
+    required this.time,
+  });
+}
+
 class Chat {
   final String id;
-  final int timeStamp;
+  final Timestamp timeStamp;
   final bool isMe;
   final bool isSeen;
   final bool isSent;

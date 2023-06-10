@@ -51,39 +51,26 @@ class _PostBottomsheetState extends State<PostBottomsheet> {
                     SizedBox(
                       height: 1.5.h,
                     ),
-                    TextField(
-                      controller: controller,
-                      cursorColor: const Color.fromARGB(255, 192, 250, 223),
-                      maxLines: 5,
-                      style: const TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
+                    Expanded(
+                      child: TextField(
+                        controller: controller,
+                        cursorColor: const Color.fromARGB(255, 192, 250, 223),
+                        maxLines: 5,
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                        ),
+                        decoration: const InputDecoration(
+                          hintText: "What's on your mind",
+                          border: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                        ),
+                        onSubmitted: (_) => addPost(context),
                       ),
-                      decoration: InputDecoration(
-                        hintText: "What's on your mind",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            color: Color.fromRGBO(182, 226, 252, 1),
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            color: Color.fromRGBO(182, 226, 252, 1),
-                            width: 1.5,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            color: Color.fromRGBO(182, 226, 252, 1),
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
-                      onSubmitted: (_) => addPost(context),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,

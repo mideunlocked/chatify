@@ -1,156 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/chat.dart';
 
 class Chatting with ChangeNotifier {
-  final List<Chat> _chats = [
-    const Chat(
-      id: "q",
-      timeStamp: 1,
-      reply: {},
-      isMe: false,
-      isSeen: true,
-      isSent: true,
-      text: "Hi",
-    ),
-    const Chat(
-      id: "w",
-      timeStamp: 2,
-      reply: {},
-      isMe: false,
-      isSeen: true,
-      isSent: true,
-      text: "This is seun",
-    ),
-    const Chat(
-      id: "e",
-      timeStamp: 3,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text: "Good day seun",
-    ),
-    const Chat(
-      id: "r",
-      timeStamp: 4,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text: "I'm Ariyo",
-    ),
-    const Chat(
-      id: "t",
-      timeStamp: 5,
-      reply: {},
-      isMe: false,
-      isSeen: true,
-      isSent: true,
-      text: "Nice to meet you",
-    ),
-    const Chat(
-      id: "y",
-      timeStamp: 6,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text: "And you too",
-    ),
-    const Chat(
-      id: "q",
-      timeStamp: 1,
-      reply: {},
-      isMe: false,
-      isSeen: true,
-      isSent: true,
-      text: "Hi",
-    ),
-    const Chat(
-      id: "w",
-      timeStamp: 2,
-      reply: {},
-      isMe: false,
-      isSeen: true,
-      isSent: true,
-      text: "This is seun",
-    ),
-    const Chat(
-      id: "e",
-      timeStamp: 3,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text: "Good day seun",
-    ),
-    const Chat(
-      id: "r",
-      timeStamp: 4,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text: "I'm Ariyo",
-    ),
-    const Chat(
-      id: "t",
-      timeStamp: 5,
-      reply: {},
-      isMe: false,
-      isSeen: true,
-      isSent: true,
-      text: "Nice to meet you",
-    ),
-    const Chat(
-      id: "y",
-      timeStamp: 6,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text:
-          "And you too, I'm doing well, i'm guessing you are the uber driver i requested for?",
-    ),
-    const Chat(
-      id: "e",
-      timeStamp: 3,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text: "Good day seun",
-    ),
-    const Chat(
-      id: "r",
-      timeStamp: 4,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text: "I'm Ariyo",
-    ),
-    const Chat(
-      id: "t",
-      timeStamp: 5,
-      reply: {},
-      isMe: false,
-      isSeen: true,
-      isSent: true,
-      text: "Nice to meet you",
-    ),
-    const Chat(
-      id: "y",
-      timeStamp: 6,
-      reply: {},
-      isMe: true,
-      isSeen: true,
-      isSent: true,
-      text:
-          "And you too, I'm doing well, i'm guessing you are the uber driver i requested for?",
-    ),
-  ];
+  FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
+  FirebaseAuth authInstance = FirebaseAuth.instance;
+
+  final List<Chat> _chats = [];
 
   Map<String, dynamic> _reply = {};
 
@@ -162,19 +20,143 @@ class Chatting with ChangeNotifier {
     return [..._chats];
   }
 
-  void senMessage(Chat chat) {
-    _chats.add(chat);
-    notifyListeners();
+  Future<dynamic> senMessage(
+    Chat chat,
+    String chatId,
+  ) async {
+    try {
+      var uid = authInstance.currentUser?.uid;
+
+      var messagePath =
+          cloudInstance.collection("chats").doc(chatId).collection("messages");
+
+      await messagePath.add({
+        "timeStamp": chat.timeStamp,
+        "senderId": uid,
+        "isSeen": chat.isSeen,
+        "isSent": chat.isSent,
+        "text": chat.text,
+        "reply": chat.reply,
+      }).then((value) {
+        messagePath.doc(value.id).update({
+          "id": value.id,
+          "isSent": true,
+        });
+      });
+
+      notifyListeners();
+      return true;
+    } catch (error) {
+      print("Send chat error: $error");
+      notifyListeners();
+      return false;
+    }
   }
 
-  List<Chat> getMessages() {
-    notifyListeners();
-    return chats;
+  Future<dynamic> startChat(String recieverUid, Chat chat) async {
+    var uid = authInstance.currentUser?.uid;
+
+    try {
+      var ids = [recieverUid, uid];
+      ids.sort();
+      print(ids);
+      String? docId = ids[0].toString() + ids[1].toString();
+
+      var chatPath = cloudInstance.collection("chats").doc(docId);
+
+      await chatPath.set({
+        "recipients": [recieverUid, uid],
+        "timeStamp": Timestamp.now(),
+      });
+      var chatResult = await chatPath.collection("messages").add({
+        "timeStamp": chat.timeStamp,
+        "senderId": uid,
+        "isSeen": chat.isSeen,
+        "isSent": chat.isSent,
+        "text": chat.text,
+        "reply": chat.reply,
+      });
+
+      await chatPath.collection("messages").doc(chatResult.id).update({
+        "id": chatResult.id,
+        "isSent": true,
+      });
+
+      print("done");
+      notifyListeners();
+      return true;
+    } catch (error) {
+      print("Send chat error: $error");
+      notifyListeners();
+      return false;
+    }
   }
 
-  void replyMessage(String name, String chatText, int index) {
+  Stream<QuerySnapshot> getMessages(List<String> ids) {
+    ids.sort();
+    String? docId = ids[0].toString() + ids[1].toString();
+
+    try {
+      Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
+          .collection("chats")
+          .doc(docId)
+          .collection("messages")
+          .orderBy(
+            "timeStamp",
+            descending: true,
+          )
+          .snapshots();
+
+      return querySnapshot;
+    } catch (e) {
+      print("Get posts error: $e");
+      return const Stream.empty();
+    }
+  }
+
+  Stream<QuerySnapshot> getUserMessageList() {
+    try {
+      String? uid = authInstance.currentUser?.uid;
+
+      Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
+          .collection("chats")
+          .where("recipients", arrayContainsAny: [uid])
+          // .orderBy("timeStamp", descending: true)
+          .snapshots();
+
+      return querySnapshot;
+    } catch (e) {
+      print("Get posts error: $e");
+      return const Stream.empty();
+    }
+  }
+
+  Future<dynamic> getLastMessageDetails(String chatId) async {
+    try {
+      var result = await cloudInstance
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .get();
+
+      Map<String, dynamic>? lastChatData = result.docs.last.data();
+
+      return {
+        "timeStamp": lastChatData["timeStamp"] ?? Timestamp.now(),
+        "text": lastChatData["text"] ?? ""
+      };
+    } catch (error) {
+      print("Get message details error: $error");
+      notifyListeners();
+      return false;
+    }
+  }
+
+  void replyMessage(
+    String name,
+    String chatText,
+  ) {
     _reply = {
-      "index": index,
       "name": name,
       "text": chatText,
     };
@@ -183,11 +165,21 @@ class Chatting with ChangeNotifier {
 
   void clearReply() {
     _reply = {};
-    notifyListeners();
   }
 
-  void deleteMessage(String id) {
-    _chats.removeWhere((element) => element.id == id);
-    notifyListeners();
+  Future<dynamic> deleteMessage(String id, String chatId) async {
+    try {
+      var messagePath =
+          cloudInstance.collection("chats").doc(chatId).collection("messages");
+
+      await messagePath.doc(id).delete();
+
+      notifyListeners();
+      return true;
+    } catch (error) {
+      print("Delete message error: $error");
+      notifyListeners();
+      return false;
+    }
   }
 }

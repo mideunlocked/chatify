@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../providers/chatting.dart';
@@ -13,19 +12,21 @@ class ChatBubble extends StatelessWidget {
     required this.text,
     this.isMe = true,
     this.isRead = false,
+    required this.time,
     required this.id,
     required this.reply,
-    required this.index,
-    required this.scrollController,
+    required this.date,
+    required this.chatId,
   });
 
   final String text;
   final String id;
+  final String chatId;
   final bool isMe;
-  final int index;
   final bool isRead;
+  final String time;
+  final String date;
   final Map<String, dynamic> reply;
-  final ItemScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -68,37 +69,31 @@ class ChatBubble extends StatelessWidget {
           context,
         ),
         onDoubleTap: () {
-          replyChat(
-            isMe == true ? "You" : "Uber Driver",
-            text,
-            index,
-            context,
-          );
+          // replyChat(
+          //   isMe == true ? "You" : "Friend",
+          //   text,
+          //   id,
+          //   context,
+          // );
         },
         child: Stack(
           alignment: Alignment.topRight,
           children: [
-            reply.isEmpty == true
+            reply["text"] == ""
                 ? const Text("")
                 : RepliedWidget(
                     isMe: isMe,
                     bubbleWidth: bubbleWidth,
                     reply: reply,
-                    scrollController: scrollController,
                   ),
             Container(
               margin: EdgeInsets.only(
-                top: reply.isEmpty == true ? 0 : 30.sp,
+                top: reply["text"] == "" ? 0 : 30.sp,
                 left: isMe == true ? 70.sp : 10.sp,
                 right: isMe == false ? 70.sp : 10.sp,
                 bottom: 6.sp,
               ),
-              padding: EdgeInsets.only(
-                top: 12.sp,
-                left: 12.sp,
-                right: 12.sp,
-                bottom: 3.sp,
-              ),
+              padding: EdgeInsets.all(12.sp),
               width: bubbleWidth,
               decoration: BoxDecoration(
                 color: isMe == true
@@ -106,35 +101,14 @@ class ChatBubble extends StatelessWidget {
                     : const Color.fromARGB(255, 0, 34, 53),
                 borderRadius: isMe == true ? borderRadius1 : borderRadius2,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    text,
-                    style: TextStyle(
-                      color: isMe == true
-                          ? const Color.fromARGB(255, 0, 34, 53)
-                          : Colors.white,
-                      fontSize: 11.sp,
-                    ),
-                  ),
-
-                  // widget to notify when a message as been delivered and seen
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        height: 10.sp,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color:
-                              isMe == true ? Colors.green : Colors.transparent,
-                        ),
-                        child: const Text(" "),
-                      ),
-                    ],
-                  ),
-                ],
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: isMe == true
+                      ? const Color.fromARGB(255, 0, 34, 53)
+                      : Colors.white,
+                  fontSize: 11.sp,
+                ),
               ),
             ),
           ],
@@ -151,17 +125,23 @@ class ChatBubble extends StatelessWidget {
         return MoreActionsDialog(
           isMe: isMe,
           text: text,
+          time: time,
+          date: date,
+          isRead: isRead,
+          chatid: chatId,
           id: id,
-          index: index,
         );
       },
     );
   }
 
   // function ot reply chat
-  void replyChat(String name, String text, int index, context) {
+  void replyChat(String name, String text, String id, context) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
 
-    chattingProvider.replyMessage(name, text, index);
+    chattingProvider.replyMessage(
+      name,
+      text,
+    );
   }
 }
