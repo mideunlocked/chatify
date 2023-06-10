@@ -66,9 +66,22 @@ class _MessageTileState extends State<MessageTile> {
             ),
             title: Padding(
               padding: EdgeInsets.symmetric(vertical: 5.sp),
-              child: Text(
-                user?.username ?? "",
-                style: textTheme.bodyLarge?.copyWith(fontSize: 13.sp),
+              child: Row(
+                children: [
+                  Text(
+                    user?.username ?? "",
+                    style: textTheme.bodyLarge?.copyWith(fontSize: 13.sp),
+                  ),
+                  SizedBox(
+                    width: 1.w,
+                  ),
+                  user?.username == "chatify"
+                      ? const Icon(
+                          Icons.verified_rounded,
+                          color: Colors.amber,
+                        )
+                      : Container(),
+                ],
               ),
             ),
             subtitle: Text(

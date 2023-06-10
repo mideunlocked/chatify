@@ -1,3 +1,4 @@
+import 'package:chatify/helpers/date_time_formatting.dart';
 import 'package:chatify/models/post.dart';
 import 'package:chatify/providers/post_provider.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ class SpacePostWidget extends StatefulWidget {
 class _SpacePostWidgetState extends State<SpacePostWidget> {
   @override
   Widget build(BuildContext context) {
+    String timeAgo = DateTimeFormatting().timeAgo(widget.post.time);
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
       child: Column(
@@ -31,7 +34,7 @@ class _SpacePostWidgetState extends State<SpacePostWidget> {
         children: [
           // this widgets hold the username, user profile image and the time posted
           ProfileAcessTime(
-            time: widget.post.time.toDate().hour.toString(),
+            time: timeAgo,
             profileUrl: widget.post.postUserInfo["profileImageUrl"] ?? "",
             username: widget.post.postUserInfo["username"],
           ),

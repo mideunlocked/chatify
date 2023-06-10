@@ -19,12 +19,12 @@ class ProfileAcessTime extends StatelessWidget {
       alignment: Alignment.centerLeft,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.grey,
-              radius: 15.sp,
-            ),
+            // CircleAvatar(
+            //   backgroundColor: Colors.transparent,
+            //   radius: 15.sp,
+            // ),
             Text(
               "~$time",
               style: const TextStyle(color: Colors.white60),
@@ -32,10 +32,23 @@ class ProfileAcessTime extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: EdgeInsets.only(left: 12.w),
-          child: Text(
-            "@$username",
-            style: const TextStyle(color: Colors.white60),
+          padding: EdgeInsets.only(left: 0.w),
+          child: Row(
+            children: [
+              Text(
+                "@$username",
+                style: const TextStyle(color: Colors.white60),
+              ),
+              SizedBox(
+                width: 1.w,
+              ),
+              username == "chatify"
+                  ? const Icon(
+                      Icons.verified_rounded,
+                      color: Colors.amber,
+                    )
+                  : Container(),
+            ],
           ),
         ),
       ],

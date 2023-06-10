@@ -51,9 +51,22 @@ class ProfileCard extends StatelessWidget {
               Column(
                 children: [
                   Text(user.fullName),
-                  Text(
-                    "@${user.username}",
-                    style: const TextStyle(color: Colors.white38),
+                  Row(
+                    children: [
+                      Text(
+                        "@${user.username}",
+                        style: const TextStyle(color: Colors.white38),
+                      ),
+                      SizedBox(
+                        width: 1.w,
+                      ),
+                      user.username == "chatify"
+                          ? const Icon(
+                              Icons.verified_rounded,
+                              color: Colors.amber,
+                            )
+                          : Container(),
+                    ],
                   ),
                 ],
               ),
