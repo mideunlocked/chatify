@@ -23,12 +23,22 @@ class Chatting with ChangeNotifier {
   Future<dynamic> senMessage(
     Chat chat,
     String chatId,
+    String recieverUid,
   ) async {
     try {
       var uid = authInstance.currentUser?.uid;
+      var ids = [recieverUid, uid];
+      ids.sort();
+      print(ids);
+      String? docId = ids[0].toString() + ids[1].toString();
 
-      var messagePath =
-          cloudInstance.collection("chats").doc(chatId).collection("messages");
+      var chatPath = cloudInstance.collection("chats").doc(docId);
+      var messagePath = chatPath.collection("messages");
+
+      await chatPath.set({
+        "recipients": [recieverUid, uid],
+        "timeStamp": Timestamp.now(),
+      });
 
       await messagePath.add({
         "timeStamp": chat.timeStamp,

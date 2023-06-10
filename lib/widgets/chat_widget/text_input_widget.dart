@@ -84,8 +84,8 @@ class _TextInputWidgetState extends State<TextInputWidget> {
                         isSent: false,
                         text: controller.text.trim(),
                       ),
-                      widget.recieverUid +
-                          chattingProvider.authInstance.currentUser!.uid,
+                      widget.chatId,
+                      widget.recieverUid,
                     );
                   } else {
                     chattingProvider.startChat(
