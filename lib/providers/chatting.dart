@@ -10,7 +10,11 @@ class Chatting with ChangeNotifier {
 
   final List<Chat> _chats = [];
 
-  Map<String, dynamic> _reply = {};
+  Map<String, dynamic> _reply = {
+    "text": "",
+    "name": "",
+    "isMe": "",
+  };
 
   Map<String, dynamic> get reply {
     return {..._reply};
@@ -130,14 +134,50 @@ class Chatting with ChangeNotifier {
 
       Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
           .collection("chats")
-          .where("recipients", arrayContainsAny: [uid])
-          // .orderBy("timeStamp", descending: true)
-          .snapshots();
+          .orderBy("timeStamp", descending: true)
+          .where("recipients", arrayContainsAny: [uid]).snapshots();
 
       return querySnapshot;
     } catch (e) {
       print("Get posts error: $e");
       return const Stream.empty();
+    }
+  }
+
+  Stream<QuerySnapshot> getUnseenMessages(String chatId, String reciverUid) {
+    try {
+      Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .where("senderId", isEqualTo: reciverUid)
+          .where("isSeen", isEqualTo: false)
+          .snapshots();
+
+      return querySnapshot;
+    } catch (error) {
+      print("Get unseen messages error: $error");
+      notifyListeners();
+      return const Stream.empty();
+    }
+  }
+
+  Future<dynamic> markMessageAsRead(String chatId, String docId) async {
+    try {
+      await cloudInstance
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .doc(docId)
+          .update({
+        "isSeen": true,
+      }).then((value) {
+        print("Done");
+      });
+    } catch (error) {
+      print("Mark as read error: $error");
+      notifyListeners();
+      return false;
     }
   }
 
@@ -147,9 +187,10 @@ class Chatting with ChangeNotifier {
           .collection("chats")
           .doc(chatId)
           .collection("messages")
+          .orderBy("timeStamp", descending: true)
           .get();
 
-      Map<String, dynamic>? lastChatData = result.docs.last.data();
+      Map<String, dynamic>? lastChatData = result.docs.first.data();
 
       return {
         "timeStamp": lastChatData["timeStamp"] ?? Timestamp.now(),

@@ -69,12 +69,12 @@ class ChatBubble extends StatelessWidget {
           context,
         ),
         onDoubleTap: () {
-          // replyChat(
-          //   isMe == true ? "You" : "Friend",
-          //   text,
-          //   id,
-          //   context,
-          // );
+          replyChat(
+            isMe == true ? "You" : "Friend",
+            text,
+            id,
+            context,
+          );
         },
         child: Stack(
           alignment: Alignment.topRight,

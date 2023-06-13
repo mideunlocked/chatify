@@ -87,6 +87,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         var dateTime = DateTimeFormatting().formatTimeDate(
                             chat["timeStamp"] ?? Timestamp.now());
 
+                        if (chat["senderId"] != uid) {
+                          chattingProvider.markMessageAsRead(
+                              widget.chatId, chatData.id);
+                        }
+
                         return ChatBubble(
                           text: chat["text"] ?? "",
                           isMe: chat["senderId"] == uid ? true : false,

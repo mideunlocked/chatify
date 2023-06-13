@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import 'reply_widget.dart';
 import 'send_icon.dart';
 
 // ignore: must_be_immutable
@@ -46,16 +47,18 @@ class _TextInputWidgetState extends State<TextInputWidget> {
   @override
   Widget build(BuildContext context) {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
+    var replyData = chattingProvider.reply;
+    print(replyData["text"]);
 
     return Column(
       children: [
-        // widget.replyText == ""
-        //     ? const SizedBox()
-        //     : ReplyWidget(
-        //         replyText: widget.replyText,
-        //         name: widget.name,
-        //         isMe: widget.isMe,
-        //       ),
+        replyData["text"] == ""
+            ? Container()
+            : ReplyWidget(
+                replyText: replyData["text"] ?? "",
+                name: replyData["name"] ?? "",
+                isMe: replyData["isMe"] ?? false,
+              ),
         Padding(
           padding: EdgeInsets.only(
             left: 7.sp,
