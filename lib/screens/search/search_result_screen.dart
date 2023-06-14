@@ -72,10 +72,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                         (element) =>
                             element["username"]
                                 .toString()
-                                .contains(widget.searchText) ||
+                                .toLowerCase()
+                                .contains(widget.searchText.toLowerCase()) ||
                             element["fullName"]
                                 .toString()
-                                .contains(widget.searchText),
+                                .toLowerCase()
+                                .contains(widget.searchText.toLowerCase()),
                       );
                       if (snapshot.hasError) {
                         return const Text(
@@ -148,10 +150,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                         (element) =>
                             element["text"]
                                 .toString()
-                                .contains(widget.searchText) ||
+                                .toLowerCase()
+                                .contains(widget.searchText.toLowerCase()) ||
                             element["postUserInfo"]["username"]
                                 .toString()
-                                .contains(widget.searchText),
+                                .toLowerCase()
+                                .contains(widget.searchText.toLowerCase()),
                       );
                       if (snapshot.hasError) {
                         return const Text(

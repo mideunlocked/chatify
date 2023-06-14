@@ -74,25 +74,3 @@ class SearchAppBar extends StatelessWidget {
     );
   }
 }
-
-
-// FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-//               future: postProvider.searchPost(),
-//               builder: (context, snapshot) {
-//                 return Expanded(
-//                   child: ListView(
-//                     children: snapshot.data!.docs
-//                         .where(
-//                           (element) => element["text"].toString().contains(
-//                                 controller.text.trim(),
-//                               ),
-//                         )
-//                         .map(
-//                           (result) => Text(
-//                             result["text"] ?? "",
-//                           ),
-//                         )
-//                         .toList(),
-//                   ),
-//                 );
-//               }),
