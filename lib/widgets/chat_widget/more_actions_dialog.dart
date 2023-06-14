@@ -109,6 +109,25 @@ class MoreActionsDialog extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
+                      isMe == true
+                          ? ListTile(
+                              title: const Text(
+                                "Read",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              trailing: Icon(
+                                Icons.circle_rounded,
+                                color: isMe == true
+                                    ? isRead == true
+                                        ? Colors.green
+                                        : Colors.grey
+                                    : Colors.transparent,
+                                size: 5.sp,
+                              ),
+                            )
+                          : Container(),
                       ListTile(
                         onTap: () => deleteChat(context),
                         title: const Text(

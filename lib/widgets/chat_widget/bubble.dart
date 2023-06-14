@@ -81,7 +81,7 @@ class ChatBubble extends StatelessWidget {
           );
         },
         child: Stack(
-          alignment: Alignment.topRight,
+          alignment: isMe == true ? Alignment.topRight : Alignment.topLeft,
           children: [
             reply["text"] == ""
                 ? const Text("")
@@ -92,7 +92,7 @@ class ChatBubble extends StatelessWidget {
                   ),
             Container(
               margin: EdgeInsets.only(
-                top: reply["text"] == "" ? 0 : 30.sp,
+                top: reply["text"] == "" ? 0 : 50.sp,
                 left: isMe == true ? 70.sp : 10.sp,
                 right: isMe == false ? 70.sp : 10.sp,
                 bottom: 6.sp,
@@ -105,14 +105,28 @@ class ChatBubble extends StatelessWidget {
                     : const Color.fromARGB(255, 0, 34, 53),
                 borderRadius: isMe == true ? borderRadius1 : borderRadius2,
               ),
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: isMe == true
-                      ? const Color.fromARGB(255, 0, 34, 53)
-                      : Colors.white,
-                  fontSize: 11.sp,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    text,
+                    style: TextStyle(
+                      color: isMe == true
+                          ? const Color.fromARGB(255, 0, 34, 53)
+                          : Colors.white,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  Icon(
+                    Icons.circle_rounded,
+                    color: isMe == true
+                        ? isRead == true
+                            ? Colors.green
+                            : Colors.grey
+                        : Colors.transparent,
+                    size: 5.sp,
+                  )
+                ],
               ),
             ),
           ],

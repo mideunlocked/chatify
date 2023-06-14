@@ -41,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
             onPageChanged: (index) => setState(() {
               currentIndex = index;
             }),
-            physics: const NeverScrollableScrollPhysics(),
             children: pages,
           ),
 
