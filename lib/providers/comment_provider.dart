@@ -22,12 +22,12 @@ class CommentProvider with ChangeNotifier {
         {
           "comment": comment,
           "time": Timestamp.now(),
-          "likeCount": 0,
-          "disLikeCount": 0,
+          "likeCount": [],
+          "disLikeCount": [],
           "commenter": {
-            "username": "johndoe",
+            "username": authInstance.currentUser?.displayName,
             "profileImageUrl": "",
-            "userId": "12345",
+            "userId": authInstance.currentUser?.uid,
           },
         },
       );
@@ -36,26 +36,6 @@ class CommentProvider with ChangeNotifier {
       return true;
     } catch (e) {
       print("Post error: $e");
-      return false;
-    }
-  }
-
-  Future<dynamic> deleteComments(
-    String id,
-  ) async {
-    String uid = authInstance.currentUser!.uid;
-    try {
-      await cloudInstance
-          .collection("posts")
-          .doc(id)
-          .collection("comments")
-          .doc(uid)
-          .delete();
-
-      notifyListeners();
-      return true;
-    } catch (e) {
-      print("Delete error: $e");
       return false;
     }
   }
@@ -76,76 +56,89 @@ class CommentProvider with ChangeNotifier {
     }
   }
 
-  Future<dynamic> likeComments(
-      String postId, int newLikeCount, String id) async {
-    String uid = authInstance.currentUser!.uid;
+  Future<dynamic> likeComment(
+      String postId, String commentId, bool isActive) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
 
     try {
-      await cloudInstance
+      DocumentReference ref = FirebaseFirestore.instance
           .collection("posts")
-          .doc(id)
-          .collection("comments")
           .doc(postId)
-          .set(
-        {
-          "likeCount": newLikeCount,
-        },
-        SetOptions(
-          merge: true,
-        ),
-      ).then((_) async {
-        await cloudInstance
-            .collection("comments")
-            .doc(postId)
-            .collection("whoLiked")
-            .doc(uid)
-            .update({
-          "userId": "12345",
+          .collection("comments")
+          .doc(commentId);
+
+      if (isActive == false) {
+        ref.update({
+          "likes": FieldValue.arrayUnion([uid]),
         });
-      });
+        ref.update({
+          "dislikes": FieldValue.arrayRemove([uid]),
+        });
+      } else {
+        ref.update({
+          "likes": FieldValue.arrayRemove([uid]),
+        });
+      }
 
       notifyListeners();
       return true;
-    } catch (e) {
-      print("Like error: $e");
-      return e.toString();
+    } catch (error) {
+      print("Like error: $error");
+      notifyListeners();
+      return false;
     }
   }
 
-  Future<dynamic> disLikeComments(
-    String postId,
-    int newLikeCount,
-    String id,
-  ) async {
-    String uid = authInstance.currentUser!.uid;
+  Future<dynamic> dislikeComment(
+      String postId, String commentId, bool isActive) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
 
+    try {
+      DocumentReference ref = FirebaseFirestore.instance
+          .collection("posts")
+          .doc(postId)
+          .collection("comments")
+          .doc(commentId);
+
+      if (isActive == false) {
+        ref.update({
+          "likes": FieldValue.arrayRemove([uid]),
+        });
+        ref.update({
+          "dislikes": FieldValue.arrayUnion([uid]),
+        });
+      } else {
+        ref.update({
+          "dislikes": FieldValue.arrayRemove([uid]),
+        });
+      }
+
+      notifyListeners();
+      return true;
+    } catch (error) {
+      print("Dislike error: $error");
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<dynamic> deleteComment(
+    String postId,
+    String commentId,
+  ) async {
     try {
       await cloudInstance
           .collection("posts")
-          .doc(id)
-          .collection("comments")
           .doc(postId)
-          .set(
-        {
-          "likeCount": newLikeCount,
-        },
-        SetOptions(
-          merge: true,
-        ),
-      ).then((_) async {
-        await cloudInstance
-            .collection("comments")
-            .doc(postId)
-            .collection("whoLiked")
-            .doc(uid)
-            .delete();
-      });
+          .collection("comments")
+          .doc(commentId)
+          .delete();
 
       notifyListeners();
       return true;
     } catch (e) {
-      print("Like error: $e");
-      return e.toString();
+      print("Delete error: $e");
+      return false;
     }
   }
 }

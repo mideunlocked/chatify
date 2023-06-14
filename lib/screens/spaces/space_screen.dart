@@ -57,31 +57,42 @@ class SpaceScreen extends StatelessWidget {
                   StreamBuilder(
                       stream: commentProvider.getComments(post.id),
                       builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong');
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Text("Loading");
-                        } else if (snapshot.hasData == false) {
-                          return const Text("No data");
-                        }
-                        return Column(
-                            children: snapshot.data!.docs
-                                .map((DocumentSnapshot commentData) {
-                          Map<String, dynamic> comment =
-                              commentData.data()! as Map<String, dynamic>;
+                        // if (snapshot.hasError) {
+                        //   return const Text('Something went wrong');
+                        // } else if (snapshot.connectionState ==
+                        //     ConnectionState.waiting) {
+                        //   return const Text("Loading");
+                        // } else if (snapshot.hasData == false) {
+                        //   return const Text("No data");
+                        // }
 
-                          return CommentWidget(
-                            comment: Comment(
-                              time: comment["time"] ?? Timestamp.now(),
-                              comment: comment["comment"] ?? "",
-                              commenter: comment["commenter"] ?? {},
-                              likeCount: comment["likeCount"] ?? 0,
-                              disLikeCount: comment["disLikeCount"] ?? 0,
-                            ),
-                            divider: divider,
-                          );
-                        }).toList());
+                        return Column(
+                          children: snapshot.data?.docs
+                                  .map((DocumentSnapshot commentData) {
+                                Map<String, dynamic> comment =
+                                    commentData.data()! as Map<String, dynamic>;
+
+                                return CommentWidget(
+                                  comment: Comment(
+                                    id: commentData.id,
+                                    post: post,
+                                    time: comment["time"] ?? Timestamp.now(),
+                                    comment: comment["comment"] ?? "",
+                                    commenter: comment["commenter"] ?? {},
+                                    likeCount: comment["likes"] ?? [],
+                                    disLikeCount: comment["dislikes"] ?? [],
+                                  ),
+                                  divider: divider,
+                                );
+                              }).toList() ??
+                              [
+                                Icon(
+                                  Icons.circle,
+                                  color: Colors.white60,
+                                  size: 10.sp,
+                                ),
+                              ],
+                        );
                       }),
                 ],
               ),

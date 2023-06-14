@@ -17,7 +17,7 @@ class LicensesButton extends StatelessWidget {
           width: 40,
           height: 40,
         ),
-        applicationVersion: "1.0.0",
+        applicationVersion: "1.1.0",
         applicationLegalese:
             "Before diving into the licenses for the resources used in the app, it's important to emphasize the significance of respecting intellectual property rights and adhering to licensing requirements. The app serves as a functional software application, providing users with a seamless and engaging experience. Throughout the development process, careful consideration has been given to ensure compliance with relevant licenses and permissions. This includes using open-source frameworks like Flutter itself, along with legally obtained images, graphics, icons, fonts, and third-party libraries. By upholding licensing obligations, we demonstrate our commitment to ethical practices and acknowledge the value of the creative works that contribute to the app's functionality and visual appeal.",
       ),

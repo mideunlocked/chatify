@@ -57,6 +57,11 @@ class _CommentTextFieldState extends State<CommentTextField> {
                   width: 1.5,
                 ),
               ),
+              border: InputBorder.none,
+              errorBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
             ),
             onTap: () => setState(() {
               isFocused = true;

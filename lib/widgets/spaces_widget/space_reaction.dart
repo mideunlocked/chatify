@@ -20,9 +20,7 @@ class SpaceReaction extends StatelessWidget {
       children: [
         Icon(
           isActive == true ? icon2 : icon,
-          color: isActive == true
-              ? const Color.fromARGB(255, 255, 17, 0)
-              : Colors.white60,
+          color: isActive == true ? Colors.red[900] : Colors.white60,
         ),
         SizedBox(
           height: 1.h,

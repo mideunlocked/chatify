@@ -1,12 +1,14 @@
 import 'package:chatify/helpers/date_time_formatting.dart';
 import 'package:chatify/models/post.dart';
 import 'package:chatify/providers/post_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'like_and_comment.dart';
 import 'profile_time.dart';
+import 'spaces_more_widget.dart';
 
 class SpacePostWidget extends StatefulWidget {
   const SpacePostWidget({
@@ -23,6 +25,8 @@ class SpacePostWidget extends StatefulWidget {
 }
 
 class _SpacePostWidgetState extends State<SpacePostWidget> {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     String timeAgo = DateTimeFormatting().timeAgo(widget.post.time);
@@ -58,37 +62,11 @@ class _SpacePostWidgetState extends State<SpacePostWidget> {
                 post: widget.post,
                 index: widget.index,
               ),
-              PopupMenuButton(
-                itemBuilder: (BuildContext context) => [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Delete"),
-                        SizedBox(
-                          width: 3.w,
-                        ),
-                        const Icon(
-                          Icons.delete_rounded,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                onSelected: (value) {
-                  if (value == 1) {
-                    deletePost(context);
-                  }
-                },
-                child: Image.asset(
-                  "assets/icons/more.png",
-                  color: Colors.white60,
-                  height: 3.h,
-                  width: 3.w,
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
+              widget.post.postUserInfo["userId"] == uid
+                  ? PostCommentMoreWidget(
+                      moreFunction: () => deletePost(context),
+                    )
+                  : const Text(""),
             ],
           ),
         ],
@@ -99,6 +77,8 @@ class _SpacePostWidgetState extends State<SpacePostWidget> {
   void deletePost(BuildContext context) async {
     var postProvider = Provider.of<PostProvider>(context, listen: false);
 
-    await postProvider.deletePost(widget.post.id, widget.index);
+    await postProvider.deletePost(
+      widget.post.id,
+    );
   }
 }

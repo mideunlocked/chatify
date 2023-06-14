@@ -1,7 +1,10 @@
 import 'package:chatify/models/post.dart';
+import 'package:chatify/providers/comment_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 // import 'package:sizer/sizer.dart';
 
 import 'space_reaction.dart';
@@ -54,26 +57,24 @@ class _LikeAndCommentState extends State<LikeAndComment> {
 
   @override
   Widget build(BuildContext context) {
+    var commentProvider = Provider.of<CommentProvider>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // comment
-        // FutureBuilder(
-        //     future: FirebaseFirestore.instance
-        //         .collection("posts")
-        //         .doc(widget.post.id)
-        //         .collection("comments")
-        //         .get(),
-        //     builder: (context, snapshot) {
-        //       return SpaceReaction(
-        //         icon: Icons.comment_outlined,
-        //         icon2: Icons.comment_rounded,
-        //         count: snapshot.data?.size.toString() ?? "0",
-        //       );
-        //     }),
-        // SizedBox(
-        //   width: 15.w,
-        // ),
+        StreamBuilder(
+            stream: commentProvider.getComments(widget.post.id),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              return SpaceReaction(
+                icon: Icons.comment_outlined,
+                icon2: Icons.comment_rounded,
+                count: snapshot.data?.docs.length.toString() ?? "0",
+              );
+            }),
+        SizedBox(
+          width: 15.w,
+        ),
         // favourite
         GestureDetector(
           onTap: toggleLike,

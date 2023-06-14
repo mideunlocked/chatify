@@ -39,7 +39,6 @@ class PostProvider with ChangeNotifier {
 
   Future<dynamic> deletePost(
     String id,
-    int index,
   ) async {
     try {
       await cloudInstance.collection("posts").doc(id).delete();
@@ -63,33 +62,6 @@ class PostProvider with ChangeNotifier {
     } catch (e) {
       print("Get posts error: $e");
       return const Stream.empty();
-    }
-  }
-
-  Future<dynamic> likePost(String postId, int newLikeCount) async {
-    try {
-      await cloudInstance.collection("posts").doc(postId).set(
-        {
-          "likeCount": newLikeCount,
-        },
-        SetOptions(
-          merge: true,
-        ),
-      ).then((_) async {
-        await cloudInstance
-            .collection("posts")
-            .doc(postId)
-            .collection("whoLiked")
-            .add({
-          "userId": "12345",
-        });
-      });
-
-      notifyListeners();
-      return true;
-    } catch (e) {
-      print("Like error: $e");
-      return e.toString();
     }
   }
 

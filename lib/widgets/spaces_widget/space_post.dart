@@ -1,4 +1,5 @@
 import 'package:chatify/models/post.dart';
+import 'package:chatify/screens/spaces/space_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -27,17 +28,16 @@ class _SpacePostState extends State<SpacePost> {
     );
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (ctx) => SpaceScreen(
-        //       index: widget.index,
-        //       post: widget.post,
-        //       spacePostWidget: spacePostWidget,
-        //     ),
-        //   ),
-        // );
-        // showSpaceDialog();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => SpaceScreen(
+              index: widget.index,
+              post: widget.post,
+              spacePostWidget: spacePostWidget,
+            ),
+          ),
+        );
       },
       child: Card(
         color: const Color.fromARGB(255, 0, 34, 53),
