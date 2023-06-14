@@ -6,7 +6,10 @@ import 'chatify_text.dart';
 class AuthAppBar extends StatelessWidget {
   const AuthAppBar({
     super.key,
+    this.title = "",
   });
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class AuthAppBar extends StatelessWidget {
               ),
             ],
           ),
-          const ChatifyText(),
+          ChatifyText(title: title),
         ],
       ),
     );

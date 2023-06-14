@@ -1,4 +1,5 @@
 import 'package:chatify/providers/auth.dart';
+import 'package:chatify/screens/auth/forgot_password_screen.dart';
 import 'package:chatify/screens/home_screen.dart';
 import 'package:chatify/widgets/auth_widget/auth_animation_widget.dart';
 import 'package:chatify/widgets/auth_widget/auth_app_bar.dart';
@@ -96,7 +97,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      const ForgotPasswordScreen(),
+                                ),
+                              ),
                               child: const Text(
                                 "Forgot password?",
                                 style: TextStyle(

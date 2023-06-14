@@ -4,7 +4,10 @@ import 'package:sizer/sizer.dart';
 class ChatifyText extends StatelessWidget {
   const ChatifyText({
     super.key,
+    this.title = "",
   });
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class ChatifyText extends StatelessWidget {
     var textTheme = of.textTheme;
 
     return Text(
-      "Chatify",
+      title == "" ? "Chatify" : title,
       style: textTheme.bodyLarge?.copyWith(
         fontSize: 15.sp,
         letterSpacing: 3.0,

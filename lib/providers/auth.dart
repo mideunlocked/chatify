@@ -104,7 +104,6 @@ class AuthProvider with ChangeNotifier {
 
   Future<dynamic> resetPassword(
     String email,
-    bool isSuccess,
   ) async {
     try {
       authInstance.sendPasswordResetEmail(email: email);

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../widgets/settings_widget/account/account_list_tile.dart';
+import '../../widgets/settings_widget/account/forgot_password_tile.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -98,6 +99,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               subtitle: user["phoneNumber"] ?? "",
                               iconUrl: "assets/icons/telephone.png",
                             ),
+
+                            // reset password
+                            const ForgotPasswordTile(),
                           ],
                         );
                       }).toList(),
