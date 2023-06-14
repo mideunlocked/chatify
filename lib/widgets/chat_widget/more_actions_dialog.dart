@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:chatify/providers/chatting.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -15,6 +16,7 @@ class MoreActionsDialog extends StatelessWidget {
     required this.isRead,
     required this.date,
     required this.chatid,
+    required this.recieverUsername,
   });
 
   final bool isMe;
@@ -24,9 +26,12 @@ class MoreActionsDialog extends StatelessWidget {
   final String time;
   final String date;
   final String text;
+  final String recieverUsername;
 
   @override
   Widget build(BuildContext context) {
+    String? username = FirebaseAuth.instance.currentUser?.displayName;
+
     return Dialog(
       backgroundColor: Colors.transparent,
       child: InkWell(
@@ -87,23 +92,23 @@ class MoreActionsDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // ListTile(
-                      //   onTap: () => replyChat(
-                      //     isMe == true ? "You" : "Friend",
-                      //     text,
-                      //     context,
-                      //   ),
-                      //   title: const Text(
-                      //     "Reply",
-                      //     style: TextStyle(
-                      //       color: Colors.white,
-                      //     ),
-                      //   ),
-                      //   trailing: const Icon(
-                      //     Icons.reply_rounded,
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
+                      ListTile(
+                        onTap: () => replyChat(
+                          isMe == true ? username ?? "" : recieverUsername,
+                          text,
+                          context,
+                        ),
+                        title: const Text(
+                          "Reply",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        trailing: const Icon(
+                          Icons.reply_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
                       ListTile(
                         onTap: () => deleteChat(context),
                         title: const Text(

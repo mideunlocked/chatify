@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -17,11 +18,13 @@ class ChatBubble extends StatelessWidget {
     required this.reply,
     required this.date,
     required this.chatId,
+    required this.recieverUsername,
   });
 
   final String text;
   final String id;
   final String chatId;
+  final String recieverUsername;
   final bool isMe;
   final bool isRead;
   final String time;
@@ -57,6 +60,7 @@ class ChatBubble extends StatelessWidget {
 
     // bubble container final size
     final bubbleWidth = textPainter.width + 45;
+    String? username = FirebaseAuth.instance.currentUser?.displayName;
 
     return Align(
       alignment: isMe
@@ -70,7 +74,7 @@ class ChatBubble extends StatelessWidget {
         ),
         onDoubleTap: () {
           replyChat(
-            isMe == true ? "You" : "Friend",
+            isMe == true ? username ?? "" : recieverUsername,
             text,
             id,
             context,
@@ -130,6 +134,7 @@ class ChatBubble extends StatelessWidget {
           isRead: isRead,
           chatid: chatId,
           id: id,
+          recieverUsername: recieverUsername,
         );
       },
     );

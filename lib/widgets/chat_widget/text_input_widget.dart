@@ -2,6 +2,7 @@ import 'package:chatify/models/chat.dart';
 import 'package:chatify/providers/chatting.dart';
 import 'package:chatify/widgets/chat_widget/text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -13,22 +14,18 @@ import 'send_icon.dart';
 class TextInputWidget extends StatefulWidget {
   TextInputWidget({
     super.key,
-    this.replyText = "",
-    this.name = "",
     required this.isMe,
-    required this.index,
     required this.chatId,
     required this.isInitial,
     required this.recieverUid,
+    required this.recieverUsername,
   });
 
-  String replyText;
-  String name;
   final String chatId;
-  final int index;
   final bool isMe;
   bool isInitial;
   final String recieverUid;
+  final String recieverUsername;
 
   @override
   State<TextInputWidget> createState() => _TextInputWidgetState();
@@ -46,9 +43,9 @@ class _TextInputWidgetState extends State<TextInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var chattingProvider = Provider.of<Chatting>(context, listen: false);
+    var chattingProvider = Provider.of<Chatting>(context);
     var replyData = chattingProvider.reply;
-    print(replyData["text"]);
+    String? username = FirebaseAuth.instance.currentUser?.displayName;
 
     return Column(
       children: [
@@ -57,7 +54,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
             : ReplyWidget(
                 replyText: replyData["text"] ?? "",
                 name: replyData["name"] ?? "",
-                isMe: replyData["isMe"] ?? false,
+                isMe: replyData["name"] == username ? true : false,
               ),
         Padding(
           padding: EdgeInsets.only(
@@ -78,9 +75,8 @@ class _TextInputWidgetState extends State<TextInputWidget> {
                         id: "jaa",
                         timeStamp: Timestamp.now(),
                         reply: {
-                          "index": widget.index,
-                          "name": widget.name,
-                          "text": widget.replyText,
+                          "name": replyData["name"] ?? "",
+                          "text": replyData["text"] ?? "",
                         },
                         isMe: true,
                         isSeen: false,
@@ -97,9 +93,8 @@ class _TextInputWidgetState extends State<TextInputWidget> {
                         id: "",
                         timeStamp: Timestamp.now(),
                         reply: {
-                          "index": widget.index,
-                          "name": widget.name,
-                          "text": widget.replyText,
+                          "name": replyData["name"] ?? "",
+                          "text": replyData["text"] ?? "",
                         },
                         isMe: true,
                         isSeen: false,

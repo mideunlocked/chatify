@@ -215,7 +215,13 @@ class Chatting with ChangeNotifier {
   }
 
   void clearReply() {
-    _reply = {};
+    _reply = {
+      "text": "",
+      "name": "",
+      "isMe": "",
+    };
+
+    notifyListeners();
   }
 
   Future<dynamic> deleteMessage(String id, String chatId) async {

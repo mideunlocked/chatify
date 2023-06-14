@@ -98,6 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           isRead: chat["isSeen"] ?? false,
                           id: chatData.id,
                           chatId: widget.chatId,
+                          recieverUsername: widget.user.username,
                           reply: chat["reply"] ?? "",
                           time: dateTime[0],
                           date: dateTime[1],
@@ -109,13 +110,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
             // Text input widget
             TextInputWidget(
-              replyText: chattingProvider.reply["text"] ?? "",
-              name: chattingProvider.reply["name"] ?? "",
-              index: chattingProvider.reply["index"] ?? 0,
               isMe: true,
+              recieverUid: widget.recieverId,
+              recieverUsername: widget.user.username,
               chatId: widget.chatId,
               isInitial: isInitial,
-              recieverUid: widget.recieverId,
             ),
           ],
         ),

@@ -68,11 +68,7 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  widget.replyText = "";
-                  widget.name = "";
-                  Provider.of<Chatting>(context, listen: false).clearReply();
-                });
+                Provider.of<Chatting>(context).clearReply();
               },
               child: const Icon(
                 Icons.clear_rounded,
