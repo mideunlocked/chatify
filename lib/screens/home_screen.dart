@@ -1,11 +1,11 @@
-// import 'package:chatify/screens/group_messaging_screen.dart';
-import 'package:chatify/screens/messages_list_screen.dart';
-import 'package:chatify/screens/search_screen.dart';
-import 'package:chatify/screens/settings/settings_screen.dart';
-import 'package:chatify/screens/spaces/spaces_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/home_screen_widget/custom_nav.dart';
+import 'group_messaging_screen.dart';
+import 'messages_list_screen.dart';
+import 'search_screen.dart';
+import 'settings/settings_screen.dart';
+import 'spaces/spaces_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,10 +15,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 1;
+  int currentIndex = 2;
 
   final pageController = PageController(
-    initialPage: 1,
+    initialPage: 2,
   );
 
   @override
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 List<Widget> pages = [
   const MessagesScreen(),
-  // const GroupMessagesScreen(),
+  const GroupMessagesScreen(),
   const SpacesScreen(),
   const SearchScreen(),
   const SettingScreen(),

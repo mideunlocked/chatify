@@ -37,7 +37,7 @@ class AboutAppScreen extends StatelessWidget {
             height: 1.h,
           ),
           Text(
-            "Version 1.1.1",
+            "Version 1.2.1",
             style: textStyle,
           ),
           Text(

@@ -2,6 +2,7 @@ import 'package:chatify/helpers/date_time_formatting.dart';
 import 'package:chatify/models/users.dart';
 import 'package:chatify/providers/chatting.dart';
 import 'package:chatify/screens/chat_screen.dart';
+import 'package:chatify/widgets/message_list/unread_inidicator_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -129,26 +130,9 @@ class _MessageTileState extends State<MessageTile> {
                             String? unreadCount =
                                 snapshot.data?.size.toString();
 
-                            print("Unread count: $unreadCount");
-
                             return unreadCount == "0"
                                 ? const Text("")
-                                : Container(
-                                    height: 5.h,
-                                    width: 5.w,
-                                    margin: EdgeInsets.only(top: 10.sp),
-                                    alignment: Alignment.center,
-                                    decoration: const BoxDecoration(
-                                      color: Color.fromARGB(255, 192, 250, 223),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      unreadCount ?? "0",
-                                      style: const TextStyle(
-                                        color: Color.fromARGB(255, 0, 34, 53),
-                                      ),
-                                    ),
-                                  );
+                                : UnreadIndicator(unreadCount: unreadCount);
                           }),
                     ],
                   ),
