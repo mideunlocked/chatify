@@ -1,3 +1,4 @@
+import 'package:chatify/models/users.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,20 @@ class UserProvider with ChangeNotifier {
 
   Stream<QuerySnapshot> getUser() {
     String uid = authInstance.currentUser!.uid;
+    try {
+      Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
+          .collection("users")
+          .where("id", isEqualTo: uid)
+          .snapshots();
+
+      return querySnapshot;
+    } catch (e) {
+      print("Get posts error: $e");
+      return const Stream.empty();
+    }
+  }
+
+  Stream<QuerySnapshot> getSpecificUser(String uid) {
     try {
       Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
           .collection("users")

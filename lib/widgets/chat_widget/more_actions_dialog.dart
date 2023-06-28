@@ -9,6 +9,8 @@ import 'package:sizer/sizer.dart';
 class MoreActionsDialog extends StatelessWidget {
   const MoreActionsDialog({
     super.key,
+    this.isGC =
+        false, // this is to check if the dialog was called from a group chat
     required this.isMe,
     required this.text,
     required this.id,
@@ -19,6 +21,7 @@ class MoreActionsDialog extends StatelessWidget {
     required this.recieverUsername,
   });
 
+  final bool isGC;
   final bool isMe;
   final String id;
   final String chatid;

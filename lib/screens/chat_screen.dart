@@ -63,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     } else if (snapshot.hasData == false ||
                         snapshot.data?.size == 0) {
                       isInitial = true;
-                      print(isInitial);
+
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(

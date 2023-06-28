@@ -48,14 +48,8 @@ class _MessagesScreenState extends State<GroupMessagesScreen> {
                             print("Loading");
                           }
 
-                          // print(snapshot.data?.size);
-                          // String? uid = FirebaseAuth.instance.currentUser?.uid;
                           Map<String, dynamic> GChat =
                               GCListData.data()! as Map<String, dynamic>;
-                          // List<dynamic> recieverId =
-                          // GChat["recipients"] as List<dynamic>;
-                          // recieverId.removeWhere((value) => value == uid);
-                          // print(recieverId[0] + "   fghj");
                           return GroupMessageTile(
                             listGroupChat: ListGroupChat(
                               id: GCListData.id,

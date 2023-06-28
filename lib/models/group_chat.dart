@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupChat {
   final String id;
+  final String senderId;
   final Timestamp timeStamp;
-  final bool isMe;
   final bool isSent;
   final String text;
   final List<dynamic> isSeen;
@@ -11,9 +11,9 @@ class GroupChat {
 
   const GroupChat({
     required this.id,
+    required this.senderId,
     required this.timeStamp,
     required this.reply,
-    required this.isMe,
     required this.isSeen,
     required this.isSent,
     required this.text,

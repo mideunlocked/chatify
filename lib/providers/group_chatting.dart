@@ -43,10 +43,7 @@ class GroupChatting with ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<QuerySnapshot> getMessages(List<String> ids) {
-    ids.sort();
-    String? docId = ids[0].toString() + ids[1].toString();
-
+  Stream<QuerySnapshot> getMessages(String docId) {
     try {
       Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
           .collection("group-chats")
@@ -103,21 +100,17 @@ class GroupChatting with ChangeNotifier {
     }
   }
 
-  Stream<QuerySnapshot> getUnseenMessages(
-      String chatId, List<dynamic> recipients) {
+  Stream<QuerySnapshot> getUnseenMessages(String chatId) {
     String uid = authInstance.currentUser!.uid;
-    recipients.remove(uid);
-    print(recipients);
 
     try {
       Stream<QuerySnapshot<Map<String, dynamic>>> querySnapshot = cloudInstance
           .collection("group-chats")
           .doc(chatId)
           .collection("messages")
-          .where("senderId", isNotEqualTo: uid)
           .where(
             "isSeen",
-            whereNotIn: recipients,
+            arrayContains: uid,
           )
           .snapshots();
 

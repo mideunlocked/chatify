@@ -1,13 +1,13 @@
+import 'package:chatify/screens/group_chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/date_time_formatting.dart';
+import '../../helpers/gc_status.dart';
 import '../../models/group_chat.dart';
 import '../../providers/group_chatting.dart';
-import '../../screens/group_messaging_screen.dart';
 import 'unread_inidicator_widget.dart';
 
 class GroupMessageTile extends StatelessWidget {
@@ -22,23 +22,9 @@ class GroupMessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     var of = Theme.of(context);
     var textTheme = of.textTheme;
-
-    var openImage = Image.asset(
-      "assets/icons/global-network.png",
-      color: Colors.blue,
-      height: 10.sp,
-      width: 10.sp,
-    );
-    var lockedImage = Image.asset(
-      "assets/icons/lock.png",
-      color: Colors.red,
-      height: 10.sp,
-      width: 10.sp,
-    );
-
-    var authInstance = FirebaseAuth.instance;
     var about = listGroupChat.about;
     var groupChatProvider = Provider.of<GroupChatting>(context);
+    int totalCount = 0;
 
     return Column(
       children: [
@@ -46,17 +32,41 @@ class GroupMessageTile extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: 1.w,
           ),
-          child: FutureBuilder(
-              future: groupChatProvider.getLastGCMessage(listGroupChat.id),
-              builder: (context, snapshot) {
-                Map<String, dynamic> data = snapshot.data ?? {};
+          child: StreamBuilder(
+              stream: groupChatProvider.getMessages(listGroupChat.id),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                var data = snapshot.data?.docs.first;
+                totalCount = snapshot.data?.size ?? 0;
 
                 return ListTile(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const GroupMessagesScreen(),
+                        builder: (context) => GroupChatScreen(
+                          groupChat: ListGroupChat(
+                            id: listGroupChat.id,
+                            about: about,
+                            recipients: listGroupChat.recipients,
+                            admins: listGroupChat.admins,
+                            timestamp: listGroupChat.timestamp,
+                            chats: snapshot.data?.docs
+                                    .map(
+                                      (DocumentSnapshot e) => GroupChat(
+                                        id: e.id,
+                                        senderId: e["senderId"] ?? "",
+                                        timeStamp:
+                                            e["timeStamp"] ?? Timestamp.now(),
+                                        reply: e["reply"] ?? {},
+                                        isSeen: e["isSeen"] ?? [],
+                                        isSent: e["isSent"] ?? false,
+                                        text: e["text"] ?? "",
+                                      ),
+                                    )
+                                    .toList() ??
+                                [],
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -80,7 +90,7 @@ class GroupMessageTile extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    data["text"] ?? "xxxxxxxxxxx",
+                    data?["text"] ?? "xxxxxxxxxxx",
                     maxLines: 1,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
@@ -95,7 +105,7 @@ class GroupMessageTile extends StatelessWidget {
                       // time widget
                       Text(
                         DateTimeFormatting().timeAgo(
-                          data["timeStamp"] ?? Timestamp.now(),
+                          data?["timeStamp"] ?? Timestamp.now(),
                         ),
                         style: TextStyle(
                           color: Colors.white38,
@@ -110,13 +120,17 @@ class GroupMessageTile extends StatelessWidget {
 
                       // unread message indicator
                       StreamBuilder(
-                          stream: groupChatProvider.getUnseenMessages(
-                              listGroupChat.id, listGroupChat.recipients),
+                          stream: groupChatProvider
+                              .getUnseenMessages(listGroupChat.id),
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                            return 1.toString() == "0"
+                            int size = snapshot.data?.size ?? 0;
+                            int unreadCount = totalCount - size;
+
+                            return unreadCount.toString() == "0"
                                 ? const Text("")
-                                : UnreadIndicator(unreadCount: 1.toString());
+                                : UnreadIndicator(
+                                    unreadCount: unreadCount.toString());
                           }),
                     ],
                   ),
