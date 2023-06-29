@@ -1,5 +1,5 @@
 import 'package:chatify/models/users.dart';
-import 'package:chatify/screens/chat_screen.dart';
+import 'package:chatify/screens/chat-screens/chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';

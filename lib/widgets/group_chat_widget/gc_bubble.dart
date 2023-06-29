@@ -1,24 +1,27 @@
+import 'package:chatify/providers/group_chatting.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../providers/chatting.dart';
 import '../chat_widget/more_actions_dialog.dart';
 import '../chat_widget/replied_widget.dart';
 import 'gc_bubble_name.dart';
 
-class GCChatBubble extends StatelessWidget {
+class GCChatBubble extends StatefulWidget {
   const GCChatBubble({
     super.key,
     required this.text,
     this.isMe = true,
-    this.isRead = false,
     required this.time,
     required this.id,
     required this.reply,
     required this.date,
     required this.chatId,
     required this.senderId,
+    required this.haveRead,
+    required this.numberOfMembers,
   });
 
   final String text;
@@ -26,10 +29,18 @@ class GCChatBubble extends StatelessWidget {
   final String id;
   final String chatId;
   final bool isMe;
-  final bool isRead;
+  final List<dynamic> haveRead;
+  final int numberOfMembers;
   final String time;
   final String date;
   final Map<String, dynamic> reply;
+
+  @override
+  State<GCChatBubble> createState() => _GCChatBubbleState();
+}
+
+class _GCChatBubbleState extends State<GCChatBubble> {
+  String username = "";
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +60,7 @@ class GCChatBubble extends StatelessWidget {
 
     // calculate bubble container width using text span
     final textSpan = TextSpan(
-      text: text,
+      text: widget.text,
     );
     final textPainter = TextPainter(
       text: textSpan,
@@ -60,83 +71,98 @@ class GCChatBubble extends StatelessWidget {
 
     // bubble container final size
     final bubbleWidth = textPainter.width + 45;
-    // String? username = FirebaseAuth.instance.currentUser?.displayName;
+    String? currentUsername = FirebaseAuth.instance.currentUser?.displayName;
+    FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
 
     return Align(
-      alignment: isMe
+      alignment: widget.isMe
           ? Alignment.centerRight
           : Alignment
               .centerLeft, // alignment for current user : alignment for other user
-      child: InkWell(
-        borderRadius: BorderRadius.circular(30),
-        onLongPress: () => showChatDetails(
-          context,
-        ),
-        onDoubleTap: () {
-          // replyChat(
-          //   isMe == true ? username ?? "" : recieverUsername,
-          //   text,
-          //   id,
-          //   context,
-          // );
-        },
-        child: Stack(
-          alignment: isMe == true ? Alignment.topRight : Alignment.topLeft,
-          children: [
-            reply["text"] == ""
-                ? const Text("")
-                : RepliedWidget(
-                    isMe: isMe,
-                    bubbleWidth: bubbleWidth,
-                    reply: reply,
-                  ),
-            Container(
-              margin: EdgeInsets.only(
-                top: reply["text"] == "" ? 0 : 50.sp,
-                left: isMe == true ? 70.sp : 10.sp,
-                right: isMe == false ? 70.sp : 10.sp,
-                bottom: 6.sp,
+      child: FutureBuilder(
+          future: cloudInstance.collection("users").doc(widget.senderId).get(),
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            Map<String, dynamic>? data =
+                snapshot.data?.data() as Map<String, dynamic>?;
+
+            username = data?["username"] ?? "";
+
+            return InkWell(
+              borderRadius: BorderRadius.circular(30),
+              onLongPress: () => showChatDetails(
+                context,
               ),
-              padding: EdgeInsets.all(12.sp),
-              width: bubbleWidth,
-              decoration: BoxDecoration(
-                color: isMe == true
-                    ? const Color.fromARGB(255, 192, 250, 223)
-                    : const Color.fromARGB(255, 0, 34, 53),
-                borderRadius: isMe == true ? borderRadius1 : borderRadius2,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              onDoubleTap: () {
+                replyChat(
+                  widget.isMe == true
+                      ? currentUsername ?? ""
+                      : data?["username"] ?? "",
+                  widget.text,
+                  widget.id,
+                  context,
+                );
+              },
+              child: Stack(
+                alignment: widget.isMe == true
+                    ? Alignment.topRight
+                    : Alignment.topLeft,
                 children: [
-                  isMe == true
-                      ? const SizedBox()
-                      : GCBubbleName(
-                          uid: senderId,
+                  widget.reply["text"] == ""
+                      ? const Text("")
+                      : RepliedWidget(
+                          isMe: widget.isMe,
+                          bubbleWidth: bubbleWidth,
+                          reply: widget.reply,
                         ),
-                  Text(
-                    text,
-                    style: TextStyle(
-                      color: isMe == true
-                          ? const Color.fromARGB(255, 0, 34, 53)
-                          : Colors.white,
-                      fontSize: 11.sp,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: widget.reply["text"] == "" ? 0 : 60.sp,
+                      left: widget.isMe == true ? 70.sp : 10.sp,
+                      right: widget.isMe == false ? 70.sp : 10.sp,
+                      bottom: 6.sp,
+                    ),
+                    padding: EdgeInsets.all(12.sp),
+                    width: bubbleWidth,
+                    decoration: BoxDecoration(
+                      color: widget.isMe == true
+                          ? const Color.fromARGB(255, 192, 250, 223)
+                          : const Color.fromARGB(255, 0, 34, 53),
+                      borderRadius:
+                          widget.isMe == true ? borderRadius1 : borderRadius2,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        widget.isMe == true
+                            ? const SizedBox()
+                            : GCBubbleName(
+                                uid: widget.senderId,
+                              ),
+                        Text(
+                          widget.text,
+                          style: TextStyle(
+                            color: widget.isMe == true
+                                ? const Color.fromARGB(255, 0, 34, 53)
+                                : Colors.white,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                        Icon(
+                          Icons.circle_rounded,
+                          color: widget.isMe == true
+                              ? widget.haveRead.length == widget.numberOfMembers
+                                  ? Colors.green
+                                  : Colors.grey
+                              : Colors.transparent,
+                          size: 5.sp,
+                        )
+                      ],
                     ),
                   ),
-                  Icon(
-                    Icons.circle_rounded,
-                    color: isMe == true
-                        ? isRead == true
-                            ? Colors.green
-                            : Colors.grey
-                        : Colors.transparent,
-                    size: 5.sp,
-                  )
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
+            );
+          }),
     );
   }
 
@@ -147,14 +173,16 @@ class GCChatBubble extends StatelessWidget {
       builder: (context) {
         return MoreActionsDialog(
           isGC: true,
-          isMe: isMe,
-          text: text,
-          time: time,
-          date: date,
-          isRead: isRead,
-          chatid: chatId,
-          id: id,
-          recieverUsername: "",
+          isMe: widget.isMe,
+          text: widget.text,
+          time: widget.time,
+          date: widget.date,
+          isRead:
+              widget.haveRead.length == widget.numberOfMembers ? true : false,
+          chatid: widget.chatId,
+          id: widget.id,
+          recieverUsername: username,
+          readBy: widget.haveRead,
         );
       },
     );
@@ -162,9 +190,9 @@ class GCChatBubble extends StatelessWidget {
 
   // function ot reply chat
   void replyChat(String name, String text, String id, context) {
-    var chattingProvider = Provider.of<Chatting>(context, listen: false);
+    var groupChatProvider = Provider.of<GroupChatting>(context, listen: false);
 
-    chattingProvider.replyMessage(
+    groupChatProvider.replyMessage(
       name,
       text,
     );

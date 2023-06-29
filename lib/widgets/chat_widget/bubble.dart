@@ -149,6 +149,7 @@ class ChatBubble extends StatelessWidget {
           chatid: chatId,
           id: id,
           recieverUsername: recieverUsername,
+          readBy: [],
         );
       },
     );

@@ -1,4 +1,4 @@
-import 'package:chatify/screens/group_chat_screen.dart';
+import 'package:chatify/screens/chat-screens/group_chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +8,7 @@ import '../../helpers/date_time_formatting.dart';
 import '../../helpers/gc_status.dart';
 import '../../models/group_chat.dart';
 import '../../providers/group_chatting.dart';
-import 'unread_inidicator_widget.dart';
+import '../message_list/unread_inidicator_widget.dart';
 
 class GroupMessageTile extends StatelessWidget {
   const GroupMessageTile({
@@ -73,6 +73,8 @@ class GroupMessageTile extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
                     radius: 17.sp,
+                    backgroundImage:
+                        const AssetImage("assets/images/logo-2.png"),
                   ),
                   title: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.sp),

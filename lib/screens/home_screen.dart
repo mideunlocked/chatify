@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/home_screen_widget/custom_nav.dart';
-import 'group_messaging_screen.dart';
-import 'messages_list_screen.dart';
+import 'chat-screens/group_messaging_screen.dart';
+import 'chat-screens/messages_list_screen.dart';
 import 'search_screen.dart';
 import 'settings/settings_screen.dart';
 import 'spaces/spaces_screen.dart';

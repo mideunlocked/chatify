@@ -1,15 +1,17 @@
 import 'package:chatify/providers/chatting.dart';
+import 'package:chatify/providers/group_chatting.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 // ignore: must_be_immutable
 class ReplyWidget extends StatefulWidget {
-  ReplyWidget(
-      {super.key,
-      required this.name,
-      required this.replyText,
-      required this.isMe});
+  ReplyWidget({
+    super.key,
+    required this.name,
+    required this.replyText,
+    required this.isMe,
+  });
 
   String name;
   String replyText;
@@ -68,7 +70,8 @@ class _ReplyWidgetState extends State<ReplyWidget> {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () {
-                Provider.of<Chatting>(context).clearReply();
+                Provider.of<Chatting>(context, listen: false).clearReply();
+                Provider.of<GroupChatting>(context, listen: false).clearReply();
               },
               child: const Icon(
                 Icons.clear_rounded,

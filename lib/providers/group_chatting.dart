@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../models/group_chat.dart';
+
 class GroupChatting with ChangeNotifier {
   FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
   FirebaseAuth authInstance = FirebaseAuth.instance;
 
-  final List<GroupChatting> _chats = [];
+  final List<GroupChatting> _groupChats = [];
 
   Map<String, dynamic> _reply = {
     "text": "",
@@ -18,8 +20,8 @@ class GroupChatting with ChangeNotifier {
     return {..._reply};
   }
 
-  List<GroupChatting> get chats {
-    return [..._chats];
+  List<GroupChatting> get groupChats {
+    return [..._groupChats];
   }
 
   void replyMessage(
@@ -30,6 +32,7 @@ class GroupChatting with ChangeNotifier {
       "name": name,
       "text": chatText,
     };
+
     notifyListeners();
   }
 
@@ -41,6 +44,68 @@ class GroupChatting with ChangeNotifier {
     };
 
     notifyListeners();
+  }
+
+  void initialClearReply() {
+    _reply = {
+      "text": "",
+      "name": "",
+      "isMe": "",
+    };
+  }
+
+  Future<dynamic> sendMessage(
+    GroupChat groupChat,
+    String gcId,
+  ) async {
+    try {
+      var uid = authInstance.currentUser?.uid;
+
+      var groupChatPath = cloudInstance.collection("group-chats").doc(gcId);
+      var messagePath = groupChatPath.collection("messages");
+
+      await messagePath.add({
+        "timeStamp": groupChat.timeStamp,
+        "senderId": uid,
+        "isSeen": [uid],
+        "isSent": groupChat.isSent,
+        "text": groupChat.text,
+        "reply": groupChat.reply,
+      }).then((value) {
+        messagePath.doc(value.id).update({
+          "id": value.id,
+          "isSent": true,
+        });
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Send group chat error: $e");
+      notifyListeners();
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> markMessageAsRead(String chatId, String docId) async {
+    String uid = authInstance.currentUser!.uid;
+
+    try {
+      await cloudInstance
+          .collection("group-chats")
+          .doc(chatId)
+          .collection("messages")
+          .doc(docId)
+          .update({
+        "isSeen": FieldValue.arrayUnion([uid]),
+      }).then((value) {
+        print("Done");
+      });
+    } catch (error) {
+      print("Mark as read error: $error");
+      notifyListeners();
+      return false;
+    }
   }
 
   Stream<QuerySnapshot> getMessages(String docId) {
@@ -57,7 +122,7 @@ class GroupChatting with ChangeNotifier {
 
       return querySnapshot;
     } catch (e) {
-      print("Get posts error: $e");
+      print("Get group chat error: $e");
       return const Stream.empty();
     }
   }
@@ -119,6 +184,24 @@ class GroupChatting with ChangeNotifier {
       print("Get unseen messages error: $error");
       notifyListeners();
       return const Stream.empty();
+    }
+  }
+
+  Future<dynamic> deleteMessage(String id, String chatId) async {
+    try {
+      var messagePath = cloudInstance
+          .collection("group-chats")
+          .doc(chatId)
+          .collection("messages");
+
+      await messagePath.doc(id).delete();
+      print("Deleted");
+      notifyListeners();
+      return true;
+    } catch (error) {
+      print("Delete message error: $error");
+      notifyListeners();
+      return false;
     }
   }
 }

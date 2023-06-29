@@ -47,7 +47,9 @@ class GCChatScreenAppBar extends StatelessWidget {
             splashColor: Colors.transparent,
             onTap: () => showDetails(context),
             child: CircleAvatar(
-              backgroundColor: Colors.grey[200],
+              backgroundColor: Colors.grey[300],
+              radius: 17.sp,
+              backgroundImage: const AssetImage("assets/images/logo-2.png"),
             ),
           ),
         ],

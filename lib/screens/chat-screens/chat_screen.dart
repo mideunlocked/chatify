@@ -7,9 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/chat_widget/app_bar.dart';
-import '../widgets/chat_widget/bubble.dart';
-import '../widgets/chat_widget/text_input_widget.dart';
+import '../../widgets/chat_widget/app_bar.dart';
+import '../../widgets/chat_widget/bubble.dart';
+import '../../widgets/chat_widget/text_input_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
@@ -30,9 +30,9 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
-    super.initState();
+    Provider.of<Chatting>(context, listen: false).initialClearReply();
 
-    Provider.of<Chatting>(context, listen: false).clearReply();
+    super.initState();
   }
 
   bool isInitial = false;
@@ -99,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           id: chatData.id,
                           chatId: widget.chatId,
                           recieverUsername: widget.user.username,
-                          reply: chat["reply"] ?? "",
+                          reply: chat["reply"] ?? {},
                           time: dateTime[0],
                           date: dateTime[1],
                         );

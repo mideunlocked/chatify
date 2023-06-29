@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/message_list/message_app_bar.dart';
-import '../widgets/message_list/message_tile.dart';
+import '../../widgets/message_list/message_app_bar.dart';
+import '../../widgets/message_list/message_tile.dart';
 
 class MessagesScreen extends StatelessWidget {
   const MessagesScreen({super.key});

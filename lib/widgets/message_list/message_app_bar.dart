@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../home_screen_widget/app_bar_images.dart';
+
 // import '../home_screen_widget/app_bar_images.dart';
 
 class MessagesAppBar extends StatelessWidget {
@@ -35,25 +37,25 @@ class MessagesAppBar extends StatelessWidget {
             style: textTheme.bodyLarge,
           ),
           const Spacer(),
-          // Row(
-          //   children: [
-          //     AppBarIcon(
-          //       url: "assets/icons/search.png",
-          //     ),
-          //     title.contains("Group") != true
-          //         ? Container()
-          //         : Row(
-          //             children: [
-          //               SizedBox(
-          //                 width: 10.w,
-          //               ),
-          //               AppBarIcon(
-          //                 url: "assets/icons/plus.png",
-          //               ),
-          //             ],
-          //           ),
-          //   ],
-          // ),
+          Row(
+            children: [
+              AppBarIcon(
+                url: "assets/icons/search.png",
+              ),
+              title.contains("Group") != true
+                  ? Container()
+                  : Row(
+                      children: [
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        AppBarIcon(
+                          url: "assets/icons/plus.png",
+                        ),
+                      ],
+                    ),
+            ],
+          ),
         ],
       ),
     );

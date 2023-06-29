@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/group_chat.dart';
-import '../providers/group_chatting.dart';
-import '../widgets/message_list/group_message_tile.dart';
-import '../widgets/message_list/message_app_bar.dart';
+import '../../models/group_chat.dart';
+import '../../providers/group_chatting.dart';
+import '../../widgets/group_chat_widget/group_message_tile.dart';
+import '../../widgets/message_list/message_app_bar.dart';
 
 class GroupMessagesScreen extends StatefulWidget {
   const GroupMessagesScreen({super.key});

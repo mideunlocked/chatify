@@ -1,7 +1,7 @@
 import 'package:chatify/helpers/date_time_formatting.dart';
 import 'package:chatify/models/users.dart';
 import 'package:chatify/providers/chatting.dart';
-import 'package:chatify/screens/chat_screen.dart';
+import 'package:chatify/screens/chat-screens/chat_screen.dart';
 import 'package:chatify/widgets/message_list/unread_inidicator_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
