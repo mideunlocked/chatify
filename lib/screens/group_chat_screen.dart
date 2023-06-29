@@ -1,11 +1,11 @@
 import 'package:chatify/helpers/date_time_formatting.dart';
-import 'package:chatify/widgets/chat_widget/gc_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/group_chat.dart';
-import '../widgets/chat_widget/gc_app_bar.dart';
 import '../widgets/chat_widget/text_input_widget.dart';
+import '../widgets/group_chat_widget/gc_app_bar.dart';
+import '../widgets/group_chat_widget/gc_bubble.dart';
 
 class GroupChatScreen extends StatefulWidget {
   const GroupChatScreen({super.key, required this.groupChat});
