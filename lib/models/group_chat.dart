@@ -23,12 +23,14 @@ class GroupChat {
 class ListGroupChat {
   final Map<String, dynamic> about;
   final List<dynamic> recipients;
+  final List<dynamic> requests;
   final List<GroupChat> chats;
   final List<dynamic> admins;
   final Timestamp timestamp;
   final String id;
 
   const ListGroupChat({
+    required this.requests,
     required this.id,
     required this.about,
     required this.recipients,

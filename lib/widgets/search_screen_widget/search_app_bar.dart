@@ -62,11 +62,9 @@ class SearchAppBar extends StatelessWidget {
           ),
           Visibility(
             visible: false,
-            child: GestureDetector(
-              onTap: () {},
-              child: AppBarIcon(
-                url: "assets/icons/search.png",
-              ),
+            child: AppBarIcon(
+              url: "assets/icons/search.png",
+              function: () {},
             ),
           ),
         ],

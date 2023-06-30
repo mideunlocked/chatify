@@ -50,6 +50,7 @@ class GroupMessageTile extends StatelessWidget {
                             recipients: listGroupChat.recipients,
                             admins: listGroupChat.admins,
                             timestamp: listGroupChat.timestamp,
+                            requests: listGroupChat.requests,
                             chats: snapshot.data?.docs
                                     .map(
                                       (DocumentSnapshot e) => GroupChat(

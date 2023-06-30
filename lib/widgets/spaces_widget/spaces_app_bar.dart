@@ -35,9 +35,9 @@ class SpacesAppBar extends StatelessWidget {
             style: textTheme.bodyLarge,
           ),
           GestureDetector(
-            onTap: () => postSpaceConversation(context),
             child: AppBarIcon(
               url: "assets/icons/plus.png",
+              function: () => postSpaceConversation(context),
             ),
           ),
         ],

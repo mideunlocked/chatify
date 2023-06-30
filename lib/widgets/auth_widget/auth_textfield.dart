@@ -40,8 +40,8 @@ class _AuthTextFieldState extends State<AuthTextField> {
         focusNode: widget.node,
         obscureText: widget.isObscure,
         cursorColor: const Color.fromARGB(255, 192, 250, 223),
-        textInputAction: TextInputAction.next,
-        keyboardType: TextInputType.emailAddress,
+        textInputAction: widget.inputAction,
+        keyboardType: widget.inputType,
         style: const TextStyle(
           fontFamily: "Poppins",
           color: Colors.white,

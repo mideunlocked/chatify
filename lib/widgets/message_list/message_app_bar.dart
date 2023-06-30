@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../screens/create-group/create_group_screen.dart';
 import '../home_screen_widget/app_bar_images.dart';
 
 // import '../home_screen_widget/app_bar_images.dart';
@@ -41,6 +42,7 @@ class MessagesAppBar extends StatelessWidget {
             children: [
               AppBarIcon(
                 url: "assets/icons/search.png",
+                function: () {},
               ),
               title.contains("Group") != true
                   ? Container()
@@ -51,6 +53,12 @@ class MessagesAppBar extends StatelessWidget {
                         ),
                         AppBarIcon(
                           url: "assets/icons/plus.png",
+                          function: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const CreateGroupScreen(),
+                            ),
+                          ),
                         ),
                       ],
                     ),

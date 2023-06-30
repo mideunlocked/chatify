@@ -10,11 +10,15 @@ class GCChatScreenAppBar extends StatelessWidget {
     required this.about,
     required this.participants,
     required this.admins,
+    required this.requests,
+    required this.groupId,
   });
 
   final Map<String, dynamic> about;
+  final List<dynamic> requests;
   final List<dynamic> admins;
   final int participants;
+  final String groupId;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +68,8 @@ class GCChatScreenAppBar extends StatelessWidget {
         about: about,
         participants: participants,
         admins: admins,
+        reuqests: requests,
+        groupId: groupId,
       ),
     );
   }

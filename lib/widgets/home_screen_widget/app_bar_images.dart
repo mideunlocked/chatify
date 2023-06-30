@@ -5,6 +5,7 @@ class AppBarIcon extends StatelessWidget {
   AppBarIcon({
     super.key,
     required this.url,
+    required this.function,
     this.color = Colors.white,
     double? height,
     double? width,
@@ -15,14 +16,20 @@ class AppBarIcon extends StatelessWidget {
   final Color color;
   final double height;
   final double width;
+  final Function function;
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      url,
-      color: Colors.white,
-      height: height,
-      width: width,
+    return GestureDetector(
+      onTap: () {
+        function();
+      },
+      child: Image.asset(
+        url,
+        color: Colors.white,
+        height: height,
+        width: width,
+      ),
     );
   }
 }

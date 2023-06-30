@@ -54,6 +54,92 @@ class GroupChatting with ChangeNotifier {
     };
   }
 
+  Future<dynamic> createGroupChat(ListGroupChat groupChat) async {
+    try {
+      var groupChatCollection = cloudInstance.collection("group-chats");
+      String? uid = authInstance.currentUser?.uid;
+      var groupId = "";
+
+      await groupChatCollection.add({
+        "requests": [],
+        "about": groupChat.about,
+        "recipients": groupChat.recipients,
+        "admins": groupChat.admins,
+        "timeStamp": Timestamp.now(),
+      }).then((value) {
+        groupId = value.id;
+        var doc = groupChatCollection.doc(value.id);
+
+        doc.update({
+          "id": value.id,
+        });
+        doc.collection("messages").add({
+          "timeStamp": Timestamp.now(),
+          "senderId": "App",
+          "isSeen": [uid],
+          "isSent": false,
+          "text": groupChat.about["description"] ?? "",
+          "reply": {
+            "name": "",
+            "text": "",
+          },
+        }).then((value) {
+          var messagePath =
+              groupChatCollection.doc(groupId).collection("messages");
+          messagePath.doc(value.id).update({
+            "id": value.id,
+            "isSent": true,
+          });
+        });
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Create group chat error: $e");
+      notifyListeners();
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> acceptRequest(String groupId, String requestId) async {
+    try {
+      var groupPath = cloudInstance.collection("group-chats").doc(groupId);
+
+      await groupPath.update({
+        "recipients": FieldValue.arrayUnion([requestId]),
+      }).then((value) {
+        groupPath.update({
+          "requests": FieldValue.arrayRemove([requestId]),
+        });
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Accept request error: $e");
+      notifyListeners();
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> removeParticipants(String groupId, String requestId) async {
+    try {
+      var groupPath = cloudInstance.collection("group-chats").doc(groupId);
+
+      await groupPath.update({
+        "recipients": FieldValue.arrayRemove([requestId]),
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Remove participants error: $e");
+      notifyListeners();
+      return e.toString();
+    }
+  }
+
   Future<dynamic> sendMessage(
     GroupChat groupChat,
     String gcId,

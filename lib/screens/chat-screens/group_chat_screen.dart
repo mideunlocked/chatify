@@ -46,8 +46,10 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
           children: [
             // App bar
             GCChatScreenAppBar(
+              groupId: widget.groupChat.id,
               about: widget.groupChat.about,
               admins: widget.groupChat.admins,
+              requests: widget.groupChat.requests,
               participants: widget.groupChat.recipients.length,
             ),
 
