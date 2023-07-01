@@ -50,7 +50,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
               about: widget.groupChat.about,
               admins: widget.groupChat.admins,
               requests: widget.groupChat.requests,
-              participants: widget.groupChat.recipients.length,
+              participants: widget.groupChat.recipients,
             ),
 
             // chat's widget

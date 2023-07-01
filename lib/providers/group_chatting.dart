@@ -102,15 +102,15 @@ class GroupChatting with ChangeNotifier {
     }
   }
 
-  Future<dynamic> acceptRequest(String groupId, String requestId) async {
+  Future<dynamic> acceptRequest(String groupId, String participantId) async {
     try {
       var groupPath = cloudInstance.collection("group-chats").doc(groupId);
 
       await groupPath.update({
-        "recipients": FieldValue.arrayUnion([requestId]),
+        "recipients": FieldValue.arrayUnion([participantId]),
       }).then((value) {
         groupPath.update({
-          "requests": FieldValue.arrayRemove([requestId]),
+          "requests": FieldValue.arrayRemove([participantId]),
         });
       });
 
@@ -123,18 +123,36 @@ class GroupChatting with ChangeNotifier {
     }
   }
 
-  Future<dynamic> removeParticipants(String groupId, String requestId) async {
+  Future<dynamic> removeParticipants(
+      String groupId, String participantId) async {
     try {
       var groupPath = cloudInstance.collection("group-chats").doc(groupId);
 
       await groupPath.update({
-        "recipients": FieldValue.arrayRemove([requestId]),
+        "recipients": FieldValue.arrayRemove([participantId]),
       });
 
       notifyListeners();
       return true;
     } catch (e) {
       print("Remove participants error: $e");
+      notifyListeners();
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> updateAdmin(String groupId, String newAdminId) async {
+    try {
+      var groupPath = cloudInstance.collection("group-chats").doc(groupId);
+
+      await groupPath.update({
+        "recipients": [newAdminId],
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Update admin error: $e");
       notifyListeners();
       return e.toString();
     }

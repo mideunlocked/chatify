@@ -1,13 +1,20 @@
+import 'package:chatify/providers/group_chatting.dart';
 import 'package:chatify/screens/chat-screens/accept_participants_screen.dart';
+import 'package:chatify/screens/chat-screens/remove_participants_screen.dart';
+import 'package:chatify/screens/home_screen.dart';
+import 'package:chatify/widgets/general_widget/custom_progress_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/date_time_formatting.dart';
 import '../../helpers/gc_status.dart';
+import 'detail_action_button.dart';
 import 'future_username_text.dart';
 
-class GCDetailsDialog extends StatelessWidget {
+class GCDetailsDialog extends StatefulWidget {
   const GCDetailsDialog({
     super.key,
     required this.about,
@@ -20,8 +27,15 @@ class GCDetailsDialog extends StatelessWidget {
   final Map<String, dynamic> about;
   final List<dynamic> admins;
   final List<dynamic> reuqests;
-  final int participants;
+  final List<dynamic> participants;
   final String groupId;
+
+  @override
+  State<GCDetailsDialog> createState() => _GCDetailsDialogState();
+}
+
+class _GCDetailsDialogState extends State<GCDetailsDialog> {
+  bool isLeaving = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +46,12 @@ class GCDetailsDialog extends StatelessWidget {
       color: Colors.white60,
     );
     var dateTime = DateTimeFormatting().formatTimeDate(
-      about["createdOn"] ?? Timestamp.now(),
+      widget.about["createdOn"] ?? Timestamp.now(),
     );
     var sizedBox = SizedBox(
       height: 1.h,
     );
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
 
     return Dialog(
       backgroundColor: scaffoldBackgroundColor,
@@ -46,128 +61,145 @@ class GCDetailsDialog extends StatelessWidget {
       child: SizedBox(
         height: 50.h,
         width: 80.w,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 3.h,
-            horizontal: 3.h,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.asset(
-                  "assets/images/logo-2.png",
-                  height: 10.h,
-                  width: 22.w,
-                  fit: BoxFit.cover,
+        child: isLeaving == true
+            ? const CustomProgressIndicator()
+            : Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 3.h,
+                  horizontal: 3.h,
                 ),
-              ),
-              sizedBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    about["name"] ?? "",
-                    style: textTheme.bodyLarge,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  about["isPublic"] == true ? openImage : lockedImage,
-                ],
-              ),
-              sizedBox,
-              Text(
-                about["description"] ?? "",
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 3.h,
-              ),
-              Text(
-                "$participants participants",
-                style: textStyle,
-              ),
-              FutureUsernameText(
-                uid: admins.first ?? "",
-                textStyle: textStyle,
-                keyString: "Admin",
-              ),
-              FutureUsernameText(
-                uid: about["createdBy"] ?? "",
-                textStyle: textStyle,
-                keyString: "Created by",
-              ),
-              Text(
-                "Created on: ${dateTime[1]}",
-                style: textStyle,
-              ),
-              sizedBox,
-              Row(
-                children: [
-                  DetailActionButton(
-                    color: Colors.red,
-                    text: """Remove 
-participant""",
-                    function: () {},
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  DetailActionButton(
-                    color: Colors.green,
-                    text: """Add 
-participant""",
-                    function: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => AcceptParticipantsScreen(
-                          requests: reuqests,
-                          groupId: groupId,
-                        ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset(
+                        "assets/images/logo-2.png",
+                        height: 10.h,
+                        width: 22.w,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                ],
+                    sizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.about["name"] ?? "",
+                          style: textTheme.bodyLarge,
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        widget.about["isPublic"] == true
+                            ? openImage
+                            : lockedImage,
+                      ],
+                    ),
+                    sizedBox,
+                    Text(
+                      widget.about["description"] ?? "",
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    Text(
+                      "${widget.participants.length} participants",
+                      style: textStyle,
+                    ),
+                    FutureUsernameText(
+                      uid: widget.admins.first ?? "",
+                      textStyle: textStyle,
+                      keyString: "Admin",
+                    ),
+                    FutureUsernameText(
+                      uid: widget.about["createdBy"] ?? "",
+                      textStyle: textStyle,
+                      keyString: "Created by",
+                    ),
+                    Text(
+                      "Created on: ${dateTime[1]}",
+                      style: textStyle,
+                    ),
+                    sizedBox,
+                    widget.admins.contains(uid)
+                        ? Row(
+                            children: [
+                              DetailActionButton(
+                                color: Colors.red,
+                                text: """Remove 
+participant""",
+                                function: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (ctx) => RemoveParticipantsScreen(
+                                      participants: widget.participants,
+                                      admins: widget.admins,
+                                      groupId: widget.groupId,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              DetailActionButton(
+                                color: Colors.green,
+                                text: """Add 
+participant""",
+                                function: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (ctx) => AcceptParticipantsScreen(
+                                      requests: widget.reuqests,
+                                      groupId: widget.groupId,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : DetailActionButton(
+                            text: "Exit group",
+                            color: Colors.red,
+                            function: () => exitGroup(context),
+                          ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
-}
 
-class DetailActionButton extends StatelessWidget {
-  const DetailActionButton({
-    super.key,
-    required this.text,
-    required this.color,
-    required this.function,
-  });
+  Future<void> exitGroup(BuildContext context) async {
+    setState(() {
+      isLeaving = true;
+    });
+    var groupChatProvider = Provider.of<GroupChatting>(context, listen: false);
+    String? uid = groupChatProvider.authInstance.currentUser?.uid;
 
-  final String text;
-  final Color color;
-  final Function function;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 30.w,
-      child: FloatingActionButton.extended(
-        backgroundColor: color,
-        onPressed: () {
-          function();
-        },
-        label: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 8.sp,
-          ),
-        ),
-      ),
+    var result = await groupChatProvider.removeParticipants(
+      widget.groupId,
+      uid ?? "",
     );
+
+    if (result == true) {
+      setState(() {
+        isLeaving = false;
+      });
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => const HomeScreen(),
+          ),
+        );
+      } else {
+        setState(() {
+          isLeaving = false;
+        });
+      }
+    }
   }
 }

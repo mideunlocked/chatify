@@ -17,7 +17,7 @@ class GCChatScreenAppBar extends StatelessWidget {
   final Map<String, dynamic> about;
   final List<dynamic> requests;
   final List<dynamic> admins;
-  final int participants;
+  final List<dynamic> participants;
   final String groupId;
 
   @override

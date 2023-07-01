@@ -8,19 +8,23 @@ import 'package:sizer/sizer.dart';
 import '../../widgets/group_chat_widget/no_request_text.dart';
 import '../../widgets/group_chat_widget/participant_action_list_tile.dart';
 
-class AcceptParticipantsScreen extends StatefulWidget {
-  const AcceptParticipantsScreen(
-      {super.key, required this.requests, required this.groupId});
+class RemoveParticipantsScreen extends StatefulWidget {
+  const RemoveParticipantsScreen(
+      {super.key,
+      required this.participants,
+      required this.groupId,
+      required this.admins});
 
-  final List<dynamic> requests;
+  final List<dynamic> participants;
+  final List<dynamic> admins;
   final String groupId;
 
   @override
-  State<AcceptParticipantsScreen> createState() =>
+  State<RemoveParticipantsScreen> createState() =>
       _AcceptParticipantsScreenState();
 }
 
-class _AcceptParticipantsScreenState extends State<AcceptParticipantsScreen> {
+class _AcceptParticipantsScreenState extends State<RemoveParticipantsScreen> {
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -37,16 +41,16 @@ class _AcceptParticipantsScreenState extends State<AcceptParticipantsScreen> {
             child: Column(
               children: [
                 const ChatInfoAppBar(
-                  title: "Add participants",
+                  title: "Remove participants",
                 ),
                 Expanded(
-                  child: widget.requests.isEmpty
+                  child: widget.participants.isEmpty
                       ? const EmptyListText(
                           text:
-                              "Looks like there are no requests at the moment",
+                              "Oops! It seems like there are no participants in this group yet. Don't worry, invite your friends and start engaging in conversations!",
                         )
                       : ListView(
-                          children: widget.requests.map((id) {
+                          children: widget.participants.map((id) {
                             return FutureBuilder(
                                 future: cloudInstance
                                     .collection("users")
@@ -59,15 +63,15 @@ class _AcceptParticipantsScreenState extends State<AcceptParticipantsScreen> {
 
                                   return ParticipantActionListTile(
                                     data: data,
-                                    admins: const [],
-                                    function: () => acceptRequest(
+                                    admins: widget.admins,
+                                    icon: Icons.person_remove_alt_1_rounded,
+                                    iconColor: Colors.red,
+                                    function: () => removeParticipant(
                                       context,
                                       widget.groupId,
                                       id,
                                       data?["username"] ?? "",
                                     ),
-                                    icon: Icons.person_add_alt_1_rounded,
-                                    iconColor: Colors.green,
                                   );
                                 });
                           }).toList(),
@@ -81,18 +85,18 @@ class _AcceptParticipantsScreenState extends State<AcceptParticipantsScreen> {
     );
   }
 
-  void acceptRequest(BuildContext context, String groupId, String requestId,
+  void removeParticipant(BuildContext context, String groupId, String requestId,
       String username) async {
     var groupChatProvider = Provider.of<GroupChatting>(context, listen: false);
 
-    var result = await groupChatProvider.acceptRequest(groupId, requestId);
+    var result = await groupChatProvider.removeParticipants(groupId, requestId);
     if (result == true) {
       setState(() {
-        widget.requests.remove(requestId);
+        widget.participants.remove(requestId);
       });
       _scaffoldKey.currentState?.showSnackBar(
         SnackBar(
-          content: Text("Added $username to group"),
+          content: Text("Removed $username from group"),
           backgroundColor: Colors.green,
         ),
       );
