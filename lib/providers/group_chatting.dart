@@ -102,6 +102,44 @@ class GroupChatting with ChangeNotifier {
     }
   }
 
+  Future<dynamic> joinGroup(String groupId) async {
+    String? uid = authInstance.currentUser?.uid;
+
+    try {
+      var groupPath = cloudInstance.collection("group-chats").doc(groupId);
+
+      await groupPath.update({
+        "recipients": FieldValue.arrayUnion([uid]),
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Join group error: $e");
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<dynamic> requestJoinGroup(String groupId) async {
+    String? uid = authInstance.currentUser?.uid;
+
+    try {
+      var groupPath = cloudInstance.collection("group-chats").doc(groupId);
+
+      await groupPath.update({
+        "requests": FieldValue.arrayUnion([uid]),
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Request group error: $e");
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<dynamic> acceptRequest(String groupId, String participantId) async {
     try {
       var groupPath = cloudInstance.collection("group-chats").doc(groupId);
@@ -306,6 +344,19 @@ class GroupChatting with ChangeNotifier {
       print("Delete message error: $error");
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> searchGroups(
+      String search) async {
+    try {
+      final querySnapshot = cloudInstance.collection("group-chats").get();
+      // Return the list of filtered documents
+      return querySnapshot;
+    } catch (error) {
+      // Handle the error
+      print('Error retrieving filtered posts: $error');
+      throw 0;
     }
   }
 }

@@ -1,7 +1,8 @@
+import 'package:chatify/screens/group-app-screens/search_group_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../screens/create-group/create_group_screen.dart';
+import '../../screens/group-app-screens/create_group_screen.dart';
 import '../home_screen_widget/app_bar_images.dart';
 
 // import '../home_screen_widget/app_bar_images.dart';
@@ -42,7 +43,12 @@ class MessagesAppBar extends StatelessWidget {
             children: [
               AppBarIcon(
                 url: "assets/icons/search.png",
-                function: () {},
+                function: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => const SearchGroupScreen(),
+                  ),
+                ),
               ),
               title.contains("Group") != true
                   ? Container()

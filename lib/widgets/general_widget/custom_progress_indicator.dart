@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 class CustomProgressIndicator extends StatelessWidget {
   const CustomProgressIndicator({
     super.key,
+    this.strokeWidth = 1.0,
   });
+
+  final double strokeWidth;
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: CircularProgressIndicator(
-        strokeWidth: 1.0,
-        color: Color.fromARGB(255, 0, 187, 6),
+        strokeWidth: strokeWidth,
+        color: const Color.fromARGB(255, 0, 187, 6),
       ),
     );
   }

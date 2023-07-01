@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../widgets/search_screen_widget/no_search_result_text.dart';
+
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({super.key, required this.searchText});
 
@@ -102,15 +104,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                           child: Row(
                             children: data?.isEmpty == true
                                 ? [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "No profile matching '${widget.searchText}'",
-                                        style: const TextStyle(
-                                          color: Colors.white54,
-                                        ),
-                                      ),
-                                    ),
+                                    NoSearchResultText(
+                                      text:
+                                          "No profile matching '${widget.searchText}'",
+                                    )
                                   ]
                                 : data?.map((result) {
                                       return ProfileCard(
@@ -157,6 +154,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                 .toLowerCase()
                                 .contains(widget.searchText.toLowerCase()),
                       );
+
                       if (snapshot.hasError) {
                         return const Text(
                           "An error occured kindly contact the developer",
@@ -176,14 +174,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       return Column(
                         children: data?.isEmpty == true
                             ? [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "No conversation matching '${widget.searchText}'",
-                                    style: const TextStyle(
-                                      color: Colors.white54,
-                                    ),
-                                  ),
+                                NoSearchResultText(
+                                  text:
+                                      "No conversation matching '${widget.searchText}'",
                                 ),
                               ]
                             : data

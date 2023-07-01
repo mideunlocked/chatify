@@ -1,4 +1,3 @@
-import 'package:chatify/screens/search/search_result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -8,9 +7,11 @@ class SearchAppBar extends StatelessWidget {
   const SearchAppBar({
     super.key,
     required this.controller,
+    required this.function,
   });
 
   final TextEditingController controller;
+  final Function function;
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +50,7 @@ class SearchAppBar extends StatelessWidget {
                 focusedBorder: InputBorder.none,
               ),
               onSubmitted: (value) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => SearchResultScreen(
-                      searchText: value,
-                    ),
-                  ),
-                );
+                function();
               },
             ),
           ),
