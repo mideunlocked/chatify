@@ -75,7 +75,7 @@ class GroupChatting with ChangeNotifier {
         });
         doc.collection("messages").add({
           "timeStamp": Timestamp.now(),
-          "senderId": "App",
+          "senderId": uid,
           "isSeen": [uid],
           "isSent": false,
           "text": groupChat.about["description"] ?? "",
