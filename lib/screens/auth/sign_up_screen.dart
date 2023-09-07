@@ -8,7 +8,9 @@ import 'package:chatify/widgets/auth_widget/have_account_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../helpers/tc_pp.dart';
 import '../home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -169,10 +171,20 @@ class _LoginScreenState extends State<SignupScreen> {
                                 },
                               ),
                               const Text("I agree with the "),
-                              const Text(
-                                "terms and conditions",
-                                style: TextStyle(
-                                  color: color2,
+                              InkWell(
+                                onTap: () async {
+                                  final url = Uri.parse(terms_and_condition);
+                                  if (await canLaunchUrl(url)) {
+                                    await launchUrl(url);
+                                  } else {
+                                    throw "Could not launch $url";
+                                  }
+                                },
+                                child: const Text(
+                                  "terms and conditions",
+                                  style: TextStyle(
+                                    color: color2,
+                                  ),
                                 ),
                               ),
                             ],

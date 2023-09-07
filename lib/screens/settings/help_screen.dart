@@ -1,8 +1,10 @@
-import 'package:chatify/screens/settings/dev_cont_screen.dart';
-import 'package:chatify/widgets/settings_widget/setting_child_app_bar.dart';
-import 'package:chatify/widgets/settings_widget/settings_list_tile.dart';
+import 'package:chatify/helpers/tc_pp.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../widgets/settings_widget/setting_child_app_bar.dart';
+import '../../widgets/settings_widget/settings_list_tile.dart';
+import 'dev_cont_screen.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -21,13 +23,28 @@ class HelpScreen extends StatelessWidget {
             //   screenWidget: Container(),
             // ),
             SettingListTile(
-              subtitle: "Take a look at our terms and privacy policy",
+              subtitle: "Take a look at our terms and condition",
               icon: Icons.book_outlined,
-              title: "Terms and Privacy Policy",
+              title: "Terms and Condition",
               screenWidget: Container(),
+              isHelp: true,
               function: () async {
-                final url = Uri.parse(
-                    "https://docs.google.com/document/d/1mvKBsKh-TahJ1xOwIC5g7DrMltS7y_kGvANyAn6Brck/edit");
+                final url = Uri.parse(terms_and_condition);
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
+                } else {
+                  throw "Could not launch $url";
+                }
+              },
+            ),
+            SettingListTile(
+              subtitle: "Take a look at our privacy policy",
+              icon: Icons.book_outlined,
+              title: "Privacy Policy",
+              screenWidget: Container(),
+              isHelp: true,
+              function: () async {
+                final url = Uri.parse(privacy_policy);
                 if (await canLaunchUrl(url)) {
                   await launchUrl(url);
                 } else {

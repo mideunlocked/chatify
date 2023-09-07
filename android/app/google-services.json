@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:615820683255:android:0a4f32d3dbebf3ed18f0f2",
+        "mobilesdk_app_id": "1:615820683255:android:9fa505dcd947e2ae18f0f2",
         "android_client_info": {
-          "package_name": "com.example.chatify"
+          "package_name": "com.chatify.chatify"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "615820683255-uffn9o2cfepeo6paibhfl5vjsddita4l.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "615820683255-il7rurif2v1b1orccsgjcqojujs7tvv6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chatify"
+              }
             }
           ]
         }

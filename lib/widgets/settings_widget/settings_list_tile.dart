@@ -38,7 +38,7 @@ class SettingListTile extends StatelessWidget {
               ),
             );
           } else {
-            function;
+            function();
           }
         },
         leading: Icon(
