@@ -1,13 +1,27 @@
+import 'dart:io';
+
+import 'package:chatify/providers/image_handling_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class ProfileImage extends StatelessWidget {
+class ProfileImage extends StatefulWidget {
   const ProfileImage({
     super.key,
   });
 
   @override
+  State<ProfileImage> createState() => _ProfileImageState();
+}
+
+class _ProfileImageState extends State<ProfileImage> {
+  @override
   Widget build(BuildContext context) {
+    FirebaseAuth authInstance = FirebaseAuth.instance;
+    String? profileImage = authInstance.currentUser?.photoURL ?? "";
+
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -15,25 +29,51 @@ class ProfileImage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundColor: Colors.grey[300],
-              radius: 50.sp,
-            ),
+              radius: 70.sp,
+              backgroundColor: Colors.grey,
+              foregroundImage: profileImage.isEmpty == false
+                  ? NetworkImage(profileImage)
+                  : null,
+            )
           ],
         ),
         Positioned(
-          left: 57.w,
-          child: CircleAvatar(
-            backgroundColor: const Color.fromARGB(255, 4, 255, 138),
-            radius: 18.sp,
-            child: Image.asset(
-              "assets/icons/camera.png",
-              color: const Color.fromARGB(255, 0, 34, 53),
-              height: 7.h,
-              width: 7.w,
+          left: 60.w,
+          child: InkWell(
+            onTap: () => pickImageFromGallery(),
+            child: CircleAvatar(
+              backgroundColor: const Color.fromARGB(255, 4, 255, 138),
+              radius: 18.sp,
+              child: Image.asset(
+                "assets/icons/camera.png",
+                color: const Color.fromARGB(255, 0, 34, 53),
+                height: 7.h,
+                width: 7.w,
+              ),
             ),
           ),
         ),
       ],
     );
+  }
+
+  void pickImageFromGallery() async {
+    final imageHandlingProvider = Provider.of<ImageHandlingProvider>(
+      context,
+      listen: false,
+    );
+
+    final pickedImage = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 75,
+    );
+
+    if (pickedImage == null) {
+      return;
+    }
+
+    File imageFile = File(pickedImage.path);
+
+    await imageHandlingProvider.uploadProfileImage(imageFile);
   }
 }

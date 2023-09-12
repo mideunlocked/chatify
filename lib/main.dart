@@ -3,6 +3,7 @@ import 'package:chatify/providers/auth.dart';
 import 'package:chatify/providers/chatting.dart';
 import 'package:chatify/providers/comment_provider.dart';
 import 'package:chatify/providers/group_chatting.dart';
+import 'package:chatify/providers/image_handling_provider.dart';
 import 'package:chatify/providers/post_provider.dart';
 import 'package:chatify/providers/user_provider.dart';
 import 'package:chatify/screens/auth/welcome_screen.dart';
@@ -21,7 +22,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseMessagingHelper().setUpPushNotification();
-  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
   runApp(const MyApp());
 }
@@ -51,6 +51,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => GroupChatting(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => ImageHandlingProvider(),
           ),
         ],
         child: MaterialApp(

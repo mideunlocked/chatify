@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCuAzE2c0-Y1iJPjUWXykY7O6UMRO5ZVs0',
-    appId: '1:615820683255:android:0a4f32d3dbebf3ed18f0f2',
+    appId: '1:615820683255:android:9fa505dcd947e2ae18f0f2',
     messagingSenderId: '615820683255',
     projectId: 'chatify-771b4',
     storageBucket: 'chatify-771b4.appspot.com',

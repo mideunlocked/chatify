@@ -60,10 +60,9 @@ class _AccountScreenState extends State<AccountScreen> {
 
                         return Column(
                           children: [
-                            // profile image
+                            // // profile image
                             // const ProfileImage(),
 
-                            // space
                             // SizedBox(
                             //   height: 2.h,
                             // ),

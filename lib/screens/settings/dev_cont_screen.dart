@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../widgets/settings_widget/help/dev_cont_tile.dart';
-import '../../widgets/settings_widget/help/social_image.dart';
 import '../../widgets/settings_widget/setting_child_app_bar.dart';
 
 class DevContScreen extends StatelessWidget {
@@ -27,7 +26,7 @@ class DevContScreen extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image.asset(
-                        "assets/images/iamlamide.jpg",
+                        "assets/images/MC.png",
                         fit: BoxFit.fill,
                         height: 25.h,
                         width: 50.w,
@@ -58,23 +57,23 @@ class DevContScreen extends StatelessWidget {
                     SizedBox(
                       height: 4.h,
                     ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SocialImage(
-                          imageUrl: "assets/icons/instagram.png",
-                          link: "https://www.instagram.com/_iamlamide/",
-                        ),
-                        SocialImage(
-                          imageUrl: "assets/icons/twitter.png",
-                          link: "https://twitter.com/_iamlamide",
-                        ),
-                        SocialImage(
-                          imageUrl: "assets/icons/linkedin.png",
-                          link: "https://www.linkedin.com/in/ariyo-osuolale",
-                        ),
-                      ],
-                    ),
+                    // const Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     SocialImage(
+                    //       imageUrl: "assets/icons/instagram.png",
+                    //       link: "https://www.instagram.com/_iamlamide/",
+                    //     ),
+                    //     SocialImage(
+                    //       imageUrl: "assets/icons/twitter.png",
+                    //       link: "https://twitter.com/_iamlamide",
+                    //     ),
+                    //     SocialImage(
+                    //       imageUrl: "assets/icons/linkedin.png",
+                    //       link: "https://www.linkedin.com/in/ariyo-osuolale",
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
