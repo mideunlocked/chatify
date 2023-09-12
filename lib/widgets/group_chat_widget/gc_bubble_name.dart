@@ -22,16 +22,14 @@ class GCBubbleName extends StatelessWidget {
           Map<String, dynamic>? userData =
               snapshot.data?.docs.first.data() as Map<String, dynamic>? ?? {};
 
-          return Row(
-            children: [
-              Text(
-                userData["username"] ?? "",
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 8.sp,
-                ),
-              ),
-            ],
+          return Text(
+            userData["username"] ?? "",
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 8.sp,
+            ),
           );
         });
   }

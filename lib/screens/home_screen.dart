@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:sizer/sizer.dart';
 
 import '../widgets/home_screen_widget/custom_nav.dart';
 import 'chat-screens/group_messaging_screen.dart';
@@ -21,15 +23,35 @@ class _HomeScreenState extends State<HomeScreen> {
     initialPage: 2,
   );
 
+  ScrollController scrollController = ScrollController();
+
   @override
   void dispose() {
     super.dispose();
 
     pageController.dispose();
+    scrollController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // bottom navigation pages
+    List<Widget> pages = [
+      MessagesScreen(
+        scrollController: scrollController,
+      ),
+      GroupMessagesScreen(
+        scrollController: scrollController,
+      ),
+      SpacesScreen(
+        scrollController: scrollController,
+      ),
+      const SearchScreen(),
+      SettingScreen(
+        scrollController: scrollController,
+      ),
+    ];
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -38,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // home screen pages with page view
           PageView(
             controller: pageController,
+            physics: const NeverScrollableScrollPhysics(),
             onPageChanged: (index) => setState(() {
               currentIndex = index;
             }),
@@ -45,20 +68,26 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           // custom bottom nav
-          CustomBottomNav(
-            pageController: pageController,
-            currentIndex: currentIndex,
+          AnimatedBuilder(
+            animation: scrollController,
+            builder: (context, child) {
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: scrollController.hasClients &&
+                        scrollController.position.userScrollDirection ==
+                            ScrollDirection.reverse
+                    ? 0
+                    : 10.h,
+                child: child,
+              );
+            },
+            child: CustomBottomNav(
+              pageController: pageController,
+              currentIndex: currentIndex,
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-List<Widget> pages = [
-  const MessagesScreen(),
-  const GroupMessagesScreen(),
-  const SpacesScreen(),
-  const SearchScreen(),
-  const SettingScreen(),
-];

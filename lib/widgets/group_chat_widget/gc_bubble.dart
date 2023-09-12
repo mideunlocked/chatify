@@ -70,7 +70,7 @@ class _GCChatBubbleState extends State<GCChatBubble> {
     textPainter.layout();
 
     // bubble container final size
-    final bubbleWidth = textPainter.width + 45;
+    final bubbleWidth = textPainter.width + 50;
     String? currentUsername = FirebaseAuth.instance.currentUser?.displayName;
     FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
 
@@ -117,12 +117,11 @@ class _GCChatBubbleState extends State<GCChatBubble> {
                   Container(
                     margin: EdgeInsets.only(
                       top: widget.reply["text"] == "" ? 0 : 60.sp,
-                      left: widget.isMe == true ? 70.sp : 10.sp,
-                      right: widget.isMe == false ? 70.sp : 10.sp,
+                      left: widget.isMe == true ? 60.sp : 10.sp,
+                      right: widget.isMe == false ? 60.sp : 10.sp,
                       bottom: 6.sp,
                     ),
-                    padding: EdgeInsets.all(12.sp),
-                    width: bubbleWidth,
+                    padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
                       color: widget.isMe == true
                           ? const Color.fromARGB(255, 192, 250, 223)
@@ -131,7 +130,9 @@ class _GCChatBubbleState extends State<GCChatBubble> {
                           widget.isMe == true ? borderRadius1 : borderRadius2,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: widget.isMe
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
                       children: [
                         widget.isMe == true
                             ? const SizedBox()
@@ -140,6 +141,7 @@ class _GCChatBubbleState extends State<GCChatBubble> {
                               ),
                         Text(
                           widget.text,
+                          textAlign: TextAlign.left,
                           style: TextStyle(
                             color: widget.isMe == true
                                 ? const Color.fromARGB(255, 0, 34, 53)

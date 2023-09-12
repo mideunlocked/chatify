@@ -128,30 +128,34 @@ class MoreActionsDialog extends StatelessWidget {
                                     size: 5.sp,
                                   ),
                                 ),
-                                textIconTile(
-                                  () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (ctx) => ChatInfoScreen(
-                                        text: text,
-                                        allRead: isRead,
-                                        readBy: readBy,
-                                      ),
-                                    ),
-                                  ),
-                                  "Read by",
-                                  Icons.info_rounded,
-                                ),
+                                isGC == true
+                                    ? textIconTile(
+                                        () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (ctx) => ChatInfoScreen(
+                                              text: text,
+                                              allRead: isRead,
+                                              readBy: readBy,
+                                            ),
+                                          ),
+                                        ),
+                                        "Read by",
+                                        Icons.info_rounded,
+                                      )
+                                    : const SizedBox(),
                               ],
                             )
                           : Container(),
-                      textIconTile(
-                        () => isGC == false
-                            ? deleteChat(context)
-                            : deleteGCChat(context),
-                        "Delete",
-                        Icons.delete_rounded,
-                      ),
+                      isMe == true
+                          ? textIconTile(
+                              () => isGC == false
+                                  ? deleteChat(context)
+                                  : deleteGCChat(context),
+                              "Delete",
+                              Icons.delete_rounded,
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),

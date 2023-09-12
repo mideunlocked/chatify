@@ -8,7 +8,9 @@ import 'package:sizer/sizer.dart';
 import '../../widgets/settings_widget/settings_list_tile.dart';
 
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({super.key});
+  const SettingScreen({super.key, required this.scrollController});
+
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class SettingScreen extends StatelessWidget {
             const SettingsAppBar(),
             Expanded(
               child: ListView(
+                controller: scrollController,
                 physics: const BouncingScrollPhysics(),
                 children: [
                   SettingListTile(

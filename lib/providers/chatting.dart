@@ -197,9 +197,11 @@ class Chatting with ChangeNotifier {
         "text": lastChatData["text"] ?? ""
       };
     } catch (error) {
-      print("Get message details error: $error");
       notifyListeners();
-      return false;
+      return {
+        "timestamp": Timestamp.now(),
+        "text": "No messages",
+      };
     }
   }
 

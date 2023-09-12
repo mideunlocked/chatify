@@ -49,6 +49,9 @@ class _MessageTileState extends State<MessageTile> {
           child: FutureBuilder(
               future: chattingProvider.getLastMessageDetails(widget.chatId),
               builder: (context, snapshot) {
+                if (snapshot.hasData == false || snapshot.hasError == true) {
+                  return const Text("");
+                }
                 Map<String, dynamic> data = snapshot.data ?? {};
 
                 return ListTile(
