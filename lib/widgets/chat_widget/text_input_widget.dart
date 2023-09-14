@@ -43,7 +43,7 @@ class TextInputWidget extends StatefulWidget {
 class _TextInputWidgetState extends State<TextInputWidget> {
   final controller = TextEditingController();
 
-  File pickedFile = File("");
+  File? pickedFile;
 
   void updateFileFromChild(File newData) {
     setState(() {
@@ -103,7 +103,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
             children: [
               AddFileWidget(
                 callback: updateFileFromChild,
-                file: pickedFile,
+                file: pickedFile ?? File(""),
               ),
               ChatTextField(controller: controller),
               SendIcon(
@@ -111,11 +111,11 @@ class _TextInputWidgetState extends State<TextInputWidget> {
                   if (controller.text.isEmpty) {
                   } else if (widget.isGroup == true) {
                     groupChatSend().then(
-                      (value) => pickedFile.deleteSync(),
+                      (value) => pickedFile?.deleteSync(),
                     );
                   } else {
                     personalChatSend().then(
-                      (value) => pickedFile.deleteSync(),
+                      (value) => pickedFile?.deleteSync(),
                     );
                   }
                 },
@@ -143,7 +143,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
         isSeen: [],
         isSent: false,
         text: controller.text.trim(),
-        file: pickedFile,
+        file: pickedFile ?? File(""),
       ),
       widget.chatId,
     );
@@ -169,7 +169,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
           isSeen: false,
           isSent: false,
           text: controller.text.trim(),
-          file: pickedFile,
+          file: pickedFile ?? File(""),
         ),
         widget.chatId,
         widget.recieverUid,
@@ -189,7 +189,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
           isSeen: false,
           isSent: false,
           text: controller.text.trim(),
-          file: pickedFile,
+          file: pickedFile ?? File(""),
         ),
         widget.reciverToken,
       );
