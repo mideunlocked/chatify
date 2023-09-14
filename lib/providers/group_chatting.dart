@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/group_chat.dart';
+import 'image_handling_provider.dart';
 
 class GroupChatting with ChangeNotifier {
   FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
@@ -79,6 +80,7 @@ class GroupChatting with ChangeNotifier {
           "isSeen": [uid],
           "isSent": false,
           "text": groupChat.about["description"] ?? "",
+          "imageUrl": "",
           "reply": {
             "name": "",
             "text": "",
@@ -213,10 +215,15 @@ class GroupChatting with ChangeNotifier {
         "isSent": groupChat.isSent,
         "text": groupChat.text,
         "reply": groupChat.reply,
-      }).then((value) {
+        "imageUrl": "",
+      }).then((value) async {
+        final imageUrl = await ImageHandlingProvider()
+            .uploadChatImage(groupChat.file, value.id);
+
         messagePath.doc(value.id).update({
           "id": value.id,
           "isSent": true,
+          "imageUrl": imageUrl,
         });
       });
 
@@ -336,7 +343,10 @@ class GroupChatting with ChangeNotifier {
           .doc(chatId)
           .collection("messages");
 
-      await messagePath.doc(id).delete();
+      await messagePath.doc(id).delete().then((value) async {
+        await ImageHandlingProvider().deleteImage("chat_images/$id");
+      });
+
       print("Deleted");
       notifyListeners();
       return true;

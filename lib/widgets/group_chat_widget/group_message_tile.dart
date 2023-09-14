@@ -53,7 +53,8 @@ class GroupMessageTile extends StatelessWidget {
                             requests: listGroupChat.requests,
                             chats: snapshot.data?.docs
                                     .map(
-                                      (DocumentSnapshot e) => GroupChat(
+                                      (DocumentSnapshot e) =>
+                                          GroupChatForScreen(
                                         id: e.id,
                                         senderId: e["senderId"] ?? "",
                                         timeStamp:
@@ -62,6 +63,7 @@ class GroupMessageTile extends StatelessWidget {
                                         isSeen: e["isSeen"] ?? [],
                                         isSent: e["isSent"] ?? false,
                                         text: e["text"] ?? "",
+                                        file: e["imageUrl"] ?? "",
                                       ),
                                     )
                                     .toList() ??

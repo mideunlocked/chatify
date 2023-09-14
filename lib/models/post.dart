@@ -6,6 +6,7 @@ class Post {
   final Map<String, dynamic> postUserInfo;
   final Timestamp time;
   final List<dynamic> likeCount;
+  final List<dynamic> imageUrls;
 
   const Post({
     required this.id,
@@ -13,5 +14,6 @@ class Post {
     required this.postUserInfo,
     required this.time,
     required this.likeCount,
+    required this.imageUrls,
   });
 }

@@ -12,7 +12,7 @@ class ChatTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80.w,
+      width: 70.w,
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(
         horizontal: 7.sp,

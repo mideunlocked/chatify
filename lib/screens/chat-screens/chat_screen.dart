@@ -102,6 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           reply: chat["reply"] ?? {},
                           time: dateTime[0],
                           date: dateTime[1],
+                          imageUrl: chat["imageUrl"] ?? "",
                         );
                       }).toList(),
                     );

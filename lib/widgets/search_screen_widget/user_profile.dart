@@ -44,6 +44,9 @@ class ProfileCard extends StatelessWidget {
               CircleAvatar(
                 radius: 40.sp,
                 backgroundColor: Colors.white38,
+                foregroundImage: user.imageUrl.isEmpty == false
+                    ? NetworkImage(user.imageUrl)
+                    : null,
               ),
               SizedBox(
                 height: 1.h,

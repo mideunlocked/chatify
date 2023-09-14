@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ListChat {
@@ -19,6 +21,7 @@ class Chat {
   final bool isSeen;
   final bool isSent;
   final String text;
+  final File file;
   final Map<String, dynamic> reply;
 
   const Chat({
@@ -29,5 +32,6 @@ class Chat {
     required this.isSeen,
     required this.isSent,
     required this.text,
+    required this.file,
   });
 }

@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 
 import '../chat_widget/more_actions_dialog.dart';
 import '../chat_widget/replied_widget.dart';
+import '../spaces_widget/post_image.dart';
 import 'gc_bubble_name.dart';
 
 class GCChatBubble extends StatefulWidget {
@@ -22,6 +23,7 @@ class GCChatBubble extends StatefulWidget {
     required this.senderId,
     required this.haveRead,
     required this.numberOfMembers,
+    required this.imageUrl,
   });
 
   final String text;
@@ -34,6 +36,7 @@ class GCChatBubble extends StatefulWidget {
   final String time;
   final String date;
   final Map<String, dynamic> reply;
+  final String imageUrl;
 
   @override
   State<GCChatBubble> createState() => _GCChatBubbleState();
@@ -138,6 +141,11 @@ class _GCChatBubbleState extends State<GCChatBubble> {
                             ? const SizedBox()
                             : GCBubbleName(
                                 uid: widget.senderId,
+                              ),
+                        widget.imageUrl.isEmpty
+                            ? const SizedBox()
+                            : PostImage(
+                                imageUrl: widget.imageUrl,
                               ),
                         Text(
                           widget.text,

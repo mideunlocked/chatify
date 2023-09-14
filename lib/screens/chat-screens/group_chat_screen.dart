@@ -108,6 +108,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                           numberOfMembers: widget.groupChat.recipients.length,
                           time: dateTime[0],
                           date: dateTime[1],
+                          imageUrl: chat["imageUrl"] ?? "",
                         );
                       }).toList(),
                     );

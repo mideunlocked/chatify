@@ -5,6 +5,7 @@ class Users {
   final String email;
   final String phoneNumber;
   final String token;
+  final String imageUrl;
 
   const Users({
     required this.token,
@@ -12,6 +13,7 @@ class Users {
     required this.fullName,
     required this.username,
     required this.email,
+    required this.imageUrl,
     required this.phoneNumber,
   });
 }

@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../widgets/settings_widget/account/account_list_tile.dart';
 import '../../widgets/settings_widget/account/forgot_password_tile.dart';
+import '../../widgets/settings_widget/account/profile_image.dart';
 // import '../../widgets/settings_widget/account/profile_image.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -61,12 +62,14 @@ class _AccountScreenState extends State<AccountScreen> {
 
                         return Column(
                           children: [
-                            // // profile image
-                            // const ProfileImage(),
+                            // profile image
+                            ProfileImage(
+                              imageUrl: user["imageUrl"] ?? "",
+                            ),
 
-                            // SizedBox(
-                            //   height: 2.h,
-                            // ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
 
                             // full name
                             AccountListTile(

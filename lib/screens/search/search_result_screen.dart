@@ -119,6 +119,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                           phoneNumber:
                                               result["phoneNumber"] ?? "",
                                           token: result["token"] ?? "",
+                                          imageUrl: result["imageUrl"] ?? "",
                                         ),
                                       );
                                     }).toList() ??
@@ -191,6 +192,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                           time:
                                               result["time"] ?? Timestamp.now(),
                                           likeCount: result["likes"] ?? [],
+                                          imageUrls: result["imageUrls"] ?? [],
                                         ),
                                         index: 0,
                                       ),

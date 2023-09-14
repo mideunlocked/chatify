@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatify/models/chat.dart';
 import 'package:chatify/models/group_chat.dart';
 import 'package:chatify/providers/chatting.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import 'add_file_widget.dart';
 import 'reply_widget.dart';
 import 'send_icon.dart';
 
@@ -39,6 +42,14 @@ class TextInputWidget extends StatefulWidget {
 
 class _TextInputWidgetState extends State<TextInputWidget> {
   final controller = TextEditingController();
+
+  File pickedFile = File("");
+
+  void updateFileFromChild(File newData) {
+    setState(() {
+      pickedFile = newData;
+    });
+  }
 
   @override
   void dispose() {
@@ -90,13 +101,22 @@ class _TextInputWidgetState extends State<TextInputWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              AddFileWidget(
+                callback: updateFileFromChild,
+                file: pickedFile,
+              ),
               ChatTextField(controller: controller),
               SendIcon(
                 function: () {
-                  if (widget.isGroup == true) {
-                    groupChatSend();
+                  if (controller.text.isEmpty) {
+                  } else if (widget.isGroup == true) {
+                    groupChatSend().then(
+                      (value) => pickedFile.deleteSync(),
+                    );
                   } else {
-                    personalChatSend();
+                    personalChatSend().then(
+                      (value) => pickedFile.deleteSync(),
+                    );
                   }
                 },
               ),
@@ -107,11 +127,11 @@ class _TextInputWidgetState extends State<TextInputWidget> {
     );
   }
 
-  void groupChatSend() {
+  Future<void> groupChatSend() async {
     var groupChatProvider = Provider.of<GroupChatting>(context, listen: false);
     var replyData = groupChatProvider.reply;
 
-    groupChatProvider.sendMessage(
+    await groupChatProvider.sendMessage(
       GroupChat(
         id: "",
         senderId: "",
@@ -123,6 +143,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
         isSeen: [],
         isSent: false,
         text: controller.text.trim(),
+        file: pickedFile,
       ),
       widget.chatId,
     );
@@ -131,12 +152,12 @@ class _TextInputWidgetState extends State<TextInputWidget> {
     groupChatProvider.clearReply();
   }
 
-  void personalChatSend() {
+  Future<void> personalChatSend() async {
     var chattingProvider = Provider.of<Chatting>(context, listen: false);
     var replyData = chattingProvider.reply;
 
     if (widget.isInitial == false) {
-      chattingProvider.sendMessage(
+      await chattingProvider.sendMessage(
         Chat(
           id: "",
           timeStamp: Timestamp.now(),
@@ -148,13 +169,14 @@ class _TextInputWidgetState extends State<TextInputWidget> {
           isSeen: false,
           isSent: false,
           text: controller.text.trim(),
+          file: pickedFile,
         ),
         widget.chatId,
         widget.recieverUid,
         widget.reciverToken,
       );
     } else {
-      chattingProvider.startChat(
+      await chattingProvider.startChat(
         widget.recieverUid,
         Chat(
           id: "",
@@ -167,6 +189,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
           isSeen: false,
           isSent: false,
           text: controller.text.trim(),
+          file: pickedFile,
         ),
         widget.reciverToken,
       );

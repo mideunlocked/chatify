@@ -1,27 +1,31 @@
 import 'dart:io';
 
 import 'package:chatify/providers/image_handling_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../general_widget/custom_progress_indicator.dart';
+
 class ProfileImage extends StatefulWidget {
   const ProfileImage({
     super.key,
+    required this.imageUrl,
   });
+
+  final String imageUrl;
 
   @override
   State<ProfileImage> createState() => _ProfileImageState();
 }
 
 class _ProfileImageState extends State<ProfileImage> {
+  bool isUploading = false;
+  String? profileImage;
+
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth authInstance = FirebaseAuth.instance;
-    String? profileImage = authInstance.currentUser?.photoURL ?? "";
-
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -31,8 +35,8 @@ class _ProfileImageState extends State<ProfileImage> {
             CircleAvatar(
               radius: 70.sp,
               backgroundColor: Colors.grey,
-              foregroundImage: profileImage.isEmpty == false
-                  ? NetworkImage(profileImage)
+              foregroundImage: widget.imageUrl.isEmpty == false
+                  ? NetworkImage(widget.imageUrl)
                   : null,
             ),
           ],
@@ -40,17 +44,21 @@ class _ProfileImageState extends State<ProfileImage> {
         Positioned(
           left: 60.w,
           child: InkWell(
-            onTap: () =>
-                pickImageFromGallery(authInstance.currentUser?.uid ?? ""),
+            onTap: () => pickImageFromGallery(),
             child: CircleAvatar(
               backgroundColor: const Color.fromARGB(255, 4, 255, 138),
               radius: 18.sp,
-              child: Image.asset(
-                "assets/icons/camera.png",
-                color: const Color.fromARGB(255, 0, 34, 53),
-                height: 7.h,
-                width: 7.w,
-              ),
+              child: isUploading == true
+                  ? const CustomProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3.0,
+                    )
+                  : Image.asset(
+                      "assets/icons/camera.png",
+                      color: const Color.fromARGB(255, 0, 34, 53),
+                      height: 7.h,
+                      width: 7.w,
+                    ),
             ),
           ),
         ),
@@ -58,7 +66,7 @@ class _ProfileImageState extends State<ProfileImage> {
     );
   }
 
-  void pickImageFromGallery(String uid) async {
+  void pickImageFromGallery() async {
     final imageHandlingProvider = Provider.of<ImageHandlingProvider>(
       context,
       listen: false,
@@ -75,6 +83,12 @@ class _ProfileImageState extends State<ProfileImage> {
 
     File imageFile = File(pickedImage.path);
 
-    await imageHandlingProvider.uploadProfileImage(imageFile, uid);
+    setState(() {
+      isUploading = true;
+    });
+    await imageHandlingProvider.uploadProfileImage(imageFile);
+    setState(() {
+      isUploading = false;
+    });
   }
 }

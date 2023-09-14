@@ -1,3 +1,4 @@
+import 'package:chatify/widgets/spaces_widget/post_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class ChatBubble extends StatelessWidget {
     required this.date,
     required this.chatId,
     required this.recieverUsername,
+    required this.imageUrl,
   });
 
   final String text;
@@ -30,6 +32,7 @@ class ChatBubble extends StatelessWidget {
   final String time;
   final String date;
   final Map<String, dynamic> reply;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +62,7 @@ class ChatBubble extends StatelessWidget {
     textPainter.layout();
 
     // bubble container final size
-    final bubbleWidth = textPainter.width + 45;
+    final bubbleWidth = textPainter.width + 50;
     String? username = FirebaseAuth.instance.currentUser?.displayName;
 
     return Align(
@@ -108,6 +111,11 @@ class ChatBubble extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  imageUrl.isEmpty
+                      ? const SizedBox()
+                      : PostImage(
+                          imageUrl: imageUrl,
+                        ),
                   Text(
                     text,
                     style: TextStyle(

@@ -49,6 +49,9 @@ class ChatScreenAppBar extends StatelessWidget {
           // profile picture
           CircleAvatar(
             backgroundColor: Colors.grey[200],
+            foregroundImage: user.imageUrl.isEmpty == false
+                ? NetworkImage(user.imageUrl)
+                : null,
           ),
         ],
       ),

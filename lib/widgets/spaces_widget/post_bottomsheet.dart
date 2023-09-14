@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:chatify/providers/post_provider.dart';
 import 'package:chatify/widgets/general_widget/custom_progress_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import 'post_picked_image.dart';
 
 class PostBottomsheet extends StatefulWidget {
   const PostBottomsheet({
@@ -15,6 +20,7 @@ class PostBottomsheet extends StatefulWidget {
 
 class _PostBottomsheetState extends State<PostBottomsheet> {
   final controller = TextEditingController();
+  File postImage = File("");
 
   bool isLoading = false;
 
@@ -72,9 +78,22 @@ class _PostBottomsheetState extends State<PostBottomsheet> {
                         onSubmitted: (_) => addPost(context),
                       ),
                     ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        postImage.existsSync() == false
+                            ? IconButton(
+                                onPressed: () => pickImageFromGallery(),
+                                icon: Image.asset("assets/icons/picture.png"),
+                              )
+                            : PostPickedImage(
+                                postImage: postImage,
+                                setState: setState,
+                              ),
+                        const Spacer(),
                         TextButton(
                           onPressed: () {
                             controller.clear();
@@ -100,13 +119,33 @@ class _PostBottomsheetState extends State<PostBottomsheet> {
     );
   }
 
+  void pickImageFromGallery() async {
+    final pickedImage = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 75,
+    );
+
+    if (pickedImage == null) {
+      return;
+    }
+
+    setState(() {
+      postImage = File(pickedImage.path);
+    });
+
+    print(postImage);
+  }
+
   void addPost(BuildContext context) async {
     setState(() {
       isLoading = true;
     });
     var postProvider = Provider.of<PostProvider>(context, listen: false);
 
-    await postProvider.addPost(controller.text.trim());
+    await postProvider.addPost(
+      controller.text.trim(),
+      postImage,
+    );
     if (mounted) {
       Navigator.pop(context);
     }

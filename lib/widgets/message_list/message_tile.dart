@@ -68,6 +68,9 @@ class _MessageTileState extends State<MessageTile> {
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
                     radius: 17.sp,
+                    foregroundImage: user?.imageUrl.isEmpty == false
+                        ? NetworkImage(user?.imageUrl ?? "")
+                        : null,
                   ),
                   title: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.sp),
@@ -156,12 +159,14 @@ class _MessageTileState extends State<MessageTile> {
 
       setState(() {
         user = Users(
-            id: userData?["id"] ?? "",
-            fullName: userData?["fullName"] ?? "",
-            username: userData?["username"] ?? "",
-            email: userData?["email"] ?? "",
-            phoneNumber: userData?["phoneNumber"] ?? "",
-            token: userData?["token"] ?? "");
+          id: userData?["id"] ?? "",
+          fullName: userData?["fullName"] ?? "",
+          username: userData?["username"] ?? "",
+          email: userData?["email"] ?? "",
+          phoneNumber: userData?["phoneNumber"] ?? "",
+          token: userData?["token"] ?? "",
+          imageUrl: userData?["imageUrl"] ?? "",
+        );
       });
     } catch (error) {
       print("Get reciever data: $error");

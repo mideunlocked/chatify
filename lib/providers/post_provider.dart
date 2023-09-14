@@ -1,4 +1,7 @@
 // import 'package:chatify/models/comment.dart';
+import 'dart:io';
+
+import 'package:chatify/providers/image_handling_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +14,7 @@ class PostProvider with ChangeNotifier {
 
   List<dynamic> get posts => [..._posts];
 
-  Future<dynamic> addPost(String text) async {
+  Future<dynamic> addPost(String text, File imageFile) async {
     var currentUser = authInstance.currentUser;
     var uid = currentUser?.uid;
 
@@ -21,13 +24,21 @@ class PostProvider with ChangeNotifier {
           "text": text,
           "time": Timestamp.now(),
           "likes": [],
+          "imageUrls": [""],
           "postUserInfo": {
             "username": currentUser?.displayName,
             "profileImageUrl": "",
             "userId": uid,
           },
         },
-      );
+      ).then((value) async {
+        final imageUrl =
+            await ImageHandlingProvider().postImage(imageFile, value.id);
+
+        cloudInstance.collection("posts").doc(value.id).update({
+          "imageUrls": [imageUrl],
+        });
+      });
 
       notifyListeners();
       return true;

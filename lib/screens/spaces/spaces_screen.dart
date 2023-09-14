@@ -81,6 +81,7 @@ class _SpacesScreenState extends State<SpacesScreen> {
                             postUserInfo: post["postUserInfo"] ?? {},
                             time: post["time"] ?? Timestamp.now(),
                             likeCount: post["likes"] ?? [],
+                            imageUrls: post["imageUrls"] ?? [],
                           ),
                           index: 0,
                         );

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/chat.dart';
+import 'image_handling_provider.dart';
 
 class Chatting with ChangeNotifier {
   FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
@@ -53,10 +54,15 @@ class Chatting with ChangeNotifier {
         "text": chat.text,
         "reply": chat.reply,
         "receiverToken": recieverToken,
-      }).then((value) {
+        "imageUrl": "",
+      }).then((value) async {
+        final imageUrl =
+            await ImageHandlingProvider().uploadChatImage(chat.file, value.id);
+
         messagePath.doc(value.id).update({
           "id": value.id,
           "isSent": true,
+          "imageUrl": imageUrl,
         });
       });
 
@@ -88,7 +94,7 @@ class Chatting with ChangeNotifier {
         "recipients": [recieverUid, uid],
         "timeStamp": Timestamp.now(),
       });
-      var chatResult = await chatPath.collection("messages").add({
+      await chatPath.collection("messages").add({
         "timeStamp": chat.timeStamp,
         "senderId": uid,
         "isSeen": chat.isSeen,
@@ -96,11 +102,16 @@ class Chatting with ChangeNotifier {
         "text": chat.text,
         "reply": chat.reply,
         "receiverToken": recieverToken,
-      });
+        "imageUrl": "",
+      }).then((value) async {
+        final imageUrl =
+            await ImageHandlingProvider().uploadChatImage(chat.file, value.id);
 
-      await chatPath.collection("messages").doc(chatResult.id).update({
-        "id": chatResult.id,
-        "isSent": true,
+        await chatPath.collection("messages").doc(value.id).update({
+          "id": value.id,
+          "isSent": true,
+          "imageUrl": imageUrl,
+        });
       });
 
       print("done");
@@ -246,7 +257,9 @@ class Chatting with ChangeNotifier {
       var messagePath =
           cloudInstance.collection("chats").doc(chatId).collection("messages");
 
-      await messagePath.doc(id).delete();
+      await messagePath.doc(id).delete().then((value) async {
+        await ImageHandlingProvider().deleteImage("chat_images/$id");
+      });
 
       notifyListeners();
       return true;

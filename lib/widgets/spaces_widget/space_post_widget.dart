@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'like_and_comment.dart';
+import 'post_image.dart';
 import 'profile_time.dart';
 import 'spaces_more_widget.dart';
 
@@ -31,6 +32,8 @@ class _SpacePostWidgetState extends State<SpacePostWidget> {
   Widget build(BuildContext context) {
     String timeAgo = DateTimeFormatting().timeAgo(widget.post.time);
 
+    var imageUrl = widget.post.imageUrls.first.toString();
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
       child: Column(
@@ -50,6 +53,11 @@ class _SpacePostWidgetState extends State<SpacePostWidget> {
           Text(
             widget.post.text,
           ),
+          imageUrl.isEmpty
+              ? const SizedBox()
+              : PostImage(
+                  imageUrl: imageUrl,
+                ),
           SizedBox(
             height: 3.h,
           ),
