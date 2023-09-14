@@ -24,10 +24,11 @@ class Chatting with ChangeNotifier {
     return [..._chats];
   }
 
-  Future<dynamic> senMessage(
+  Future<dynamic> sendMessage(
     Chat chat,
     String chatId,
     String recieverUid,
+    String recieverToken,
   ) async {
     try {
       var uid = authInstance.currentUser?.uid;
@@ -51,6 +52,7 @@ class Chatting with ChangeNotifier {
         "isSent": chat.isSent,
         "text": chat.text,
         "reply": chat.reply,
+        "receiverToken": recieverToken,
       }).then((value) {
         messagePath.doc(value.id).update({
           "id": value.id,
@@ -67,7 +69,11 @@ class Chatting with ChangeNotifier {
     }
   }
 
-  Future<dynamic> startChat(String recieverUid, Chat chat) async {
+  Future<dynamic> startChat(
+    String recieverUid,
+    Chat chat,
+    String recieverToken,
+  ) async {
     var uid = authInstance.currentUser?.uid;
 
     try {
@@ -89,6 +95,7 @@ class Chatting with ChangeNotifier {
         "isSent": chat.isSent,
         "text": chat.text,
         "reply": chat.reply,
+        "receiverToken": recieverToken,
       });
 
       await chatPath.collection("messages").doc(chatResult.id).update({

@@ -122,6 +122,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
               chatId: widget.groupChat.id,
               isInitial: false,
               isGroup: true,
+              reciverToken: "",
             ),
           ],
         ),

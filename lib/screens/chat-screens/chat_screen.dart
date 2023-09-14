@@ -113,6 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
               isMe: true,
               recieverUid: widget.recieverId,
               recieverUsername: widget.user.username,
+              reciverToken: widget.user.token,
               chatId: widget.chatId,
               isInitial: isInitial,
             ),

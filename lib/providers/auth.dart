@@ -1,3 +1,4 @@
+import 'package:chatify/helpers/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ class AuthProvider with ChangeNotifier {
     String age,
     bool isAgreed,
   ) async {
+    String? token = await FirebaseMessagingHelper().getFcmToken();
+
     try {
       await authInstance
           .createUserWithEmailAndPassword(
@@ -30,6 +33,7 @@ class AuthProvider with ChangeNotifier {
           "phoneNumber": phoneNumber,
           "username": username,
           "isAgree": isAgreed,
+          "token": token ?? "",
         });
         authInstance.currentUser?.updateDisplayName(username);
       });
@@ -60,6 +64,8 @@ class AuthProvider with ChangeNotifier {
     String loginDetail,
     String password,
   ) async {
+    String? token = await FirebaseMessagingHelper().getFcmToken();
+
     try {
       if (loginDetail.contains(".com") != true) {
         QuerySnapshot snap = await cloudInstance
@@ -67,18 +73,30 @@ class AuthProvider with ChangeNotifier {
             .where("username", isEqualTo: loginDetail)
             .get();
 
-        await authInstance.signInWithEmailAndPassword(
+        await authInstance
+            .signInWithEmailAndPassword(
           email: snap.docs[0]["email"],
           password: password,
-        );
+        )
+            .then((value) async {
+          await cloudInstance.collection("users").doc(value.user?.uid).update({
+            "token": token,
+          });
+        });
 
         notifyListeners();
         return true;
       } else {
-        await authInstance.signInWithEmailAndPassword(
+        await authInstance
+            .signInWithEmailAndPassword(
           email: loginDetail,
           password: password,
-        );
+        )
+            .then((value) async {
+          await cloudInstance.collection("users").doc(value.user?.uid).update({
+            "token": token,
+          });
+        });
 
         notifyListeners();
         return true;

@@ -80,5 +80,8 @@ class _SpacePostWidgetState extends State<SpacePostWidget> {
     await postProvider.deletePost(
       widget.post.id,
     );
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 }

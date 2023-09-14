@@ -118,6 +118,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                           email: result["email"] ?? "",
                                           phoneNumber:
                                               result["phoneNumber"] ?? "",
+                                          token: result["token"] ?? "",
                                         ),
                                       );
                                     }).toList() ??

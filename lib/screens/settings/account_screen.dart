@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../widgets/settings_widget/account/account_list_tile.dart';
 import '../../widgets/settings_widget/account/forgot_password_tile.dart';
+// import '../../widgets/settings_widget/account/profile_image.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});

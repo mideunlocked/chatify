@@ -59,13 +59,7 @@ class _MessageTileState extends State<MessageTile> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ChatScreen(
-                        user: Users(
-                          id: user?.id ?? "",
-                          fullName: user?.fullName ?? "",
-                          username: user?.username ?? "",
-                          email: user?.email ?? "",
-                          phoneNumber: user?.phoneNumber ?? "",
-                        ),
+                        user: user!,
                         chatId: widget.chatId,
                         recieverId: widget.recieverUid,
                       ),
@@ -162,12 +156,12 @@ class _MessageTileState extends State<MessageTile> {
 
       setState(() {
         user = Users(
-          id: userData?["id"] ?? "",
-          fullName: userData?["fullName"] ?? "",
-          username: userData?["username"] ?? "",
-          email: userData?["email"] ?? "",
-          phoneNumber: userData?["phoneNumber"] ?? "",
-        );
+            id: userData?["id"] ?? "",
+            fullName: userData?["fullName"] ?? "",
+            username: userData?["username"] ?? "",
+            email: userData?["email"] ?? "",
+            phoneNumber: userData?["phoneNumber"] ?? "",
+            token: userData?["token"] ?? "");
       });
     } catch (error) {
       print("Get reciever data: $error");

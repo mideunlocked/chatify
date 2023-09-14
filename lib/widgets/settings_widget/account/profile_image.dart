@@ -34,13 +34,14 @@ class _ProfileImageState extends State<ProfileImage> {
               foregroundImage: profileImage.isEmpty == false
                   ? NetworkImage(profileImage)
                   : null,
-            )
+            ),
           ],
         ),
         Positioned(
           left: 60.w,
           child: InkWell(
-            onTap: () => pickImageFromGallery(),
+            onTap: () =>
+                pickImageFromGallery(authInstance.currentUser?.uid ?? ""),
             child: CircleAvatar(
               backgroundColor: const Color.fromARGB(255, 4, 255, 138),
               radius: 18.sp,
@@ -57,7 +58,7 @@ class _ProfileImageState extends State<ProfileImage> {
     );
   }
 
-  void pickImageFromGallery() async {
+  void pickImageFromGallery(String uid) async {
     final imageHandlingProvider = Provider.of<ImageHandlingProvider>(
       context,
       listen: false,
@@ -74,6 +75,6 @@ class _ProfileImageState extends State<ProfileImage> {
 
     File imageFile = File(pickedImage.path);
 
-    await imageHandlingProvider.uploadProfileImage(imageFile);
+    await imageHandlingProvider.uploadProfileImage(imageFile, uid);
   }
 }

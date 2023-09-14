@@ -1,3 +1,4 @@
+import 'package:chatify/screens/auth/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -37,11 +38,16 @@ class SettingsAppBar extends StatelessWidget {
   }
 }
 
-class SettingsMoreButton extends StatelessWidget {
+class SettingsMoreButton extends StatefulWidget {
   const SettingsMoreButton({
     super.key,
   });
 
+  @override
+  State<SettingsMoreButton> createState() => _SettingsMoreButtonState();
+}
+
+class _SettingsMoreButtonState extends State<SettingsMoreButton> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
@@ -67,6 +73,14 @@ class SettingsMoreButton extends StatelessWidget {
       onSelected: (value) async {
         if (value == 1) {
           await FirebaseAuth.instance.signOut();
+          if (mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => const WelcomeScreen(),
+              ),
+            );
+          }
         }
       },
       child: Image.asset(

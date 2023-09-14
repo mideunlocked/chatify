@@ -60,7 +60,6 @@ class MessagesScreen extends StatelessWidget {
                               List<dynamic> recieverId =
                                   chat["recipients"] as List<dynamic>;
                               recieverId.removeWhere((value) => value == uid);
-                              print(recieverId[0] + "   fghj");
 
                               return MessageTile(
                                 chatId: listData.id,

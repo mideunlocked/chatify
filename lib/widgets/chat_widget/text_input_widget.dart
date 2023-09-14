@@ -22,6 +22,7 @@ class TextInputWidget extends StatefulWidget {
     required this.recieverUid,
     required this.recieverUsername,
     this.isGroup = false,
+    required this.reciverToken,
   });
 
   final String chatId;
@@ -30,6 +31,7 @@ class TextInputWidget extends StatefulWidget {
   final String recieverUid;
   final String recieverUsername;
   final bool isGroup;
+  final String reciverToken;
 
   @override
   State<TextInputWidget> createState() => _TextInputWidgetState();
@@ -134,7 +136,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
     var replyData = chattingProvider.reply;
 
     if (widget.isInitial == false) {
-      chattingProvider.senMessage(
+      chattingProvider.sendMessage(
         Chat(
           id: "",
           timeStamp: Timestamp.now(),
@@ -149,6 +151,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
         ),
         widget.chatId,
         widget.recieverUid,
+        widget.reciverToken,
       );
     } else {
       chattingProvider.startChat(
@@ -165,6 +168,7 @@ class _TextInputWidgetState extends State<TextInputWidget> {
           isSent: false,
           text: controller.text.trim(),
         ),
+        widget.reciverToken,
       );
       setState(() {
         widget.isInitial = false;
