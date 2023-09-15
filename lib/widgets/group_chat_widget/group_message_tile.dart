@@ -38,6 +38,8 @@ class GroupMessageTile extends StatelessWidget {
                 var data = snapshot.data?.docs.first;
                 totalCount = snapshot.data?.size ?? 0;
 
+                String text = data?["text"].toString() ?? "";
+
                 return ListTile(
                   onTap: () {
                     Navigator.push(
@@ -95,7 +97,7 @@ class GroupMessageTile extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    data?["text"] ?? "xxxxxxxxxxx",
+                    text.isEmpty ? "📷" : data?["text"] ?? "xxxxxxxxxxx",
                     maxLines: 1,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,

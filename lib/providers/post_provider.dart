@@ -32,12 +32,14 @@ class PostProvider with ChangeNotifier {
           },
         },
       ).then((value) async {
-        final imageUrl =
-            await ImageHandlingProvider().postImage(imageFile, value.id);
+        if (imageFile.existsSync() == true) {
+          final imageUrl =
+              await ImageHandlingProvider().postImage(imageFile, value.id);
 
-        cloudInstance.collection("posts").doc(value.id).update({
-          "imageUrls": [imageUrl],
-        });
+          cloudInstance.collection("posts").doc(value.id).update({
+            "imageUrls": [imageUrl],
+          });
+        }
       });
 
       notifyListeners();

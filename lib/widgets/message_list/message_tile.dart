@@ -93,7 +93,9 @@ class _MessageTileState extends State<MessageTile> {
                     ),
                   ),
                   subtitle: Text(
-                    data["text"] ?? "xxxxxxxxxxx",
+                    data["text"].toString().isEmpty
+                        ? "📷"
+                        : data["text"] ?? "xxxxxxxxxxx",
                     maxLines: 1,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,

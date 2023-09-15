@@ -56,14 +56,16 @@ class Chatting with ChangeNotifier {
         "receiverToken": recieverToken,
         "imageUrl": "",
       }).then((value) async {
-        final imageUrl =
-            await ImageHandlingProvider().uploadChatImage(chat.file, value.id);
+        if (chat.file.existsSync() == true) {
+          final imageUrl = await ImageHandlingProvider()
+              .uploadChatImage(chat.file, value.id);
 
-        messagePath.doc(value.id).update({
-          "id": value.id,
-          "isSent": true,
-          "imageUrl": imageUrl,
-        });
+          messagePath.doc(value.id).update({
+            "id": value.id,
+            "isSent": true,
+            "imageUrl": imageUrl,
+          });
+        }
       });
 
       notifyListeners();
@@ -104,14 +106,16 @@ class Chatting with ChangeNotifier {
         "receiverToken": recieverToken,
         "imageUrl": "",
       }).then((value) async {
-        final imageUrl =
-            await ImageHandlingProvider().uploadChatImage(chat.file, value.id);
+        if (chat.file.existsSync() == true) {
+          final imageUrl = await ImageHandlingProvider()
+              .uploadChatImage(chat.file, value.id);
 
-        await chatPath.collection("messages").doc(value.id).update({
-          "id": value.id,
-          "isSent": true,
-          "imageUrl": imageUrl,
-        });
+          await chatPath.collection("messages").doc(value.id).update({
+            "id": value.id,
+            "isSent": true,
+            "imageUrl": imageUrl,
+          });
+        }
       });
 
       print("done");

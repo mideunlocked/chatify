@@ -108,7 +108,8 @@ class _TextInputWidgetState extends State<TextInputWidget> {
               ChatTextField(controller: controller),
               SendIcon(
                 function: () {
-                  if (controller.text.isEmpty) {
+                  if (controller.text.isEmpty &&
+                      pickedFile?.existsSync() == false) {
                   } else if (widget.isGroup == true) {
                     groupChatSend().then(
                       (value) => pickedFile?.deleteSync(),

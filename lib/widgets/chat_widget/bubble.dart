@@ -65,6 +65,19 @@ class ChatBubble extends StatelessWidget {
     final bubbleWidth = textPainter.width + 50;
     String? username = FirebaseAuth.instance.currentUser?.displayName;
 
+    var boxDecoration = BoxDecoration(
+      color: isMe == true
+          ? const Color.fromARGB(255, 192, 250, 223)
+          : const Color.fromARGB(255, 0, 34, 53),
+      borderRadius: isMe == true ? borderRadius1 : borderRadius2,
+    );
+    var margin = EdgeInsets.only(
+      top: reply["text"] == "" ? 0 : 50.sp,
+      left: isMe == true ? 70.sp : 10.sp,
+      right: isMe == false ? 70.sp : 10.sp,
+      bottom: 6.sp,
+    );
+
     return Align(
       alignment: isMe
           ? Alignment.centerRight
@@ -93,50 +106,53 @@ class ChatBubble extends StatelessWidget {
                     bubbleWidth: bubbleWidth,
                     reply: reply,
                   ),
-            Container(
-              margin: EdgeInsets.only(
-                top: reply["text"] == "" ? 0 : 50.sp,
-                left: isMe == true ? 70.sp : 10.sp,
-                right: isMe == false ? 70.sp : 10.sp,
-                bottom: 6.sp,
-              ),
-              padding: EdgeInsets.all(12.sp),
-              width: bubbleWidth,
-              decoration: BoxDecoration(
-                color: isMe == true
-                    ? const Color.fromARGB(255, 192, 250, 223)
-                    : const Color.fromARGB(255, 0, 34, 53),
-                borderRadius: isMe == true ? borderRadius1 : borderRadius2,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  imageUrl.isEmpty
-                      ? const SizedBox()
-                      : PostImage(
-                          imageUrl: imageUrl,
+            text.isEmpty == true
+                ? Container(
+                    width: 70.w,
+                    padding: EdgeInsets.all(5.sp),
+                    margin: margin,
+                    decoration: boxDecoration,
+                    child: PostImage(
+                      imageUrl: imageUrl,
+                    ),
+                  )
+                : Container(
+                    margin: margin,
+                    padding: EdgeInsets.all(12.sp),
+                    width: imageUrl.isNotEmpty ? 70.w : bubbleWidth,
+                    decoration: boxDecoration,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        imageUrl.isEmpty
+                            ? const SizedBox()
+                            : PostImage(
+                                imageUrl: imageUrl,
+                              ),
+                        SizedBox(
+                          width: imageUrl.isNotEmpty ? 70.w : bubbleWidth,
+                          child: Text(
+                            text,
+                            style: TextStyle(
+                              color: isMe == true
+                                  ? const Color.fromARGB(255, 0, 34, 53)
+                                  : Colors.white,
+                              fontSize: 11.sp,
+                            ),
+                          ),
                         ),
-                  Text(
-                    text,
-                    style: TextStyle(
-                      color: isMe == true
-                          ? const Color.fromARGB(255, 0, 34, 53)
-                          : Colors.white,
-                      fontSize: 11.sp,
+                        Icon(
+                          Icons.circle_rounded,
+                          color: isMe == true
+                              ? isRead == true
+                                  ? Colors.green
+                                  : Colors.grey
+                              : Colors.transparent,
+                          size: 5.sp,
+                        )
+                      ],
                     ),
                   ),
-                  Icon(
-                    Icons.circle_rounded,
-                    color: isMe == true
-                        ? isRead == true
-                            ? Colors.green
-                            : Colors.grey
-                        : Colors.transparent,
-                    size: 5.sp,
-                  )
-                ],
-              ),
-            ),
           ],
         ),
       ),

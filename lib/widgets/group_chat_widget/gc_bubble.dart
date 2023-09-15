@@ -77,6 +77,19 @@ class _GCChatBubbleState extends State<GCChatBubble> {
     String? currentUsername = FirebaseAuth.instance.currentUser?.displayName;
     FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
 
+    var boxDecoration = BoxDecoration(
+      color: widget.isMe == true
+          ? const Color.fromARGB(255, 192, 250, 223)
+          : const Color.fromARGB(255, 0, 34, 53),
+      borderRadius: widget.isMe == true ? borderRadius1 : borderRadius2,
+    );
+    var margin = EdgeInsets.only(
+      top: widget.reply["text"] == "" ? 0 : 50.sp,
+      left: widget.isMe == true ? 70.sp : 10.sp,
+      right: widget.isMe == false ? 70.sp : 10.sp,
+      bottom: 6.sp,
+    );
+
     return Align(
       alignment: widget.isMe
           ? Alignment.centerRight
@@ -117,58 +130,60 @@ class _GCChatBubbleState extends State<GCChatBubble> {
                           bubbleWidth: bubbleWidth,
                           reply: widget.reply,
                         ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: widget.reply["text"] == "" ? 0 : 60.sp,
-                      left: widget.isMe == true ? 60.sp : 10.sp,
-                      right: widget.isMe == false ? 60.sp : 10.sp,
-                      bottom: 6.sp,
-                    ),
-                    padding: EdgeInsets.all(10.sp),
-                    decoration: BoxDecoration(
-                      color: widget.isMe == true
-                          ? const Color.fromARGB(255, 192, 250, 223)
-                          : const Color.fromARGB(255, 0, 34, 53),
-                      borderRadius:
-                          widget.isMe == true ? borderRadius1 : borderRadius2,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: widget.isMe
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
-                      children: [
-                        widget.isMe == true
-                            ? const SizedBox()
-                            : GCBubbleName(
-                                uid: widget.senderId,
+                  widget.text.isEmpty == true
+                      ? Container(
+                          width: 60.w,
+                          padding: EdgeInsets.all(5.sp),
+                          margin: margin,
+                          decoration: boxDecoration,
+                          child: PostImage(
+                            imageUrl: widget.imageUrl,
+                          ),
+                        )
+                      : Container(
+                          margin: margin,
+                          padding: EdgeInsets.all(10.sp),
+                          decoration: boxDecoration,
+                          width:
+                              widget.imageUrl.isNotEmpty ? 70.w : bubbleWidth,
+                          child: Column(
+                            crossAxisAlignment: widget.isMe
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
+                            children: [
+                              widget.isMe == true
+                                  ? const SizedBox()
+                                  : GCBubbleName(
+                                      uid: widget.senderId,
+                                    ),
+                              widget.imageUrl.isEmpty
+                                  ? const SizedBox()
+                                  : PostImage(
+                                      imageUrl: widget.imageUrl,
+                                    ),
+                              Text(
+                                widget.text,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: widget.isMe == true
+                                      ? const Color.fromARGB(255, 0, 34, 53)
+                                      : Colors.white,
+                                  fontSize: 11.sp,
+                                ),
                               ),
-                        widget.imageUrl.isEmpty
-                            ? const SizedBox()
-                            : PostImage(
-                                imageUrl: widget.imageUrl,
-                              ),
-                        Text(
-                          widget.text,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: widget.isMe == true
-                                ? const Color.fromARGB(255, 0, 34, 53)
-                                : Colors.white,
-                            fontSize: 11.sp,
+                              Icon(
+                                Icons.circle_rounded,
+                                color: widget.isMe == true
+                                    ? widget.haveRead.length ==
+                                            widget.numberOfMembers
+                                        ? Colors.green
+                                        : Colors.grey
+                                    : Colors.transparent,
+                                size: 5.sp,
+                              )
+                            ],
                           ),
                         ),
-                        Icon(
-                          Icons.circle_rounded,
-                          color: widget.isMe == true
-                              ? widget.haveRead.length == widget.numberOfMembers
-                                  ? Colors.green
-                                  : Colors.grey
-                              : Colors.transparent,
-                          size: 5.sp,
-                        )
-                      ],
-                    ),
-                  ),
                 ],
               ),
             );

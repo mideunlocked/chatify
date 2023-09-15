@@ -217,14 +217,16 @@ class GroupChatting with ChangeNotifier {
         "reply": groupChat.reply,
         "imageUrl": "",
       }).then((value) async {
-        final imageUrl = await ImageHandlingProvider()
-            .uploadChatImage(groupChat.file, value.id);
+        if (groupChat.file.existsSync() == true) {
+          final imageUrl = await ImageHandlingProvider()
+              .uploadChatImage(groupChat.file, value.id);
 
-        messagePath.doc(value.id).update({
-          "id": value.id,
-          "isSent": true,
-          "imageUrl": imageUrl,
-        });
+          messagePath.doc(value.id).update({
+            "id": value.id,
+            "isSent": true,
+            "imageUrl": imageUrl,
+          });
+        }
       });
 
       notifyListeners();
